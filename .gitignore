@@ -1,0 +1,10 @@
+# Local research & private files — not for public repo
+research/
+investor-decks/
+data/
+CLAUDE.md
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

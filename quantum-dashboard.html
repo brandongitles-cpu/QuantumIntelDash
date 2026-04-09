@@ -172,6 +172,21 @@
   /* Scrollbar */
   ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+  /* Nav dropdowns */
+  .nav-wrap { display: flex; gap: 10px; margin-bottom: 22px; align-items: center; flex-wrap: wrap; }
+  .nav-group { position: relative; }
+  .nav-btn { display: flex; align-items: center; gap: 5px; padding: 7px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 7px; color: #94a3b8; font-size: 11px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+  .nav-btn:hover { color: #e2e8f0; border-color: var(--border2); }
+  .nav-btn.nav-active { border-color: var(--blue); background: rgba(59,130,246,0.06); color: #f1f5f9; }
+  .nav-btn-group { font-size: 8px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; color: var(--dim); }
+  .nav-sep { color: rgba(255,255,255,0.12); font-size: 10px; }
+  .nav-btn-cur { font-size: 11px; font-weight: 700; color: inherit; }
+  .nav-btn-caret { font-size: 8px; color: var(--dim); margin-left: 2px; }
+  .nav-dropdown { position: absolute; top: calc(100% + 6px); left: 0; min-width: 190px; background: #111827; border: 1px solid var(--border2); border-radius: 8px; padding: 4px; z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .nav-item { display: block; width: 100%; text-align: left; padding: 7px 12px; font-size: 11px; font-weight: 600; color: #94a3b8; background: none; border: none; cursor: pointer; font-family: inherit; border-radius: 5px; transition: all 0.1s; letter-spacing: 0.2px; }
+  .nav-item:hover { background: rgba(255,255,255,0.05); color: #e2e8f0; }
+  .nav-item.nav-item-active { background: rgba(59,130,246,0.12); color: #60a5fa; }
+
   @media (max-width: 900px) {
     .detail-grid { grid-template-columns: 1fr 1fr; }
     .modality-grid { grid-template-columns: 1fr 1fr; }
@@ -224,6 +239,107 @@
   .invest-dim-cell-note { font-size: 10px; color: #94a3b8; line-height: 1.5; }
   .rating-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 3px; font-size: 9px; font-weight: 700; letter-spacing: 0.4px; }
   .private-badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 3px; font-size: 9px; font-weight: 700; letter-spacing: 0.4px; background: rgba(100,116,139,0.15); color: #94a3b8; }
+
+  /* Modality Explanation animations */
+  .mod-anim-wrap { width: 100%; height: 72px; margin-bottom: 10px; position: relative; overflow: hidden; border-radius: 6px; background: rgba(0,0,0,0.25); }
+  .mod-fidelity-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .mod-fidelity-label { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: #475569; text-transform: uppercase; flex-shrink: 0; }
+  .mod-fidelity-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+  .mod-fidelity-fill { height: 100%; border-radius: 3px; }
+  .mod-fidelity-pct { font-size: 10px; font-weight: 700; flex-shrink: 0; width: 40px; text-align: right; }
+  .mod-na-badge { font-size: 9px; font-weight: 700; color: #475569; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px; }
+
+  @keyframes ion-osc { 0%,100%{transform:translateX(0)} 50%{transform:translateX(3px)} }
+  @keyframes ion-osc2 { 0%,100%{transform:translateX(0)} 50%{transform:translateX(-3px)} }
+  @keyframes phonon-wave { 0%{opacity:0;stroke-dashoffset:60} 30%{opacity:1} 70%{opacity:1} 100%{opacity:0;stroke-dashoffset:0} }
+  @keyframes gate-glow { 0%,60%,100%{opacity:0.35} 70%,90%{opacity:1} }
+  @keyframes alltoall-glow { 0%,65%,100%{opacity:0.15} 75%,88%{opacity:0.7} }
+
+  @keyframes rydberg-expand { 0%,100%{r:5;opacity:0} 30%,70%{r:22;opacity:0.18} }
+  @keyframes atom-gate-pulse { 0%,55%,100%{opacity:0} 65%,85%{opacity:1} }
+  @keyframes atom-move { 0%,100%{cx:24} 45%,55%{cx:34} }
+
+  @keyframes sc-pulse-travel { 0%{stroke-dashoffset:80;opacity:0} 10%{opacity:1} 80%{stroke-dashoffset:0;opacity:1} 90%,100%{opacity:0} }
+  @keyframes sc-error-flicker { 0%,85%,100%{opacity:0} 88%,96%{opacity:0.5} }
+  @keyframes sc-idle-osc { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
+  @keyframes catwell-hop { 0%,100%{transform:translateX(0)} 40%,60%{transform:translateX(18px)} }
+  @keyframes catwell-phase-err { 0%,88%,100%{opacity:0} 92%,97%{opacity:0.8} }
+
+  @keyframes photon-travel { 0%{transform:translateX(-70px);opacity:0} 15%{opacity:1} 55%{transform:translateX(0);opacity:1} 65%,100%{transform:translateX(0);opacity:0} }
+  @keyframes photon-exit-a { 0%,54%{transform:translate(0,0);opacity:0} 55%{opacity:1} 85%{transform:translate(28px,-18px);opacity:1} 90%,100%{opacity:0} }
+  @keyframes photon-exit-b { 0%,54%{transform:translate(0,0);opacity:0} 55%{opacity:1} 85%{transform:translate(28px,18px);opacity:1} 90%,100%{opacity:0} }
+  @keyframes photon-fail-flash { 0%,54%,70%,100%{opacity:0} 58%,65%{opacity:0.9} }
+
+  @keyframes braid-move-a { 0%{d:path("M 26 20 C 26 36 50 36 50 52")} 50%{d:path("M 26 20 C 26 36 50 36 50 52")} 100%{d:path("M 26 20 C 26 36 50 36 50 52")} }
+  @keyframes anyon-pulse { 0%,100%{opacity:0.5;r:4} 50%{opacity:1;r:5.5} }
+
+  @keyframes spin-flip { 0%,40%{transform:rotate(0deg)} 50%,90%{transform:rotate(180deg)} 100%{transform:rotate(180deg)} }
+  @keyframes spin-gate-line { 0%,45%,100%{opacity:0} 55%,80%{opacity:1} }
+
+  @keyframes ball-roll { 0%{cx:20;cy:20} 60%{cx:72;cy:54} 80%,100%{cx:72;cy:54} }
+  @keyframes ball-reset { 0%,75%{opacity:1} 90%,100%{opacity:0} }
+  @keyframes ball-appear { 0%,88%{opacity:0} 100%{opacity:1} }
+
+  @keyframes sfq-pulse-a { 0%,20%,100%{transform:scaleY(0)} 25%,35%{transform:scaleY(1)} 40%{transform:scaleY(0)} }
+  @keyframes sfq-pulse-b { 0%,50%,100%{transform:scaleY(0)} 55%,65%{transform:scaleY(1)} 70%{transform:scaleY(0)} }
+
+  /* Quantum Type Badges */
+  .qt-badge { display: inline-flex; align-items: center; padding: 2px 6px; border-radius: 3px; font-size: 9px; font-weight: 700; letter-spacing: 0.3px; }
+
+  /* Valuation Tab (Market Map) */
+  .vt-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .vt-bar-row { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
+  .vt-bar-label { font-size: 11px; font-weight: 600; color: #e2e8f0; width: 180px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vt-bar-track { flex: 1; height: 20px; background: rgba(255,255,255,0.03); border-radius: 4px; overflow: hidden; }
+  .vt-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; transition: width 0.4s; }
+  .vt-bar-val { width: 90px; text-align: right; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; gap: 4px; font-size: 11px; font-weight: 700; color: #94a3b8; }
+  .vt-summary { display: flex; gap: 20px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .vt-stat { font-size: 11px; color: var(--dim); }
+  .vt-stat strong { color: #e2e8f0; }
+  .vt-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 4px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); font-size: 10px; color: var(--dim); margin: 3px; }
+  @keyframes vt-pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  /* Rebalancer Tab */
+  .rb-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .rb-stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .rb-stat-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; color: var(--dim); text-transform: uppercase; margin-bottom: 6px; }
+  .rb-stat-val { font-size: 20px; font-weight: 800; line-height: 1; margin-bottom: 3px; color: #f1f5f9; }
+  .rb-stat-sub { font-size: 10px; color: #64748b; }
+  .rb-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .rb-table th { text-align: left; padding: 8px 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.6px; color: var(--dim); text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .rb-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; }
+  .rb-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Fund Pitch Tab */
+  .fund-hero { background: linear-gradient(135deg, rgba(59,130,246,0.10) 0%, rgba(139,92,246,0.08) 60%, rgba(6,182,212,0.06) 100%); border: 1px solid rgba(59,130,246,0.2); border-radius: 14px; padding: 44px 48px; margin-bottom: 28px; text-align: center; }
+  .fund-hero-title { font-size: 28px; font-weight: 800; letter-spacing: -0.8px; color: #f8fafc; margin-bottom: 10px; }
+  .fund-hero-sub { font-size: 13px; color: #94a3b8; line-height: 1.7; max-width: 580px; margin: 0 auto; }
+  .fund-hero-tags { display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .fund-section { margin-bottom: 28px; }
+  .fund-section-title { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #475569; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .fund-pillar { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; height: 100%; }
+  .fund-pillar-num { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: var(--dim); text-transform: uppercase; margin-bottom: 8px; }
+  .fund-pillar-title { font-size: 14px; font-weight: 800; color: #f1f5f9; margin-bottom: 8px; }
+  .fund-pillar-body { font-size: 12px; color: #94a3b8; line-height: 1.7; }
+  .fund-stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .fund-stat-num { font-size: 24px; font-weight: 800; color: #f1f5f9; line-height: 1; margin-bottom: 5px; }
+  .fund-stat-label { font-size: 11px; color: var(--dim); line-height: 1.5; }
+  .fund-company-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .fund-company-row:last-child { border-bottom: none; }
+  .fund-risk-card { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.12); border-radius: 8px; padding: 14px; }
+  .fund-risk-title { font-size: 11px; font-weight: 700; color: #f87171; margin-bottom: 5px; }
+  .fund-risk-body { font-size: 11px; color: #94a3b8; line-height: 1.6; }
+  .fund-footer { text-align: center; padding: 24px; margin-top: 24px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 900px) {
+    .rb-summary { grid-template-columns: 1fr 1fr; }
+    .fund-hero { padding: 28px 24px; }
+  }
+  @media (max-width: 600px) {
+    .rb-summary { grid-template-columns: 1fr; }
+    .fund-hero-title { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
@@ -241,6 +357,22 @@ const SCALING_COLORS = {
   outsourced:    '#94a3b8',
   novel:         '#ec4899',
   infrastructure:'#64748b',
+};
+
+const QUANTUM_TYPE_COLORS = {
+  platform:       { bg:'rgba(59,130,246,0.15)',  color:'#60a5fa',  rgb:'59,130,246',  label:'Platform' },
+  hardware:       { bg:'rgba(16,185,129,0.15)',  color:'#34d399',  rgb:'16,185,129',  label:'Hardware' },
+  infrastructure: { bg:'rgba(139,92,246,0.15)',  color:'#a78bfa',  rgb:'139,92,246',  label:'Infrastructure' },
+  sensing:        { bg:'rgba(6,182,212,0.15)',   color:'#22d3ee',  rgb:'6,182,212',   label:'Sensing' },
+  software:       { bg:'rgba(245,158,11,0.15)',  color:'#fbbf24',  rgb:'245,158,11',  label:'Software' },
+  security:       { bg:'rgba(239,68,68,0.15)',   color:'#f87171',  rgb:'239,68,68',   label:'Security' },
+  networking:     { bg:'rgba(249,115,22,0.15)',  color:'#fb923c',  rgb:'249,115,22',  label:'Networking' },
+};
+
+const PS_COLORS = {
+  portfolio:    { rgb:'59,130,246',  color:'#60a5fa',  label:'Portfolio' },
+  watching:     { rgb:'245,158,11',  color:'#fbbf24',  label:'Watching' },
+  questionable: { rgb:'239,68,68',   color:'#f87171',  label:'Questionable' },
 };
 
 const PHASE_CONFIG = {
@@ -272,10 +404,26 @@ const VALUATION_COLORS = {
   Stretched:  { bg: 'rgba(239,68,68,0.15)',  color: '#f87171' },
 };
 
-const VERSION = 'v1.0';
+const VERSION = 'v1.1';
 const LAST_UPDATED = 'April 2026';
 
 const CHANGELOG = [
+  {
+    version: 'v1.1',
+    date: 'April 2026',
+    changes: [
+      'Valuation tab — live market cap fetching for public tickers, private funding round data',
+      'Rebalancer tab — portfolio tier allocation with donut chart and rebalance targets',
+      'Fund Pitch tab — investment narrative builder with timeline nodes',
+      'All Companies tab — full universe browser with category filtering (Hardware, Software, Security, Infrastructure, Applications, Consulting)',
+      'Modality animations — live physics visualizations for all 9 modality types (trapped ion, neutral atom, superconducting, cat qubit, photonic, topological, silicon spin, annealing, SFQ)',
+      'Fidelity bars — 2Q gate fidelity comparison in Modality Explanation tab',
+      'Dropdown navigation — grouped nav menus replacing flat tab bar',
+      'Quantum Type badges — platform/software/hardware/security classification per company',
+      'Added Multiverse Computing (€100M ARR, highest revenue in quantum software)',
+      'Redeployed to quantumeconomics.vercel.app',
+    ]
+  },
   {
     version: 'v1.0',
     date: 'April 2026',
@@ -308,6 +456,7 @@ const COMPANIES = [
     moatPotential: 'Exceptional', moatPotentialNote: 'Semiconductor path = manufacturing moat no competitor can replicate quickly. Vertical integration + 8 acquisitions creating full-stack platform.',
     commerceRating: 'Clear', commerceNote: 'Cloud access (AWS/Azure/GCP), govt contracts (DARPA QBI Stage B), SkyWater TaaS model. $130M FY2025, $235M 2026 guidance midpoint.',
     valuationRating: 'Stretched', valuationNote: '$12B+ mkt cap on $130M revenue (P/S ~93x). 2026 guidance $225-245M. EBITDA loss $310-330M. Justified only if 2028 CRQC roadmap delivers.',
+    quantumType: 'platform',
   },
   {
     id: 'quantinuum', name: 'Quantinuum', ticker: 'Pre-IPO', modality: 'Trapped Ion',
@@ -325,6 +474,25 @@ const COMPANIES = [
     moatPotential: 'Exceptional', moatPotentialNote: 'Iceberg codes + Azure integration = premium enterprise quantum provider. If ratio scales: lowest total system cost per logical qubit.',
     commerceRating: 'Clear', commerceNote: 'QCaaS + enterprise pilots. $115M revenue. Confidential S-1 filed Jan 14, 2026. Expected ~$20B+ valuation, ~$1B raise.',
     valuationRating: null, valuationNote: 'Expected $20B+ at IPO (up from $10B Sept 2025). Honeywell ~54% stake, exit in 12-36 months post-listing. Premium justified by ~2:1 ratio breakthrough.',
+    quantumType: 'platform',
+  },
+  {
+    id: 'aqt', name: 'Alpine Quantum Technologies', ticker: 'Private', modality: 'Trapped Ion',
+    phase: 'engineering', phaseX: 2.3,
+    physicsStatus: 'solving',
+    physicsNote: '2Q gate fidelity 97.7–98.7% (PINE Q1, 20 qubits) and 97.7% avg (IBEX Q1, 12 qubits). 1Q fidelity 99.96–99.97%. Quantum Volume 128 (PINE Q1). April 2026 (Nature Communications): first measurement-free fault-tolerant universal gate set — 8 Ca⁺ ions → 3 logical qubits via four-qubit error-detecting code, Grover search executed fault-tolerantly without mid-circuit measurements. Founded 2018 by Blatt, Monz, Zoller — the original Innsbruck ion trap group that pioneered the field.',
+    logicalRatio: 3, ratioType: 'demonstrated',
+    ratioNote: '8 physical → 3 logical qubits demonstrated (Nature Communications, April 2026) via four-qubit error-detecting code. First measurement-free fault-tolerant universal gate set demonstration globally. Proof-of-concept only — no published roadmap to large-scale logical qubits. PINE chassis supports up to 50 physical qubits.',
+    scalingPath: 'modular_ion',
+    scalingNote: 'PINE Q1 is world\'s first commercial 19" rack-mounted QC — integrates directly into existing HPC data centers, room-temperature support electronics, <2 kW power, <2 sqm footprint. All-to-all Ca⁺ ion connectivity (no SWAP gates needed). IBEX Q1 live on AWS Braket eu-north-1 (Nov 2025) and Scaleway EU sovereign cloud (Feb 2026). No photonic interconnect roadmap published.',
+    costCurve: 'Deflationary',
+    expectations: 'Defensible EU niche: first trapped-ion on AWS Braket EU region and EU sovereign cloud (Scaleway, Feb 2026). Material government hardware sales: €12.28M PIAST-Q (EuroHPC Poland, inaugurated June 2025 attended by Presidents of Germany and Austria) + ~€9.8M LRZ Munich — hardware revenues likely exceed total VC raised (~$12M). Rack-mount HPC form factor is a genuine differentiator vs. IonQ and Quantinuum. Raw fidelity (97.7–98.7% 2Q) trails IonQ (99.99%) and Quantinuum (99.921%) — the key headwind for enterprise buyers. EU regulatory tailwinds and sovereign cloud preference are the bull thesis.',
+    contextTier: false,
+    moatCurrent: 'Moderate', moatCurrentNote: 'Unique 19" rack-mount PINE form factor (HPC-native, room-temp, <2kW). First EU trapped-ion on AWS Braket + Scaleway sovereign cloud. €22M+ in confirmed gov hardware contracts (EuroHPC Poland + LRZ Munich). Founded by Blatt/Monz/Zoller — who pioneered trapped-ion QC at Innsbruck.',
+    moatPotential: 'Moderate', moatPotentialNote: 'EU sovereign cloud + HPC center pipeline strategy could lock in European national lab channel. EU quantum policy strongly favors domestic suppliers. Fidelity gap to IonQ/Quantinuum must close for global competitive relevance beyond EU.',
+    commerceRating: 'Developing', commerceNote: '€12.28M PIAST-Q (EuroHPC Poland, delivered June 2025). ~€9.8M LRZ Munich (Bavarian state). AWS Braket eu-north-1 (Nov 2025), Scaleway (Feb 2026), Quantum Rings, qBraid. European HPC center pipeline is the revenue model.',
+    valuationRating: null, valuationNote: 'Private; valuation undisclosed. ~$12M total raised (primarily govt grants: Austria Wirtschaftsservice, FFG). Gov hardware revenues (~€22M confirmed) likely exceed equity raised — unusual capital efficiency profile.',
+    quantumType: 'hardware',
   },
   {
     id: 'quera', name: 'QuEra', ticker: 'Private', modality: 'Neutral Atom',
@@ -342,6 +510,7 @@ const COMPANIES = [
     moatPotential: 'Exceptional', moatPotentialNote: '100 logical qubits by 2026 = fault-tolerant utility before most competitors. Transversal AFT reduces runtime cost 10-100x.',
     commerceRating: 'Developing', commerceNote: '$230M+ raised at $1B (Feb 2025). Google QAI, SoftBank, NVIDIA as investors. No IPO announced. 100 logical qubits in 2026 is the catalyst.',
     valuationRating: null, valuationNote: '$1B valuation (Feb 2025 unicorn). Deep-pocketed investors. No near-term revenue but strongest logical qubit trajectory.',
+    quantumType: 'hardware',
   },
   {
     id: 'alice_bob', name: 'Alice & Bob', ticker: 'Private', modality: 'Cat Qubits',
@@ -359,6 +528,7 @@ const COMPANIES = [
     moatPotential: 'Exceptional', moatPotentialNote: 'If 16:1 holds: lowest overhead SC path. Could undercut transmon economics by 2030.',
     commerceRating: 'Unclear', commerceNote: '2030 target (Graphene chip). No revenue. EUR100M Series B (Jan 2025) provides runway.',
     valuationRating: null, valuationNote: 'EUR130M total raised. Series B led by FFC, AVP, Bpifrance. Highest capital risk in engineering phase.',
+    quantumType: 'hardware',
   },
   {
     id: 'seeqc', name: 'SEEQC', ticker: 'Pre-IPO', modality: 'Infrastructure',
@@ -376,6 +546,7 @@ const COMPANIES = [
     moatPotential: 'Strong', moatPotentialNote: 'Picks-and-shovels: wins regardless of modality winner. NVIDIA validation is the strongest signal. Critical infra if hardware commoditizes.',
     commerceRating: 'Developing', commerceNote: 'SPAC merger with Allegro (~$1B, Q2 2026). NVIDIA/NQCC demonstrations. IBM DARPA partnership. Pre-revenue at scale.',
     valuationRating: null, valuationNote: '$1B SPAC target ($65M PIPE). SPAC dilution risk. NVIDIA validation de-risks thesis but revenue remains unproven.',
+    quantumType: 'infrastructure',
   },
   {
     id: 'qci', name: 'Quantum Circuits (QCI)', ticker: 'Acquired (QBTS)', modality: 'Superconducting',
@@ -393,6 +564,7 @@ const COMPANIES = [
     moatPotential: 'Moderate', moatPotentialNote: 'Dual-rail + on-chip cryo control could differentiate D-Wave\'s gate offering. Integration risk is real.',
     commerceRating: 'Unclear', commerceNote: 'No longer independent. D-Wave acquired Jan 2026 for $550M. GA 2026 target for dual-rail system.',
     valuationRating: null, valuationNote: 'Acquired for $550M. Evaluate via QBTS.',
+    quantumType: 'hardware',
   },
   {
     id: 'atom', name: 'Atom Computing', ticker: 'Private', modality: 'Neutral Atom',
@@ -410,6 +582,7 @@ const COMPANIES = [
     moatPotential: 'Strong', moatPotentialNote: 'Azure Quantum integration + on-premise delivery model. If 10K qubits arrive: competitive with QuEra.',
     commerceRating: 'Developing', commerceNote: 'Magne system orderable, delivery 2025, operational 2027. Microsoft partnership IS the commercialization path.',
     valuationRating: null, valuationNote: 'Private; undisclosed valuation. Magne orders are the near-term catalyst. Dependency on Microsoft is the key risk.',
+    quantumType: 'hardware',
   },
 
   /* ── PHYSICS PROVING ────────────────────────────────── */
@@ -429,6 +602,7 @@ const COMPANIES = [
     moatPotential: 'Weak', moatPotentialNote: '1,000:1 ratio problem requires novel physics, not better fab. India C-DAC order is a signal but not a moat.',
     commerceRating: 'Developing', commerceNote: '$7.1M FY2025 revenue (declining). $443.5M cash. Novera systems + C-DAC orders. Revenue trajectory is the red flag.',
     valuationRating: 'Stretched', valuationNote: '~$2-4B mkt cap on $7.1M declining revenue. Sharpest narrative/fundamentals mismatch in sector. $443.5M cash is the only bull case.',
+    quantumType: 'platform',
   },
   {
     id: 'pasqal', name: 'Pasqal', ticker: 'Pre-IPO', modality: 'Neutral Atom',
@@ -446,6 +620,7 @@ const COMPANIES = [
     moatPotential: 'Moderate', moatPotentialNote: 'European HPC integration + enterprise deployment. TAM limited if analog simulation remains the focus vs gate-based.',
     commerceRating: 'Developing', commerceNote: 'SPAC merger at ~$2B (Nasdaq, H2 2026). 7 deployed systems. Enterprise contracts are real but QEC roadmap lags.',
     valuationRating: null, valuationNote: '$2B SPAC valuation. ~$200M convertible financing. QEC lag vs QuEra/Atom is the risk.',
+    quantumType: 'hardware',
   },
   {
     id: 'infleqtion', name: 'Infleqtion', ticker: 'INFQ', modality: 'Neutral Atom',
@@ -463,6 +638,7 @@ const COMPANIES = [
     moatPotential: 'Strong', moatPotentialNote: 'Sensing + compute sharing physics = fastest path to commercial revenue. 1,000 logical by 2030 roadmap. If compute catches up: dual-platform moat.',
     commerceRating: 'Clear', commerceNote: '$29M LTM revenue. Listed INFQ (NYSE, Feb 2026). $540M+ proceeds. Sensing is real TODAY, compute is optionality.',
     valuationRating: 'Fair', valuationNote: '$2.52B mkt cap on $29M revenue (~87x P/S). Revenue is real and diversified (sensing). Most defensible near-term revenue story in quantum.',
+    quantumType: 'sensing',
   },
   {
     id: 'psiquantum', name: 'PsiQuantum', ticker: 'Private', modality: 'Photonic',
@@ -480,6 +656,7 @@ const COMPANIES = [
     moatPotential: 'Moderate', moatPotentialNote: 'If CMOS path dominates: GF + DARPA = strong position. But >1M:1 overhead ratio is the fundamental problem.',
     commerceRating: 'Unclear', commerceNote: '$7B valuation. Zero demonstrated quantum computation. DARPA Stage C is the strongest validation. Feb 2026 utility-scale target likely to slip.',
     valuationRating: null, valuationNote: '$7B valuation ($1B Series E, Sept 2025). Highest capital deployed per physics proof point. Binary outcome: zero or breakthrough.',
+    quantumType: 'hardware',
   },
   {
     id: 'microsoft', name: 'Microsoft Quantum', ticker: 'MSFT', modality: 'Topological',
@@ -497,6 +674,7 @@ const COMPANIES = [
     moatPotential: 'Exceptional', moatPotentialNote: 'If topological qubits work at scale: intrinsic error protection leapfrogs entire industry. Binary outcome.',
     commerceRating: 'Clear', commerceNote: 'Azure Quantum marketplace + Atom Computing partnership. Quantum is strategic optionality on $3T market cap.',
     valuationRating: 'Fair', valuationNote: 'MSFT at $3T. Quantum is rounding error. Topological upside is free with core cloud/AI position.',
+    quantumType: 'platform',
   },
 
   /* ── COMMERCIAL TODAY ───────────────────────────────── */
@@ -516,6 +694,7 @@ const COMPANIES = [
     moatPotential: 'Moderate', moatPotentialNote: 'QCI acquisition ($550M) is gate pivot wildcard. Dual-platform if both work. Integration risk is real.',
     commerceRating: 'Clear', commerceNote: 'Clearest commercialization proof. $30M+ Jan 2026 bookings. Risk: gate pivot cannibalizes working business. ~236x P/S.',
     valuationRating: 'Stretched', valuationNote: '$5.8-6.5B mkt cap on $24.6M revenue (~236x P/S). Revenue growth (+179%) is real but from tiny base. 2025 stock +256%. Analyst 2026 target: ~$39.5M.',
+    quantumType: 'hardware',
   },
 
   /* ── CONTEXT TIER: BIG TECH ─────────────────────────── */
@@ -534,6 +713,7 @@ const COMPANIES = [
     commerceRating: 'Clear', commerceNote: 'IBM Quantum Network paying customers. DARPA QBI Stage B. Most credible commercial SC deployment. Quantum advantage target 2026.',
     valuationRating: 'Fair', valuationNote: 'IBM at ~$150B market cap. Quantum is small % today. Long-term strategic option. qLDPC breakthrough strengthens thesis.',
     helmerAvg: 2.14, helmerCount: '6/7', helmerClass: 'Fortress',
+    quantumType: 'platform',
   },
 
   /* ── NEW PURE-PLAYS ─────────────────────────────────── */
@@ -552,6 +732,7 @@ const COMPANIES = [
     commerceRating: 'Developing', commerceNote: 'SPAC at $1.8B (NYSE + Helsinki, Q2 2026). Real European HPC deployments. Halocene orders. $450M+ post-close cash.',
     valuationRating: null, valuationNote: '$1.8B SPAC valuation. SPAC dilution risk. European HPC niche is the thesis. Would be Europe\'s first listed quantum company.',
     helmerAvg: 1.14, helmerCount: '5/7', helmerClass: 'Moderate',
+    quantumType: 'hardware',
   },
   {
     id: 'xanadu', name: 'Xanadu', ticker: 'XNDU', modality: 'Photonic',
@@ -568,8 +749,512 @@ const COMPANIES = [
     commerceRating: 'Developing', commerceNote: 'SPAC at $3.6B (Nasdaq + TSX, closing Mar 2026). XNDU ticker. PennyLane partnerships growing but monetization unclear.',
     valuationRating: null, valuationNote: '$3.6B SPAC market cap. First public pure-play photonic. SPAC dilution risk. PennyLane moat + GKP milestone are the bull case.',
     helmerAvg: 1.29, helmerCount: '5/7', helmerClass: 'Moderate',
+    quantumType: 'software',
+  },
+
+  /* ── WAVE 2: NEW ADDITIONS ─────────────────────────── */
+  {
+    id: 'quantum_machines', name: 'Quantum Machines', ticker: 'Private', modality: 'Control Systems',
+    phase: 'commercial', phaseX: 3.5,
+    physicsStatus: 'solved',
+    physicsNote: 'QOP (Quantum Orchestration Platform) runs control electronics for >50% of the world\'s operational quantum systems (company claim). NVIDIA DGX Quantum integration — first quantum-AI hybrid compute system. OPX1000 processor enables sub-microsecond feedback loops critical for QEC. Modality-agnostic: works with trapped ion, neutral atom, superconducting, photonic.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — control and orchestration layer, not compute. Enables QEC decoding and real-time feedback at the speed QEC requires. Works across all hardware modalities.',
+    scalingPath: 'infrastructure', scalingNote: 'Series C Feb 2025: $280M raised, $700M valuation. Intel Capital, PSG Equity, Samsung Ventures, Allied Minds. NVIDIA DGX Quantum = first quantum-AI hybrid. Deployed in quantum centers worldwide.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Strong picks-and-shovels play. Whoever wins the hardware race, Quantum Machines could be the arms dealer. >50% market share of deployed quantum systems is a powerful early moat. NVIDIA DGX Quantum integration is the highest-value signal.',
+    moatCurrent: 'Strong', moatCurrentNote: '>50% of deployed quantum systems use QOP. NVIDIA DGX Quantum = first quantum-AI hybrid. Modality-agnostic = wins regardless of hardware winner.',
+    moatPotential: 'Strong', moatPotentialNote: 'Control infrastructure sticky as systems scale. Deep integration + switching costs. Picks-and-shovels moat.',
+    commerceRating: 'Clear', commerceNote: 'Revenue generating. $700M valuation (Series C Feb 2025). Intel Capital, PSG Equity. DGX Quantum = enterprise quantum-AI.',
+    valuationRating: 'Fair', valuationNote: '$700M ($280M raised, Series C Feb 2025). Intel Capital + PSG Equity. Strong relative to sector given actual revenue.',
+    quantumType: 'infrastructure',
+  },
+  {
+    id: 'kipu_quantum', name: 'Kipu Quantum', ticker: 'Private', modality: 'Software (Algorithm Compression)',
+    phase: 'commercial', phaseX: 3.2,
+    physicsStatus: 'solved',
+    physicsNote: 'Platform-agnostic algorithm compression enables NISQ hardware to run circuits that would otherwise require 10-100x more qubits. Paying pharma and finance customers running algorithms TODAY on real quantum hardware. No physics R&D — pure algorithm engineering on IBM, IQM, IonQ hardware.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — software only. Compression reduces qubit requirement, effectively solving the NISQ limitation commercially before fault tolerance arrives.',
+    scalingPath: 'outsourced', scalingNote: 'Works on IBM, IQM, IonQ hardware. ~€25M raised. German deep-tech. Fraunhofer + pharma partnerships. Revenue from pharma customers TODAY.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Revenue-generating on CURRENT hardware = no binary physics risk. The compression thesis is either a bridge to the fault-tolerant era or a moat in its own right. Watch for Series B.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'Algorithm compression IP. Paying pharma customers on NISQ hardware today. Fraunhofer ecosystem.',
+    moatPotential: 'Strong', moatPotentialNote: 'If compression becomes industry standard: every quantum cloud customer needs Kipu. Like compiler software for classical computing.',
+    commerceRating: 'Clear', commerceNote: 'Paying customers now. Pharma-first. ~€25M raised. Revenue on NISQ hardware = no fault-tolerance dependency.',
+    valuationRating: 'Attractive', valuationNote: '~€25M raised, valuation undisclosed. Revenue-generating on current hardware. Early-stage pricing.',
+    quantumType: 'software',
+  },
+  {
+    id: 'classiq', name: 'Classiq', ticker: 'Private', modality: 'Software (Circuit Synthesis)',
+    phase: 'commercial', phaseX: 3.3,
+    physicsStatus: 'solved',
+    physicsNote: 'Circuit synthesis IDE — the "compiler" of the quantum stack. Automatically generates optimized quantum circuits from functional specifications. Works with all major quantum hardware. $180M+ raised (Series C, Nov 2025). NTT, HPE, MSD Partners. Analogous to EDA software in semiconductors.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — software development platform. Classiq is to quantum software what Synopsys is to semiconductor EDA.',
+    scalingPath: 'outsourced', scalingNote: 'NTT, HPE, MSD Partners leading Series C ($180M+, Nov 2025). Enterprise customers in pharma, finance, aerospace. IonQ, IBM, Quantinuum integrations.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'EDA-for-quantum thesis is compelling. $180M raised at Series C = strong institutional validation. NTT + HPE = enterprise distribution moat. Circuit synthesis becomes more valuable as circuit complexity grows.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'Circuit synthesis IP. NTT, HPE, MSD Partners ($180M). Cross-platform integrations. Enterprise customer base.',
+    moatPotential: 'Strong', moatPotentialNote: 'EDA-for-quantum = Synopsys/Cadence analogue. Switching costs compound as customer circuits are designed in Classiq.',
+    commerceRating: 'Clear', commerceNote: '$180M+ raised (Series C, Nov 2025). NTT + HPE enterprise distribution. Revenue generating.',
+    valuationRating: null, valuationNote: '$180M+ raised (Series C, Nov 2025). Valuation undisclosed. Tier-1 institutional validation.',
+    quantumType: 'software',
+  },
+  {
+    id: 'qctrl', name: 'Q-CTRL', ticker: 'Private', modality: 'Software (Error Suppression)',
+    phase: 'commercial', phaseX: 3.1,
+    physicsStatus: 'solved',
+    physicsNote: 'AI-driven quantum error suppression and control optimization. Fire Opal firmware deployed at IBM, IonQ, Quantinuum. Demonstrated 10-1000x performance improvement on commercial systems. Q-CTRL Space: quantum sensing for navigation/positioning (non-GPS). DARPA + IBM partnerships validated. Modality-agnostic.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — error suppression software. Fire Opal improves performance on existing hardware via machine learning-optimized control pulses.',
+    scalingPath: 'outsourced', scalingNote: '~$500M estimated valuation. $128M raised (Series B-ext, Oct 2024). IBM + DARPA partnerships. Q-CTRL Space for navigation/positioning. Sydney-based.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Error suppression improves as hardware improves — growing TAM. Q-CTRL Space is a hedged revenue stream (quantum sensing, hardware-independent). IBM partnership = distribution moat.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'Fire Opal deployed at IBM, IonQ, Quantinuum. DARPA partnership. Q-CTRL Space sensing revenue. ~$128M raised.',
+    moatPotential: 'Strong', moatPotentialNote: 'Error suppression compounds with hardware improvement. Fire Opal as default middleware = sticky enterprise. Space sensing diversifies.',
+    commerceRating: 'Clear', commerceNote: 'Revenue generating. IBM + DARPA partnerships. Q-CTRL Space customers. $128M raised (Oct 2024).',
+    valuationRating: null, valuationNote: '~$500M estimated. $128M raised (Series B-ext, Oct 2024). IBM + DARPA validation.',
+    quantumType: 'infrastructure',
+  },
+  {
+    id: 'multiverse', name: 'Multiverse Computing', ticker: 'Private', modality: 'Software (Quantum-Inspired AI)',
+    phase: 'commercial', phaseX: 3.6,
+    physicsStatus: 'solved',
+    physicsNote: 'CompactifAI: LLM compression using tensor networks from quantum research. Quantum finance algorithms on NISQ hardware. ARR €100M (Jan 2026) — highest revenue of any quantum software company. NOTE: partial AI pivot away from pure quantum thesis. Targeting €1.5B valuation for new €500M raise (in talks, Feb 2026).',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — software only. Quantum-inspired tensor networks applied to AI compression and optimization without requiring quantum hardware.',
+    scalingPath: 'outsourced', scalingNote: 'ARR €100M (Jan 2026). Spain-based. Series B June 2025. Current valuation ~$500M+. Targeting €1.5B for new €500M round (Feb 2026). CompactifAI = AI, not quantum — positioning risk.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Highest revenue of any quantum software company (€100M ARR). CompactifAI AI pivot: near-term strength, long-term category risk. €500M new raise confirms scale ambition.',
+    moatCurrent: 'Strong', moatCurrentNote: '€100M ARR (Jan 2026). CompactifAI deployed. Finance + industrial customers. Series B funded.',
+    moatPotential: 'Moderate', moatPotentialNote: 'AI pivot dilutes quantum thesis. If CompactifAI scales: AI company with quantum heritage. Core quantum finance remains valuable.',
+    commerceRating: 'Clear', commerceNote: '€100M ARR (Jan 2026). Highest revenue in quantum software. Targeting €1.5B for new €500M raise.',
+    valuationRating: null, valuationNote: '~$500M+ current (post-Series B June 2025). Targeting €1.5B for new €500M round. ARR €100M.',
+    quantumType: 'software',
+  },
+  {
+    id: 'quantum_brilliance', name: 'Quantum Brilliance', ticker: 'Private', modality: 'NV-Diamond (Room-Temp)',
+    phase: 'engineering', phaseX: 2.0,
+    physicsStatus: 'improving',
+    physicsNote: 'NV (nitrogen-vacancy) diamond centers — room-temperature quantum computing with no cryogenics. Jan 2025: 6-qubit diamond QPU demonstrated. YeeQ system delivered to ANU. Targets data center edge accelerators in standard server racks. Key thesis: small form factor + room-temperature = deployable without dedicated quantum data center.',
+    logicalRatio: null, ratioType: 'unknown',
+    ratioNote: 'Unknown — NV-diamond QEC is active research. Room-temperature operation has significant decoherence challenges. Commercial thesis depends on error mitigation before fault-tolerant QEC.',
+    scalingPath: 'novel', scalingNote: '~$18M AUD raised. ANU spinout (Canberra). CSIRO + Oak Ridge National Lab partnership. Targeting quantum edge computing in classical data centers.',
+    costCurve: 'Deflationary if room-temp scales', contextTier: false,
+    expectations: 'Unique niche: room-temperature quantum computing in a server rack. If QEC catches up, eliminates the entire cryogenics bottleneck. Genuinely differentiated but speculative.',
+    moatCurrent: 'Weak', moatCurrentNote: '6-qubit demo. CSIRO + Oak Ridge partnerships. Room-temp = no cryogenics moat. ~$18M AUD raised.',
+    moatPotential: 'Strong', moatPotentialNote: 'Room-temperature = data center deployment without $1M+ cryostats. If coherence improves: extraordinary cost structure advantage.',
+    commerceRating: 'Developing', commerceNote: 'YeeQ delivered to ANU. Oak Ridge partnership. Edge computing use case is real but scale unproven.',
+    valuationRating: null, valuationNote: '~$18M AUD raised. Very early. Binary: room-temp QEC breakthrough = large prize.',
+    quantumType: 'hardware',
+  },
+  {
+    id: 'eeroq', name: 'EeroQ', ticker: 'Private', modality: 'Electrons on Helium',
+    phase: 'proving', phaseX: 0.6,
+    physicsStatus: 'unproven',
+    physicsNote: 'Novel modality: electrons floating on superfluid helium surface. Theoretical advantages: long coherence times, high connectivity, CMOS compatibility → millions of qubits. Chicago Quantum Exchange (CQE) ecosystem. ~$15M raised. Single-qubit operations demonstrated in research settings.',
+    logicalRatio: null, ratioType: 'theoretical',
+    ratioNote: 'Theoretical — no QEC demonstrations. Electrons on helium is research-stage. Coherence time advantage is theoretical at multi-qubit scale.',
+    scalingPath: 'novel', scalingNote: '~$15M raised. Chicago-based. CQE ecosystem — UChicago, Argonne, Fermilab. CMOS compatibility is the manufacturing thesis.',
+    costCurve: 'Unknown', contextTier: false,
+    expectations: 'Highest risk/reward in the universe. Electrons on helium has theoretical advantages that could leapfrog every modality. $15M = binary upside at minimal capital. Will not be known for 5+ years.',
+    moatCurrent: 'Weak', moatCurrentNote: '~$15M raised. Novel modality. CQE ecosystem. Very early — single-qubit demonstrations only.',
+    moatPotential: 'Exceptional', moatPotentialNote: 'If electrons-on-helium + CMOS scales: highest-potential architecture. Theoretical advantages are genuine if the physics works.',
+    commerceRating: 'Unclear', commerceNote: '~$15M raised. CQE ecosystem. Research stage. 5+ year horizon.',
+    valuationRating: null, valuationNote: '~$15M raised. Seed. Binary: breakthrough = generational; plateau = write-off.',
+    quantumType: 'hardware',
+  },
+  {
+    id: 'horizon_quantum', name: 'Horizon Quantum', ticker: 'Private', modality: 'Software (Compiler)',
+    phase: 'engineering', phaseX: 2.5,
+    physicsStatus: 'solved',
+    physicsNote: 'Classical-to-quantum compiler: automatically converts classical algorithms into quantum circuits — no quantum expertise required. Addresses the quantum programming talent gap. Singapore government IMDA strategic backing. Targeting $100M+ Series A (Apr 2026) at ~$500M valuation. Works on all major quantum hardware platforms.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — software compiler. The bottleneck is quantum programming talent, not hardware. Classical-to-quantum compilation eliminates that constraint.',
+    scalingPath: 'outsourced', scalingNote: '~$500M estimated valuation. Raising $100M+ Series A (Apr 2026). Singapore IMDA backing. Singapore National Quantum Strategy aligned.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Singapore-backed compiler play. Classical-to-quantum makes quantum accessible to classical engineers. Government backing de-risks runway. $500M at Series A is aggressive but IMDA backing validates it.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'Compiler IP. Singapore govt backing. Classical-to-quantum removes talent constraint. Raising $100M+ (Apr 2026).',
+    moatPotential: 'Strong', moatPotentialNote: 'Compiler becomes standard toolchain = switching cost compound. Government + Asia-Pacific distribution.',
+    commerceRating: 'Developing', commerceNote: '$500M valuation. Raising $100M+ (Apr 2026). Singapore National Quantum Strategy. Commercial pilots ongoing.',
+    valuationRating: null, valuationNote: '~$500M valuation (Apr 2026 raise). Singapore govt backing. Aggressive for pre-revenue stage.',
+    quantumType: 'software',
+  },
+  {
+    id: 'saxonq', name: 'SaxonQ', ticker: 'Private', modality: 'NV-Diamond (Mobile Edge)',
+    phase: 'proving', phaseX: 0.8,
+    physicsStatus: 'improving',
+    physicsNote: 'NV-diamond room-temperature quantum computing for mobile quantum edge applications. University of Leipzig spinout. Q.24 Capital backed. Building compact NV-diamond QPUs for portable/mobile deployment. Distinct from XeedQ (aerospace/DLR contracts) and Quantum Brilliance (data center edge). Focus on mobile quantum edge.',
+    logicalRatio: null, ratioType: 'theoretical',
+    ratioNote: 'Theoretical. Room-temp NV-diamond QEC shared challenge with XeedQ and Quantum Brilliance. Mobile edge adds constraints.',
+    scalingPath: 'novel', scalingNote: 'Seed stage. Q.24 Capital. University of Leipzig spinout (physics excellence in NV-centers). German quantum ecosystem.',
+    costCurve: 'Unknown', contextTier: false,
+    expectations: 'Very early. German NV-diamond ecosystem alongside XeedQ and Quantum Brilliance. Mobile quantum edge is a 5-10 year thesis. Seed stage binary upside.',
+    moatCurrent: 'Weak', moatCurrentNote: 'Seed stage. Leipzig spinout. Q.24 backed. Very early.',
+    moatPotential: 'Moderate', moatPotentialNote: 'Mobile quantum edge niche: if NV-diamond scales, handheld quantum sensors are a unique market.',
+    commerceRating: 'Unclear', commerceNote: 'Seed stage. Leipzig ecosystem + Q.24 capital.',
+    valuationRating: null, valuationNote: 'Seed stage. Undisclosed. Q.24 Capital. University of Leipzig spinout.',
+    quantumType: 'hardware',
+  },
+  {
+    id: 'nu_quantum', name: 'Nu Quantum', ticker: 'Private', modality: 'Photonic Networking',
+    phase: 'engineering', phaseX: 2.3,
+    physicsStatus: 'near-solved',
+    physicsNote: 'Quantum Networking Units (QNUs) for distributed quantum computing and quantum internet. Photonic interconnects connecting quantum computers across distances — the "router" for quantum networks. Series B June 2025. BT Group quantum networking partnership. Cambridge spinout. Critical infrastructure for multi-QPU systems.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — networking layer, not compute. QNUs enable quantum entanglement distribution between remote QPUs. Infrastructure for quantum internet.',
+    scalingPath: 'novel', scalingNote: 'Series B June 2025. Amadeus Capital. BT Group partnership. Cambridge-based. Targets: quantum data centers, distributed quantum computing, QKD.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Quantum networking is the overlooked infrastructure layer. As quantum computers scale to multi-QPU systems, interconnects become the bottleneck. BT Group provides real deployment pathway.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'QNU technology IP. BT Group partnership. Cambridge spinout. Amadeus Capital. Series B funded.',
+    moatPotential: 'Strong', moatPotentialNote: 'Quantum networking becomes critical infrastructure as QPU counts scale. First-mover in QNUs + BT distribution.',
+    commerceRating: 'Developing', commerceNote: 'Series B June 2025. BT Group partnership. Commercial deployments with quantum data center buildout.',
+    valuationRating: null, valuationNote: 'Series B June 2025. Amadeus Capital. Valuation undisclosed.',
+    quantumType: 'networking',
+  },
+  {
+    id: 'arqit', name: 'Arqit', ticker: 'ARQQ', modality: 'PQC Security',
+    phase: 'commercial', phaseX: 3.7,
+    physicsStatus: 'solved',
+    physicsNote: 'Symmetric key agreement protocol (QuantumCloud) for post-quantum cryptography. Technology does NOT require quantum hardware — uses quantum-derived symmetric key math. UK government and NATO contracts. Listed on Nasdaq (ARQQ) post-SPAC. NIST PQC standards play. Volatile stock: post-SPAC decline from $10B+ peak to ~$192M.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — cryptography software. QuantumCloud is quantum-derived but operates on classical infrastructure.',
+    scalingPath: 'outsourced', scalingNote: '$192M market cap (Apr 2026). ARQQ on Nasdaq. UK + NATO government contracts. Symmetric key agreement deployed.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'CRQC threat is real (50% probability by ~2037-2040). Arqit is positioned for the PQC transition. $192M at deep discount from SPAC highs. Government contracts provide durability.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'QuantumCloud deployed. UK + NATO govt contracts. First mover in symmetric key agreement PQC.',
+    moatPotential: 'Moderate', moatPotentialNote: 'CRQC acceleration = PQC adoption demand surge. Government contracts compound to enterprise.',
+    commerceRating: 'Clear', commerceNote: 'Revenue generating. ARQQ listed. UK + NATO govt contracts. QuantumCloud enterprise product.',
+    valuationRating: 'Attractive', valuationNote: '$192M market cap (Apr 2026). Down from $10B+ SPAC peak. Government contracts provide floor.',
+    quantumType: 'security',
+  },
+  {
+    id: 'btq', name: 'BTQ Technologies', ticker: 'BTQ.CN', modality: 'PQC Blockchain Security',
+    phase: 'commercial', phaseX: 3.4,
+    physicsStatus: 'solved',
+    physicsNote: 'Post-quantum cryptography for blockchain and distributed ledger technology. NIST PQC standards implementation. Targets cryptocurrency exchanges, DeFi, and financial infrastructure. Canadian Securities Exchange (CSE) listed. $357M market cap. Proactively building CRQC-resistant blockchain infrastructure.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — cryptography software for blockchain. BTQ makes existing blockchain infrastructure quantum-resistant.',
+    scalingPath: 'outsourced', scalingNote: '$357M market cap. BTQ.CN on CSE. PQC for blockchain niche. NIST standards aligned. Canadian quantum ecosystem.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Niche PQC play for blockchain. $357M market cap seems high for early-stage. CRQC timeline is the catalyst. Speculative but differentiated niche.',
+    moatCurrent: 'Weak', moatCurrentNote: '$357M market cap. BTQ.CN listed. NIST-aligned PQC for blockchain. Early commercial.',
+    moatPotential: 'Moderate', moatPotentialNote: 'Blockchain CRQC threat niche. First-mover in PQC-for-blockchain as timeline firms.',
+    commerceRating: 'Developing', commerceNote: 'BTQ.CN listed. NIST standards. Early commercial. CRQC timing is the activation catalyst.',
+    valuationRating: 'Stretched', valuationNote: '$357M market cap. Microcap on CSE. Pre-significant-revenue. CRQC timing is key variable.',
+    quantumType: 'security',
+  },
+  {
+    id: 'xeedq', name: 'XeedQ', ticker: 'Private', modality: 'NV-Diamond (Aerospace)',
+    phase: 'engineering', phaseX: 1.9,
+    physicsStatus: 'improving',
+    physicsNote: 'Built XQ1 — a multi-qubit mobile NV processor for field deployment. DLR (German Aerospace Center) contracts of ~€87M — the largest government quantum hardware contract in Germany. Founded 2021. Different company from SaxonQ despite both being German NV-diamond. XeedQ focus: aerospace, navigation, sensing applications.',
+    logicalRatio: null, ratioType: 'unknown',
+    ratioNote: 'Unknown — XQ1 multi-qubit NV processor. QEC specs not public. Government contract focus suggests sensing and near-term quantum applications.',
+    scalingPath: 'novel', scalingNote: 'Founded 2021. ~€87M DLR government contracts. XQ1 deployed. German quantum ecosystem (distinct from SaxonQ/Leipzig). DLR: aerospace navigation, sensing, timing.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: '€87M in DLR contracts for a company founded in 2021 is extraordinary validation. Mobile NV-diamond for aerospace is a defensible niche. Government revenue more durable than VC runway.',
+    moatCurrent: 'Moderate', moatCurrentNote: '~€87M DLR contracts. XQ1 deployed. Mobile NV-diamond IP. German aerospace quantum niche.',
+    moatPotential: 'Strong', moatPotentialNote: 'DLR = long-term government contract base. Mobile NV-diamond aerospace niche with real budget.',
+    commerceRating: 'Clear', commerceNote: '~€87M DLR contracts. Revenue generating. XQ1 deployed.',
+    valuationRating: null, valuationNote: 'Valuation undisclosed. ~€87M DLR contracts. Strong revenue for 2021-founded stage.',
+    quantumType: 'hardware',
+  },
+  {
+    id: 'memq', name: 'memQ', ticker: 'Private', modality: 'Quantum Networking (xQNA)',
+    phase: 'engineering', phaseX: 1.8,
+    physicsStatus: 'improving',
+    physicsNote: 'xQNA (quantum network architecture) for distributed quantum computing and quantum repeater technology. UChicago and Argonne National Lab spinout — top quantum networking pedigree. $10M Series A (Mar 2026). Chicago Quantum Exchange (CQE) ecosystem alongside EeroQ. Quantum memory and entanglement distribution technology.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — networking and memory layer. xQNA enables long-distance quantum entanglement via quantum repeaters. Critical for quantum internet.',
+    scalingPath: 'novel', scalingNote: '$10M Series A (Mar 2026). UChicago + Argonne spinout. CQE ecosystem. Quantum memory technology. Target: quantum repeater networks.',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'UChicago/Argonne pedigree is world-class in quantum networking. $10M Series A is seed-scale but serious. Watch for DOE funding given Argonne affiliation.',
+    moatCurrent: 'Weak', moatCurrentNote: '$10M raised (Series A, Mar 2026). UChicago/Argonne pedigree. xQNA architecture. CQE ecosystem.',
+    moatPotential: 'Strong', moatPotentialNote: 'Quantum networking infrastructure critical and underinvested. Argonne/DOE ecosystem = govt contract runway. xQNA = first-mover in architecture.',
+    commerceRating: 'Unclear', commerceNote: '$10M Series A Mar 2026. Very early. Argonne/DOE pathway.',
+    valuationRating: null, valuationNote: '$10M raised (Series A, Mar 2026). Seed stage. Argonne/UChicago pedigree.',
+    quantumType: 'networking',
+  },
+  {
+    id: 'oqc', name: 'Oxford Quantum Circuits (OQC)', ticker: 'Private', modality: 'Superconducting (Coaxmon)',
+    phase: 'engineering', phaseX: 2.4,
+    physicsStatus: 'improving',
+    physicsNote: 'Coaxmon architecture — proprietary superconducting design for reduced crosstalk and improved connectivity vs standard transmon. OQC Toshiko: 32-qubit system available on AWS Braket (first European quantum cloud on AWS). $138M+ raised, $100M Series B (Apr 2024) led by SBI Investment. NOT acquired by IonQ — OQC remains fully independent. IonQ acquired Oxford Ionics (trapped-ion), not OQC.',
+    logicalRatio: 1000, ratioType: 'estimated',
+    ratioNote: 'Estimated ~1,000:1 (standard SC surface code). Coaxmon improves connectivity vs transmon but does not change QEC overhead. Toshiko targets near-term quantum advantage, not fault tolerance.',
+    scalingPath: 'outsourced', scalingNote: '$138M+ raised. $100M Series B Apr 2024 (SBI Investment, Oxford Science Enterprises). OQC Toshiko on AWS Braket. NQCC (UK National Quantum Computing Centre) partnership.',
+    costCurve: 'Inflationary (cryo)', contextTier: false,
+    expectations: 'Most commercially deployed independent superconducting company. AWS Braket presence gives enterprise distribution without hardware sales dependency. $138M raised puts it in strong position for next round.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'OQC Toshiko on AWS Braket. Coaxmon IP. $138M raised. NQCC partnership. UK quantum ecosystem leader.',
+    moatPotential: 'Moderate', moatPotentialNote: 'AWS distribution = enterprise quantum cloud without hardware sales. Coaxmon connectivity advantage. UK NQCC long-term partnership.',
+    commerceRating: 'Developing', commerceNote: 'OQC Toshiko on AWS Braket. $100M Series B (Apr 2024). NQCC partnership.',
+    valuationRating: null, valuationNote: '$138M+ raised. $100M Series B Apr 2024 (SBI Investment). Valuation undisclosed.',
+    quantumType: 'hardware',
   },
 ];
+
+/* ─── ALL QUANTUM COMPANIES UNIVERSE ───────────────────── */
+const ALL_QUANTUM_COMPANIES = [
+  // Hardware
+  {name:'Alice & Bob',category:'Hardware',tech:'Cat Qubits (SC)',desc:'Superconducting cat qubit computers; exponential bit-flip error suppression via bias-preserving gates.',country:'France',tracked:true},
+  {name:'Alpine Quantum Technologies',category:'Hardware',tech:'Trapped Ion',desc:'World\'s first rack-mounted HPC-native quantum computer (PINE); EU sovereign cloud; EuroHPC Poland + LRZ Munich deployments. Founded by Blatt/Monz/Zoller.',country:'Austria',tracked:true},
+  {name:'Anyon Systems Inc.',category:'Hardware',tech:'Superconducting',desc:'Superconducting processors at the forefront of the quantum computing revolution.',country:'Canada',tracked:false},
+  {name:'Atlantic Quantum',category:'Hardware',tech:'Superconducting',desc:'Fault-tolerant superconducting quantum hardware; roots in MIT and Chalmers.',country:'USA',tracked:false},
+  {name:'Atom Computing',category:'Hardware',tech:'Neutral Atom',desc:'Nuclear-spin qubit computers; Microsoft partnership; fast path to scale.',country:'USA',tracked:true},
+  {name:'Bleximo',category:'Hardware',tech:'Superconducting ASIC',desc:'Application-specific superconducting quantum computers co-designed with algorithms.',country:'USA',tracked:false},
+  {name:'Bose Quantum',category:'Hardware',tech:'Coherent QC',desc:"China's first coherent quantum computing startup.",country:'China',tracked:false},
+  {name:'C12 Quantum Electronics',category:'Hardware',tech:'Carbon Nanotube',desc:'Carbon nanotube qubits as the fundamental building block of quantum processors.',country:'France',tracked:false},
+  {name:'ColdQuanta',category:'Hardware',tech:'Neutral Atom',desc:'Cold-atom quantum technology company; rebranded to Infleqtion in 2023.',country:'USA',tracked:false,status:'renamed',statusNote:'Now Infleqtion (2023)'},
+  {name:'D-Wave Systems Inc.',category:'Hardware',tech:'Annealing',desc:'Quantum annealing systems delivering practical business optimization value.',country:'Canada',tracked:true},
+  {name:'Diraq',category:'Hardware',tech:'Silicon CMOS',desc:'Silicon quantum computing IP manufacturable at scale using existing chip fabs.',country:'Australia',tracked:false},
+  {name:'EeroQ',category:'Hardware',tech:'Electrons on Helium',desc:'Individual electrons trapped and controlled above pools of superfluid helium.',country:'USA',tracked:true},
+  {name:'equal1.labs',category:'Hardware',tech:'Silicon CMOS',desc:'Accelerating cost-effective quantum computers built on silicon CMOS chips.',country:'Ireland',tracked:false},
+  {name:'Google Quantum AI',category:'Hardware',tech:'Superconducting',desc:'Willow chip; below-threshold quantum error correction; AlphaQubit error decoder.',country:'USA',tracked:false},
+  {name:'IBM Quantum',category:'Hardware',tech:'Superconducting',desc:'Eagle/Heron/Flamingo processors; qLDPC error correction; largest public QPU fleet.',country:'USA',tracked:true},
+  {name:'Infleqtion',category:'Hardware',tech:'Neutral Atom',desc:'Formerly ColdQuanta; cold-atom quantum computing and sensing; Microsoft partnership.',country:'USA',tracked:true},
+  {name:'IonQ',category:'Hardware',tech:'Trapped Ion',desc:'World-first public pure-play quantum company; $130M FY2025 revenue; SkyWater acquisition.',country:'USA',tracked:true},
+  {name:'IQM Quantum Computers',category:'Hardware',tech:'Superconducting',desc:'Superconducting QPUs for research labs and supercomputing centers; co-design approach.',country:'Finland',tracked:true},
+  {name:'memQ',category:'Hardware',tech:'Quantum Networking',desc:'Cross-architecture quantum network access (xQNA); quantum memory for networking.',country:'USA',tracked:true},
+  {name:'Microsoft Quantum',category:'Hardware',tech:'Topological',desc:'Topological qubits via Majorana zero modes; Azure Quantum cloud platform.',country:'USA',tracked:true},
+  {name:'Nord Quantique',category:'Hardware',tech:'Superconducting',desc:'Per-qubit error mitigation via superconducting circuits; faster path to fault tolerance.',country:'Canada',tracked:false},
+  {name:'Nordic Quantum Computing Group',category:'Hardware',tech:'Optical',desc:'Optical quantum computers targeting universal accessibility for research and business.',country:'Norway',tracked:false},
+  {name:'ORCA Computing',category:'Hardware',tech:'Photonic',desc:'Proprietary quantum memory + photonic computing on standard telecom infrastructure.',country:'UK',tracked:false},
+  {name:'Origin Quantum Computing',category:'Hardware',tech:'Superconducting',desc:'Quantum cloud simulators (full/partial/noise-inclusive) and hardware; major Chinese platform.',country:'China',tracked:false},
+  {name:'Oxford Ionics',category:'Hardware',tech:'Trapped Ion',desc:'Noiseless electronic qubit control for trapped-ion computers; acquired by IonQ (2025).',country:'UK',tracked:false,status:'acquired',statusNote:'Acquired by IonQ $1.075B (Sept 2025)'},
+  {name:'Oxford Quantum Circuits',category:'Hardware',tech:'Superconducting',desc:'Full-stack superconducting quantum computing; Coaxmon architecture; available on AWS Braket.',country:'UK',tracked:true},
+  {name:'PASQAL',category:'Hardware',tech:'Neutral Atom',desc:'Neutral-atom quantum processors leveraging deep laser and vacuum engineering expertise.',country:'France',tracked:true},
+  {name:'Photonic Inc.',category:'Hardware',tech:'Silicon Photonic',desc:'Silicon-based photonic quantum hardware addressing core scalability challenges.',country:'Canada',tracked:false},
+  {name:'PsiQuantum',category:'Hardware',tech:'Photonic',desc:'Large-scale error-corrected photonic quantum computer; GlobalFoundries partnership.',country:'USA',tracked:true},
+  {name:'Q.ANT',category:'Hardware',tech:'Photonic',desc:'Novel photonic sensors and photonic computing chips based on quantum photonic framework.',country:'Germany',tracked:false},
+  {name:'Quandela',category:'Hardware',tech:'Photonic',desc:'Solid-state single-photon sources and photonic quantum computing algorithms.',country:'France',tracked:false},
+  {name:'Quantum Brilliance',category:'Hardware',tech:'NV-Diamond',desc:'Diamond quantum accelerators operating at room temperature for edge deployment.',country:'Australia',tracked:true},
+  {name:'Quantum Motion',category:'Hardware',tech:'Silicon',desc:'Silicon fault-tolerant quantum computers targeting 1M+ qubits via semiconductor leverage.',country:'UK',tracked:false},
+  {name:'Quantum Source Labs',category:'Hardware',tech:'Photonic',desc:'Revolutionizing photonic quantum computing with novel light-source technology.',country:'Israel',tracked:false},
+  {name:'QuantWare',category:'Hardware',tech:'SC Components',desc:'Superconducting QPU components; democratizing quantum hardware access and expanding the field.',country:'Netherlands',tracked:false},
+  {name:'QuEra Computing',category:'Hardware',tech:'Neutral Atom',desc:'96 logical qubits demonstrated (Nature 2025); 3,000-qubit continuous operation.',country:'USA',tracked:true},
+  {name:'QuiX Quantum',category:'Hardware',tech:'Photonic',desc:'Integrated photonic processors for photonic quantum computing.',country:'Netherlands',tracked:false},
+  {name:'Rigetti Computing',category:'Hardware',tech:'Superconducting',desc:'Superconducting quantum computers on AWS Braket; publicly traded.',country:'USA',tracked:true},
+  {name:'SaxonQ',category:'Hardware',tech:'NV-Diamond (Mobile)',desc:'Mobile-edge diamond NV-center quantum computers targeting field deployment.',country:'Germany',tracked:true},
+  {name:'SEEQC',category:'Hardware',tech:'Superconducting',desc:'Classical control integrated directly with QPU; SPAC merger targeting $1B.',country:'USA',tracked:true},
+  {name:'Silicon Quantum Computing',category:'Hardware',tech:'Silicon',desc:'Cutting-edge silicon atom qubit technology; life-enhancing and world-changing mission.',country:'Australia',tracked:false},
+  {name:'SpinQ',category:'Hardware',tech:'NMR / SC',desc:'Desktop NMR quantum computers and cloud-based superconducting quantum systems.',country:'China',tracked:false},
+  {name:'TundraSystems Global',category:'Hardware',tech:'Silicon Photonic',desc:'Silicon photonics technology addressing limitations of traditional semiconductor approaches.',country:'Canada',tracked:false},
+  {name:'TuringQ',category:'Hardware',tech:'Photonic',desc:'Optical quantum chips, photonic computers, and quantum cloud platforms.',country:'China',tracked:false},
+  {name:'Universal Quantum',category:'Hardware',tech:'Trapped Ion',desc:'Trapped-ion quantum computers for real-world problems beyond supercomputer reach.',country:'UK',tracked:false},
+  {name:'Xanadu',category:'Hardware',tech:'Photonic',desc:'Photonic quantum computers and PennyLane open-source framework; publicly traded.',country:'Canada',tracked:true},
+  {name:'XeedQ',category:'Hardware',tech:'NV-Diamond (Aerospace)',desc:'Diamond NV-center quantum systems for aerospace and defense edge applications.',country:'Germany',tracked:true},
+  // Software
+  {name:'1QBit',category:'Software',tech:'Optimization',desc:'Software for classical and quantum hardware solving intractable industry optimization problems.',country:'Canada',tracked:false},
+  {name:'A* Quantum',category:'Software',tech:'Problem Solving',desc:'Software enabling researchers and end users to solve their own problems on quantum hardware.',country:'France',tracked:false},
+  {name:'Agnostiq',category:'Software',tech:'Workflow',desc:'Interdisciplinary team building practical quantum applications and hybrid workflows.',country:'Canada',tracked:false},
+  {name:'Algorithmiq',category:'Software',tech:'Life Sciences',desc:'Quantum computing for life sciences; solving currently inaccessible molecular problems.',country:'Finland',tracked:false},
+  {name:'Apply Science Quantum Division',category:'Software',tech:'Quantum AI Research',desc:'Research division exploring quantum computers for future artificial intelligence.',country:'USA',tracked:false},
+  {name:'aQuantum',category:'Software',tech:'Dev Platform',desc:'First quantum software development and lifecycle application platform.',country:'Spain',tracked:false},
+  {name:'Beit',category:'Software',tech:'Algorithms',desc:'Novel quantum algorithms and implementations pushing the boundary of near-term hardware.',country:'Poland',tracked:false},
+  {name:'Cambridge Quantum Computing',category:'Software',tech:'Enterprise',desc:'Enterprise quantum software; merged into Quantinuum in 2021.',country:'UK',tracked:false,status:'merged',statusNote:'Merged into Quantinuum (2021)'},
+  {name:'Classiq',category:'Software',tech:'Circuit Synthesis',desc:'Quantum circuit synthesis platform automating complex quantum algorithm design.',country:'Israel',tracked:true},
+  {name:'ColibrITD',category:'Software',tech:'QCaaS Platform',desc:'Quantum software and algorithm platform as a service.',country:'France',tracked:false},
+  {name:'Elyah',category:'Software',tech:'IDE',desc:'Qubit Workbench — write, test, debug, and simulate quantum code.',country:'USA',tracked:false},
+  {name:'Entropica Labs',category:'Software',tech:'Optimization',desc:'Quantum optimization for enterprise and advancing quantum hardware performance.',country:'Singapore',tracked:false},
+  {name:'Good Chemistry Company',category:'Software',tech:'Chem Simulation',desc:'QEMIST Cloud — cloud, AI, and quantum computing for computational chemistry.',country:'Canada',tracked:false},
+  {name:'Horizon Quantum Computing',category:'Software',tech:'Compiler',desc:'Classical-language quantum compiler; no quantum knowledge required from developers.',country:'Singapore',tracked:true},
+  {name:'HQS Quantum Simulations',category:'Software',tech:'Materials Simulation',desc:'Quantum-level material models for chemical industry and academia.',country:'Germany',tracked:false},
+  {name:'Jij',category:'Software',tech:'Annealing Optimization',desc:'Quantum annealing and mathematical optimization across infrastructure and manufacturing.',country:'Japan',tracked:false},
+  {name:'Kipu Quantum',category:'Software',tech:'Algorithm Compression',desc:'Algorithm compression enabling quantum advantage on available current hardware.',country:'Germany',tracked:true},
+  {name:'Molecular Quantum Solutions',category:'Software',tech:'Quantum Chemistry',desc:'Bridging the gap between laboratories and quantum chemistry for industry.',country:'Denmark',tracked:false},
+  {name:'Multiverse Computing',category:'Software',tech:'Finance / Inspired',desc:'Quantum and quantum-inspired software for financial services and enterprise.',country:'Spain',tracked:true},
+  {name:'ODE',category:'Software',tech:'Chemistry Algorithm',desc:'Algorithms solving NP-hard chemistry problems using quantum computing.',country:'UK',tracked:false},
+  {name:'Opacity',category:'Software',tech:'Bridging',desc:'Making near-term quantum hardware useful at both application and hardware layers.',country:'USA',tracked:false},
+  {name:'ParityQC',category:'Software',tech:'Architecture',desc:'Quantum computer blueprints based on the ParityQC architecture for optimization.',country:'Austria',tracked:false},
+  {name:'PhaseCraft',category:'Software',tech:'Materials',desc:'Quantum theory and software for novel quantum materials (better batteries and solar cells).',country:'UK',tracked:false},
+  {name:'Q-CTRL',category:'Software',tech:'Error Suppression',desc:'Quantum firmware and error suppression software for transformational real-world outcomes.',country:'Australia',tracked:true},
+  {name:'QBee',category:'Software',tech:'Full Stack',desc:'Full-stack quantum accelerator covering application to hardware; quantum genetics and chemistry.',country:'Germany',tracked:false},
+  {name:'QbitLogic',category:'Software',tech:'AI + Quantum',desc:'AI and quantum computing tools for software system creation and protection.',country:'USA',tracked:false},
+  {name:'QC Ware',category:'Software',tech:'Algorithms',desc:'Enterprise quantum algorithm development on current and near-term hardware.',country:'USA',tracked:false},
+  {name:'QunaSys',category:'Software',tech:'Algorithms',desc:'Algorithm development and product engineering pushing quantum computing to full potential.',country:'Japan',tracked:false},
+  {name:'Qunova Computing',category:'Software',tech:'Accessibility',desc:'Making quantum computing more accessible to scientists and engineers worldwide.',country:'South Korea',tracked:false},
+  {name:'QuDot',category:'Software',tech:'Simulation',desc:'Simulating universal quantum computers on commodity hardware using QuDot Net technology.',country:'USA',tracked:false},
+  {name:'Riverlane',category:'Software',tech:'Error Correction',desc:'Quantum error correction software; hardware-obsessed and commercially driven.',country:'UK',tracked:false},
+  {name:'softwareQ',category:'Software',tech:'Compilers / Simulators',desc:'Reliable quantum compilers, optimizers, and simulators for the dynamic QC landscape.',country:'Canada',tracked:false},
+  {name:'Strangeworks',category:'Software',tech:'Collaboration Platform',desc:'QC platform used by thousands of researchers, developers, and companies worldwide.',country:'USA',tracked:false},
+  {name:'Super.tech',category:'Software',tech:'Optimization',desc:'Business quantum applications deployed to any quantum computer via an optimized stack.',country:'USA',tracked:false},
+  {name:'Tokyo Quantum Computing',category:'Software',tech:'Annealing Simulation',desc:'Source code for massive simulations of quantum annealing problems.',country:'Japan',tracked:false},
+  {name:'Zapata Computing',category:'Software',tech:'Enterprise Workflows',desc:'Quantum workflows via Orquestra platform for enterprise quantum applications.',country:'USA',tracked:false,status:'defunct',statusNote:'Pivoted / wound down operations'},
+  // Security
+  {name:'Anametric',category:'Security',tech:'Chip-scale Photonics',desc:'Chip-scale quantum photonics devices for next-generation cybersecurity applications.',country:'USA',tracked:false},
+  {name:'Arqit',category:'Security',tech:'QKD / PQC',desc:'Quantum encryption key creation, distribution and management as a service.',country:'UK',tracked:true},
+  {name:'BTQ Technologies',category:'Security',tech:'PQC Blockchain',desc:'Post-quantum infrastructure for energy-efficient blockchain networks.',country:'Canada',tracked:true},
+  {name:'Crypta Labs',category:'Security',tech:'QRNG',desc:'Photon-based quantum random number generation for quantum-secure product upgrades.',country:'UK',tracked:false},
+  {name:'Crypto Quantique',category:'Security',tech:'IoT Security',desc:'Quantum-based end-to-end security architecture for scalable IoT device protection.',country:'UK',tracked:false},
+  {name:'CryptoNext Security',category:'Security',tech:'PQC',desc:'Next-gen cryptographic standards making IT systems resilient against quantum attacks.',country:'France',tracked:false},
+  {name:'evolutionQ',category:'Security',tech:'PQC Migration',desc:'Standard services for quantum-safe cybersecurity migration.',country:'Canada',tracked:false},
+  {name:'EYL',category:'Security',tech:'IoT / PQC',desc:'Blocking quantum hacking threats for IoT and industrial systems at affordable price.',country:'South Korea',tracked:false},
+  {name:'ID Quantique',category:'Security',tech:'QKD',desc:'QKD pioneer since 2001; comprehensive quantum-safe cybersecurity ecosystem.',country:'Switzerland',tracked:false},
+  {name:'ISARA',category:'Security',tech:'PQC',desc:'Crypto-agile technologies for practical transition to quantum-safe cryptographic standards.',country:'Canada',tracked:false},
+  {name:'KETS Quantum Security',category:'Security',tech:'Chip QKD',desc:'Real-world security solutions using chip-scale integrated quantum key distribution.',country:'UK',tracked:false},
+  {name:'MagiQ Technologies',category:'Security',tech:'QKD',desc:'Quantum and classical optical science for quantum communication security systems.',country:'USA',tracked:false},
+  {name:'Patero',category:'Security',tech:'PQC',desc:'Quantum-secure cryptography for national security, critical infrastructure, and supply chains.',country:'USA',tracked:false},
+  {name:'Post-Quantum',category:'Security',tech:'PQC',desc:'Quantum-safe software products protecting data now and in the quantum age.',country:'UK',tracked:false},
+  {name:'PQShield',category:'Security',tech:'PQC',desc:"World-class post-quantum cryptography; highest concentration of cryptography PhD's.",country:'UK',tracked:false},
+  {name:'Qaisec',category:'Security',tech:'Quantum Encryption / AI',desc:'Quantum encryption and AI security solutions for state and industry.',country:'Germany',tracked:false},
+  {name:'QNu Labs',category:'Security',tech:'QKD / QRNG',desc:'Quantum-safe cryptography; unconditional forward security for internet and cloud.',country:'India',tracked:false},
+  {name:'Qasky',category:'Security',tech:'QKD',desc:'Quantum information technology industrialization; state-certified QKD provider in China.',country:'China',tracked:false},
+  {name:'QuBalt GmbH',category:'Security',tech:'PQC',desc:'Post-quantum security for quantum networks and safety-critical systems.',country:'Germany',tracked:false},
+  {name:'Quantum Trilogy',category:'Security',tech:'Cybersecurity',desc:'Preventing cybersecurity incidents and eavesdropping using quantum principles.',country:'USA',tracked:false},
+  {name:'Quantum Xchange',category:'Security',tech:'QKD',desc:'Enterprise quantum key distribution networks for comprehensive data protection.',country:'USA',tracked:false},
+  {name:'QuantumCTek',category:'Security',tech:'QKD',desc:"China's leading QKD manufacturer and provider of QIT-enabled ICT security products.",country:'China',tracked:false},
+  {name:'Quintessence Labs',category:'Security',tech:'QRNG + Data Protection',desc:'Quantum-enhanced cybersecurity leader; strongest enterprise data protection today.',country:'Australia',tracked:false},
+  {name:'QuSecure',category:'Security',tech:'PQC',desc:'QuProtect: software-based post-quantum security solution for enterprises.',country:'USA',tracked:false},
+  {name:'Quside',category:'Security',tech:'QRNG',desc:'High-performance quantum random number generators for safer connectivity and computation.',country:'Spain',tracked:false},
+  {name:'Resquant',category:'Security',tech:'PQC',desc:'Post-quantum encryption and secure architecture for electronic devices.',country:'Germany',tracked:false},
+  {name:'SandboxAQ',category:'Security',tech:'AI + Quantum Security',desc:'Enterprise SaaS combining AI and quantum technology to solve hard security problems.',country:'USA',tracked:false},
+  {name:'SpeQtral',category:'Security',tech:'Satellite QKD',desc:'Satellite-based quantum key distribution; NUS Centre for Quantum Technologies spin-off.',country:'Singapore',tracked:false},
+  {name:'VeriQloud',category:'Security',tech:'QKD',desc:'Most scalable and secure quantum cryptography solutions for networks.',country:'France',tracked:false},
+  // Infrastructure
+  {name:'AegiQ',category:'Infrastructure',tech:'Single Photon Sources',desc:'Deterministic single-photon sources for QKD, quantum computing, and imaging.',country:'UK',tracked:false},
+  {name:'BraneCell',category:'Infrastructure',tech:'Quantum Repeater',desc:'Keyless all-photonic quantum repeater with minimal quantum memory requirement.',country:'USA',tracked:false},
+  {name:'Delft Circuits',category:'Infrastructure',tech:'HW Components',desc:'Best-in-class hardware components and cabling for the quantum engineer and industry.',country:'Netherlands',tracked:false},
+  {name:'InfiniQuant',category:'Infrastructure',tech:'Quantum Communication',desc:'Investigating possible applications and components for quantum communication scenarios.',country:'Germany',tracked:false},
+  {name:'Kiutra',category:'Infrastructure',tech:'Cryostats',desc:'Easy-to-use turnkey cryostats so researchers focus on work, not cooling systems.',country:'Germany',tracked:false},
+  {name:'Low Noise Factory',category:'Infrastructure',tech:'Cryo Amplifiers',desc:"World's best low-noise cryogenic microwave amplifiers for QC, space exploration, and radio astronomy.",country:'Sweden',tracked:false},
+  {name:'M-Labs',category:'Infrastructure',tech:'Control Systems',desc:'Leading-edge control systems for quantum information experiments; open hardware.',country:'USA',tracked:false},
+  {name:'Maybell Quantum Industries',category:'Infrastructure',tech:'Dilution Fridges / Tools',desc:"World's best quantum tools and dilution fridges; advancing U.S. quantum supply chain.",country:'USA',tracked:false},
+  {name:'Miraex',category:'Infrastructure',tech:'Photonic Sensing',desc:'Photonic quantum hardware for sensing; microfabrication and integrated photonics team.',country:'Switzerland',tracked:false},
+  {name:'Nu Quantum',category:'Infrastructure',tech:'Photonic Networking',desc:'High-performance quantum networking solutions for the future of quantum information.',country:'UK',tracked:true},
+  {name:'Orange Quantum Systems',category:'Infrastructure',tech:'QPU Diagnostics',desc:'Characterization, calibration software, and hardware systems for QPU device diagnostics.',country:'Netherlands',tracked:false},
+  {name:'Qblox',category:'Infrastructure',tech:'Control Electronics',desc:'Scalable low-latency qubit control and readout electronics for quantum experiments.',country:'Netherlands',tracked:false},
+  {name:'Quantum Machines',category:'Infrastructure',tech:'Control Electronics',desc:'Quantum control electronics enabling real-world transformational quantum computing outcomes.',country:'Israel',tracked:true},
+  {name:'Qunnect',category:'Infrastructure',tech:'Quantum Networking HW',desc:'Hardware transforming standard telecom infrastructure into scalable quantum networks.',country:'USA',tracked:false},
+  {name:'SCALINQ',category:'Infrastructure',tech:'SC Packaging / Scaling',desc:'Solving packaging and scaling problems when increasing superconducting qubit counts.',country:'Sweden',tracked:false},
+  {name:'Single Quantum',category:'Infrastructure',tech:'Photon Detectors',desc:'Superconducting nanowire single photon detectors (SNSPDs) for quantum applications.',country:'Netherlands',tracked:false},
+  {name:'Sparrow Quantum',category:'Infrastructure',tech:'Quantum Light Sources',desc:'Quantum photon sources as key enabling components for quantum technologies.',country:'Denmark',tracked:false},
+  {name:'Zurich Instruments',category:'Infrastructure',tech:'Measurement',desc:'Test and measurement instruments for quantum computing and scientific research.',country:'Switzerland',tracked:false},
+  // Applications
+  {name:'AbaQus',category:'Applications',tech:'Finance',desc:'Platform for financial organizations to explore quantum for risk, optimization, and pricing.',country:'USA',tracked:false},
+  {name:'Adaptive Finance Technologies',category:'Applications',tech:'Finance / AI',desc:'Quantum-enabled, AI-driven investment strategies and scalable enterprise solutions.',country:'USA',tracked:false},
+  {name:'Aliro',category:'Applications',tech:'Quantum Networking',desc:'Entanglement-as-a-Service (EaaS) for 100% secure networks and the quantum internet.',country:'USA',tracked:false},
+  {name:'ApexQubit',category:'Applications',tech:'Biotech',desc:'Harnessing frontier quantum technologies for better health outcomes for humanity.',country:'USA',tracked:false},
+  {name:'Avanetix',category:'Applications',tech:'Decision Making',desc:'Real-time insights for complex decision scenarios using quantum computing and ML.',country:'USA',tracked:false},
+  {name:'BosonQ',category:'Applications',tech:'Engineering CAE',desc:'Quantum-enhanced CAE solvers built by domain experts for engineering simulation.',country:'India',tracked:false},
+  {name:'Boxcat',category:'Applications',tech:'Rendering',desc:'Quantum-enhanced rendering technology reducing times, costs, and expanding possibilities.',country:'Canada',tracked:false},
+  {name:'Chicago Quantum',category:'Applications',tech:'Finance',desc:'Stock portfolio optimization via the quantitative Chicago Quantum Net Score model.',country:'USA',tracked:false},
+  {name:'CogniFrame',category:'Applications',tech:'Finance / ML',desc:'Hybrid quantum-classical ML for institutions to improve outcomes in financial services.',country:'Canada',tracked:false},
+  {name:'Entangled Networks',category:'Applications',tech:'Multi-QPU',desc:'Optical components and software for scalable multi-QPU quantum computing solutions.',country:'UK',tracked:false},
+  {name:'InfinityQ',category:'Applications',tech:'Quantum-Inspired',desc:'Quantum-inspired computing for gaming and metaverse intensive computation demands.',country:'Canada',tracked:false},
+  {name:'JoS QUANTUM',category:'Applications',tech:'Finance',desc:'Next-generation quantum calculation engine for capital and energy markets.',country:'Germany',tracked:false},
+  {name:'Kvantify',category:'Applications',tech:'Industry (Nordic)',desc:'Making Denmark and Northern Europe the global leader in quantum computing benefits.',country:'Denmark',tracked:false},
+  {name:'Menten AI',category:'Applications',tech:'Drug Discovery',desc:'Machine learning and quantum computing methods to accelerate drug discovery.',country:'USA',tracked:false},
+  {name:'NetraMark',category:'Applications',tech:'Drug Discovery / AI',desc:'Research-accelerating augmented intelligence platform using causal AI.',country:'Canada',tracked:false},
+  {name:'Next Generation Quantum',category:'Applications',tech:'Multi-QPU Clustering',desc:'Interconnecting multiple quantum processors into one large quantum computing cluster.',country:'Netherlands',tracked:false},
+  {name:'nodeQ',category:'Applications',tech:'Quantum Network SW',desc:'Software tools for designing, optimizing, and controlling quantum networks.',country:'Netherlands',tracked:false},
+  {name:'Pine.ly',category:'Applications',tech:'Catalysts / Materials',desc:'Classical and quantum computing to accelerate catalyst and material development.',country:'Germany',tracked:false},
+  {name:'POLARISqb',category:'Applications',tech:'Drug Discovery',desc:'First drug discovery platform using a quantum computer; 10x faster discovery process.',country:'USA',tracked:false},
+  {name:'ProteinQure',category:'Applications',tech:'Drug Discovery',desc:'Computational platform for protein drug discovery partnering with pharma.',country:'Canada',tracked:false},
+  {name:'Qabacus',category:'Applications',tech:'AI Hardware',desc:'Next-generation memory chipsets for AI and cloud data center applications.',country:'USA',tracked:false},
+  {name:'Qapitan Quantum',category:'Applications',tech:'API Marketplace',desc:'Easy access to quantum-based APIs with performance metrics and monitoring.',country:'USA',tracked:false},
+  {name:'Quantum Circuits (QCI)',category:'Applications',tech:'Superconducting',desc:'Superconducting quantum platform; acquired by D-Wave for $550M (Jan 2026).',country:'USA',tracked:true,status:'acquired',statusNote:'Acquired by D-Wave $550M (Jan 2026)'},
+  {name:'Quantum-South',category:'Applications',tech:'Logistics Optimization',desc:'Quantum optimization for cargo management in airlines and shipping.',country:'Uruguay',tracked:false},
+  {name:'Qubit Engineering',category:'Applications',tech:'Renewable Energy',desc:'Quantum optimization methods for wind turbine micro-siting.',country:'USA',tracked:false},
+  {name:'Qubit Pharmaceuticals',category:'Applications',tech:'Drug Discovery',desc:'Physics-driven drug discovery using advanced simulation and AI-enhanced chemistry.',country:'France',tracked:false},
+  {name:'Qubit Value',category:'Applications',tech:'QCaaS',desc:'Quantum computing as a service (QCaaS) delivered via cloud for organizations.',country:'France',tracked:false},
+  {name:'Qubitekk',category:'Applications',tech:'Commercialization',desc:'Commercializing quantum technology products to strengthen American quantum leadership.',country:'USA',tracked:false},
+  {name:'Qubitor',category:'Applications',tech:'Innovation Hub',desc:'Invention hub developing core technologies from "qubit to orbit."',country:'USA',tracked:false},
+  {name:'Qulabs',category:'Applications',tech:'Broad QC',desc:'Quantum solutions across computing, communications, sensing, cryptography, and imaging.',country:'India',tracked:false},
+  {name:'Quanvia',category:'Applications',tech:'Implementation',desc:'Implementing quantum applications that deliver positive and scalable impact.',country:'USA',tracked:false},
+  {name:'QuantyCat',category:'Applications',tech:'Hybrid QC',desc:'Hybrid quantum-classical computing delivered as a software service.',country:'USA',tracked:false},
+  {name:'Semicyber',category:'Applications',tech:'Data Analytics',desc:'Data analytics, quantum algorithms, and software for mission-critical challenges.',country:'USA',tracked:false},
+  {name:'Solid State AI',category:'Applications',tech:'Manufacturing ML',desc:'ML software for advanced manufacturers to increase yields and throughput.',country:'USA',tracked:false},
+  {name:'Synergy Quantum',category:'Applications',tech:'Entanglement',desc:'Quantum technologies harnessing entanglement and superposition for industry.',country:'Switzerland',tracked:false},
+  {name:'Terra Quantum AG',category:'Applications',tech:'Deep Tech',desc:'Deep tech quantum pioneer developing revolutionary applications across domains.',country:'Switzerland',tracked:false},
+  {name:'Xofia',category:'Applications',tech:'Modeling',desc:'Mathematical and computational models for complex physical and social systems.',country:'USA',tracked:false},
+  // Consulting / Education
+  {name:'Artiste-qb.net',category:'Consulting',tech:'Landscape Analysis',desc:'Analyzing the quantum computing landscape to guide expectations and capability timelines.',country:'Canada',tracked:false},
+  {name:'Aspen Quantum Consulting',category:'Consulting',tech:'VC Advisory',desc:'Practical quantum applications achievable within venture capital timeframes.',country:'USA',tracked:false},
+  {name:'Automatski',category:'Consulting',tech:'Research / IP',desc:'Research, equity, and IP holding company in quantum computing.',country:'USA',tracked:false},
+  {name:'Avid Quantum',category:'Consulting',tech:'Academic Research',desc:'Numerical models for quantum phase transition and correlated electron systems.',country:'Canada',tracked:false},
+  {name:'BardeenQ Labs',category:'Consulting',tech:'Room-Temp Quantum',desc:'Coherent platform for room-temperature quantum machines to power Industry 4.0.',country:'USA',tracked:false},
+  {name:'Dark Star Quantum Computing Labs',category:'Consulting',tech:'Problem Matching',desc:'Matching industrial problems with quantum solutions for measurable business advantage.',country:'Canada',tracked:false},
+  {name:'Driven Quantum Technologies',category:'Consulting',tech:'Warm Quantum',desc:'Leveraging room-temperature quantum phenomena for societal and technological problems.',country:'USA',tracked:false},
+  {name:'Entanglement Inc.',category:'Consulting',tech:'Computing Access',desc:'Early-stage deep tech providing access to diverse advanced computing systems.',country:'USA',tracked:false},
+  {name:'Entanglement Partners',category:'Consulting',tech:'Quantum Information',desc:'Quantum information company; the question is not when but who.',country:'USA',tracked:false},
+  {name:'H-Bar Consultants',category:'Consulting',tech:'Advisory',desc:'Quantum technology and physics experts advising business and government.',country:'Australia',tracked:false},
+  {name:'Phase Space Computing',category:'Consulting',tech:'Education Tools',desc:'Educational tools for quantum information science; Linköping University spin-off.',country:'Sweden',tracked:false},
+  {name:'Q.BPO',category:'Consulting',tech:'Business Consulting',desc:'Quantum computing consulting and engineering services for enterprise managers.',country:'USA',tracked:false},
+  {name:'Q&I',category:'Consulting',tech:'Technology Advisory',desc:'Independent quantum technology solutions across the full breadth of QT sectors.',country:'USA',tracked:false},
+  {name:'Q4B Technologies',category:'Consulting',tech:'Business Strategy',desc:'Quantum computing strategy, business consulting, and application development.',country:'USA',tracked:false},
+  {name:'Quantum Computing Report',category:'Consulting',tech:'Media / Analysis',desc:'Most authoritative source for quantum industry developments and analysis.',country:'USA',tracked:false},
+  {name:'Quantum Phi',category:'Consulting',tech:'Research',desc:'Small consulting, analytics, educational, and research company in Prague.',country:'Czechia',tracked:false},
+  {name:'Quantum Quants',category:'Consulting',tech:'Business Bridge',desc:'Building bridges between quantum physics and business applications.',country:'USA',tracked:false},
+  {name:'Quantum Thought',category:'Consulting',tech:'Launchpad',desc:"World's premier quantum computing launchpad for founding-generation applications.",country:'USA',tracked:false},
+  {name:'Quaxys',category:'Consulting',tech:'Training',desc:'Training next-generation engineers in quantum, 5G, radar, and microwave technologies.',country:'USA',tracked:false},
+  {name:'QURECA',category:'Consulting',tech:'Education',desc:'Quantum resources and professional services for individuals and businesses.',country:'UK',tracked:false},
+  {name:'QuRISK',category:'Consulting',tech:'Risk Assessment',desc:'Quantum risk assessment to identify, assess, and eliminate quantum adoption threats.',country:'USA',tracked:false},
+  {name:'SheQuantum',category:'Consulting',tech:'Education',desc:'Global quantum eLearning platform enabling more women into quantum computing.',country:'USA',tracked:false},
+  {name:'Silicofeller',category:'Consulting',tech:'Computing Solutions',desc:'Advanced and powerful quantum computing solutions to solve complex world problems.',country:'USA',tracked:false},
+  {name:'Spin Quantum Tech',category:'Consulting',tech:'Business Consulting',desc:'Empowering businesses to embrace quantum computing for the next revolution.',country:'India',tracked:false},
+  {name:'Unitary Zero Space',category:'Consulting',tech:'Education / Advisory',desc:'Educating and advising on creating and securing business in the second quantum revolution.',country:'USA',tracked:false},
+];
+
+/* ─── MARKET CAPS ──────────────────────────────────────── */
+
+const MARKET_CAPS = {
+  ionq:              { capB: 12.0,  capStatus:'public',         capNote:'$12B mkt cap (Mar 2026) · P/S ~93x · $130M FY2025 rev' },
+  quantinuum:        { capB: 20.0,  capStatus:'ipo_expected',   capNote:'$20B+ IPO target · S-1 filed Jan 14 2026 · $10B was Sept 2025 private round' },
+  quera:             { capB: 1.0,   capStatus:'private_funded', capNote:'$1B (Feb 2025 Series B) · $230M+ raised · Google QAI + SoftBank' },
+  alice_bob:         { capB: null,  capStatus:'private_funded', capNote:'EUR130M raised (Series B Jan 2025) · valuation undisclosed' },
+  aqt:               { capB: null,  capStatus:'private_funded', capNote:'~$12M raised (govt grants: Austria Wirtschaftsservice, FFG) · valuation undisclosed · €22M+ in gov hardware contracts (EuroHPC Poland + LRZ Munich)' },
+  seeqc:             { capB: 1.0,   capStatus:'spac',           capNote:'$1B SPAC target (Allegro Merger, Q2 2026)' },
+  qci:               { capB: 0.55,  capStatus:'acquired',       capNote:'Acquired by D-Wave $550M (Jan 2026)' },
+  atom:              { capB: null,  capStatus:'private_funded', capNote:'Private; valuation undisclosed · Microsoft partnership' },
+  rigetti:           { capB: 3.0,   capStatus:'public',         capNote:'~$2-4B mkt cap (Mar 2026) · P/S extreme on $7.1M declining rev' },
+  pasqal:            { capB: 2.0,   capStatus:'spac',           capNote:'$2B SPAC (Bleichroeder II, Nasdaq H2 2026)' },
+  infleqtion:        { capB: 2.52,  capStatus:'public',         capNote:'$2.52B mkt cap · NYSE Feb 2026 · $29M rev (75% sensing)' },
+  psiquantum:        { capB: 7.0,   capStatus:'private_funded', capNote:'$7B Series E (Sept 2025) · DARPA Stage C · zero computation demonstrated' },
+  microsoft:         { capB: 3000,  capStatus:'conglomerate',   capNote:'~$3T parent · quantum = DARPA Stage C optionality on Azure' },
+  dwave:             { capB: 6.0,   capStatus:'public',         capNote:'~$5.8-6.5B mkt cap (Mar 2026) · P/S ~236x · QCI gate pivot' },
+  ibm:               { capB: 150,   capStatus:'conglomerate',   capNote:'~$150B parent · qLDPC breakthrough = long-term thesis' },
+  iqm:               { capB: 1.8,   capStatus:'spac',           capNote:'$1.8B SPAC (Real Asset Acq., NYSE + Helsinki Q2 2026)' },
+  xanadu:            { capB: 3.6,   capStatus:'spac',           capNote:'$3.6B SPAC (Crane Harbor, XNDU Nasdaq + TSX)' },
+  quantum_machines:  { capB: 0.7,   capStatus:'private_funded', capNote:'$700M (Series C Feb 2025) · $280M raised · Intel Capital, PSG Equity' },
+  kipu_quantum:      { capB: null,  capStatus:'private_funded', capNote:'~€25M raised · valuation undisclosed' },
+  classiq:           { capB: null,  capStatus:'private_funded', capNote:'$180M+ raised (Series C Nov 2025) · valuation undisclosed' },
+  qctrl:             { capB: 0.5,   capStatus:'private_funded', capNote:'~$500M est. · $128M raised · Series B-ext Oct 2024' },
+  multiverse:        { capB: 0.55,  capStatus:'private_funded', capNote:'~$500M+ current (post-Series B June 2025) · targeting €1.5B for new €500M round (Feb 2026) · ARR €100M' },
+  quantum_brilliance: { capB: null, capStatus:'private_funded', capNote:'~$18M AUD raised · valuation undisclosed · room-temp NV-diamond' },
+  eeroq:             { capB: null,  capStatus:'private_funded', capNote:'~$15M raised · very early · Chicago CQE ecosystem' },
+  horizon_quantum:   { capB: 0.5,   capStatus:'private_funded', capNote:'$500M valuation · raising $100M+ (Apr 2026) · Singapore' },
+  saxonq:            { capB: null,  capStatus:'private_funded', capNote:'Seed stage · Q.24 backed · University of Leipzig spinout' },
+  nu_quantum:        { capB: null,  capStatus:'private_funded', capNote:'Series B (June 2025) · Amadeus Capital · UK networking' },
+  arqit:             { capB: 0.19,  capStatus:'public',         capNote:'$192M mkt cap (Apr 2026) · ARQQ · volatile post-SPAC' },
+  btq:               { capB: 0.36,  capStatus:'public',         capNote:'$357M mkt cap · BTQ.CN (CSE) · PQC microcap' },
+  xeedq:             { capB: null,  capStatus:'private_funded', capNote:'~€87M DLR govt contracts · valuation undisclosed · XQ1 deployed' },
+  memq:              { capB: null,  capStatus:'private_funded', capNote:'~$10M raised (Series A Mar 2026) · UChicago/Argonne spinout' },
+  oqc:               { capB: null,  capStatus:'private_funded', capNote:'$138M+ raised · $100M Series B Apr 2024 · Coaxmon · OQC Toshiko on AWS' },
+};
+
+// Live Yahoo Finance market cap fetch (15-min cache via localStorage)
+async function fetchYahooMarketCap(ticker) {
+  const cacheKey = `qi_cap_${ticker}`;
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if (cached && Date.now() - cached.ts < 15 * 60 * 1000) return { capB: cached.capB, live: true };
+  } catch(e) {}
+  try {
+    const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`, {
+      headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' },
+    });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    const meta = data?.chart?.result?.[0]?.meta;
+    const capB = meta?.marketCap ? meta.marketCap / 1e9 : null;
+    if (capB) localStorage.setItem(cacheKey, JSON.stringify({ capB, ts: Date.now() }));
+    return { capB, live: !!capB };
+  } catch(e) {
+    return { capB: null, live: false };
+  }
+}
 
 /* ─── SCATTER PLOT ─────────────────────────────────────── */
 
@@ -742,19 +1427,30 @@ function RatioConfTag({ type }) {
   return <span className={`tag ${cls}`} style={{ fontSize: 9 }}>{labels[type]}</span>;
 }
 
-function CompanyCard({ c, selected, onSelect }) {
+function CompanyCard({ c, selected, onSelect, portfolioStatus, onStatusChange }) {
+  const psRgb = portfolioStatus ? PS_COLORS[portfolioStatus]?.rgb : null;
+  const tc = QUANTUM_TYPE_COLORS[c.quantumType];
   return (
-    <div className={`card ${selected ? 'selected' : ''}`} onClick={() => onSelect(c)}>
+    <div
+      className={`card ${selected ? 'selected' : ''}`}
+      style={psRgb ? { borderLeft: `4px solid rgba(${psRgb},0.7)`, paddingLeft: 12 } : {}}
+      onClick={() => onSelect(c)}
+    >
       <div className="card-top">
         <div>
           <div className="card-name">{c.name}</div>
           <div className="card-ticker">{c.ticker}</div>
         </div>
-        <span className="card-modality" style={{
-          background: SCALING_COLORS[c.scalingPath] + '22',
-          color: SCALING_COLORS[c.scalingPath],
-          border: `1px solid ${SCALING_COLORS[c.scalingPath]}44`
-        }}>{c.modality}</span>
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-end', gap:4 }}>
+          <span className="card-modality" style={{
+            background: SCALING_COLORS[c.scalingPath] + '22',
+            color: SCALING_COLORS[c.scalingPath],
+            border: `1px solid ${SCALING_COLORS[c.scalingPath]}44`
+          }}>{c.modality}</span>
+          {tc && (
+            <span className="qt-badge" style={{ background: tc.bg, color: tc.color }}>{tc.label}</span>
+          )}
+        </div>
       </div>
       <div className="metrics-row">
         <div className="metric">
@@ -787,6 +1483,29 @@ function CompanyCard({ c, selected, onSelect }) {
           </div>
         </div>
       </div>
+      {onStatusChange && (
+        <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.05)', display:'flex', alignItems:'center', justifyContent:'space-between' }}
+          onClick={e => e.stopPropagation()}
+        >
+          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.4px', color: 'var(--dim)', textTransform: 'uppercase' }}>Interest</span>
+          <select
+            value={portfolioStatus || ''}
+            onChange={e => onStatusChange(c.id, e.target.value || null)}
+            style={{
+              background: psRgb ? `rgba(${psRgb},0.12)` : 'rgba(255,255,255,0.04)',
+              border: `1px solid ${psRgb ? `rgba(${psRgb},0.4)` : 'var(--border)'}`,
+              color: portfolioStatus === 'portfolio' ? '#60a5fa' : portfolioStatus === 'watching' ? '#fbbf24' : portfolioStatus === 'questionable' ? '#f87171' : 'var(--dim)',
+              borderRadius: 3, padding: '2px 6px', fontSize: 9, fontWeight: 700,
+              fontFamily: 'inherit', cursor: 'pointer', outline: 'none', letterSpacing: '0.3px',
+            }}
+          >
+            <option value="">— Unset</option>
+            <option value="portfolio">Portfolio</option>
+            <option value="watching">Watching</option>
+            <option value="questionable">Questionable</option>
+          </select>
+        </div>
+      )}
     </div>
   );
 }
@@ -889,31 +1608,324 @@ const MODALITY_DATA = [
   { name: 'SFQ Infrastructure', color: '#64748b', companies: 'SEEQC', coherence: 'N/A (control layer)', gateSpeed: 'N/A', cryo: 'Room temp chip, cryo interface', errorRate: '97% cost reduction VALIDATED (NVIDIA demo)', physicalRatio: 'N/A (control, not compute)', costCurve: 'Deflationary (CMOS)', note: 'NVIDIA NVQLink: first fully digital QPU-to-GPU link. ITRI manufacturing partnership (Taiwan). SPAC at $1B (Q2 2026). 100,000x energy reduction. IBM DARPA QBI partnership. Picks-and-shovels thesis strengthened by NVIDIA validation.' },
 ];
 
+/* ─── MODALITY GATE ANIMATIONS ─────────────────────────── */
+
+function TrappedIonAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Trap axis line */}
+      <line x1="12" y1="36" x2="148" y2="36" stroke="#1e293b" strokeWidth="1.5"/>
+      {/* Phonon wave between ion 1 and ion 2 */}
+      <path d="M 52 36 Q 60 26 68 36 Q 76 46 84 36 Q 92 26 100 36 Q 108 46 116 36"
+        fill="none" stroke={color} strokeWidth="1.2" strokeDasharray="8 4" strokeDashoffset="60"
+        style={{animation:'phonon-wave 2.8s ease-in-out infinite', opacity:0}} />
+      {/* Ion 3 (all-to-all indicator) */}
+      <circle cx="136" cy="36" r="5.5" fill={color} style={{animation:'alltoall-glow 2.8s ease-in-out infinite', opacity:0.15}} />
+      <circle cx="136" cy="36" r="3" fill={color} opacity="0.3"/>
+      <text x="136" y="54" textAnchor="middle" fontSize="7" fill="#475569">all-to-all</text>
+      {/* Ion 1 */}
+      <circle cx="52" cy="36" r="7" fill={color} style={{animation:'gate-glow 2.8s ease-in-out infinite', opacity:0.35}} />
+      <circle cx="52" cy="36" r="4" fill={color} opacity="0.9" style={{animation:'ion-osc 2.8s ease-in-out infinite'}}/>
+      {/* Ion 2 */}
+      <circle cx="108" cy="36" r="7" fill={color} style={{animation:'gate-glow 2.8s ease-in-out infinite', opacity:0.35}} />
+      <circle cx="108" cy="36" r="4" fill={color} opacity="0.9" style={{animation:'ion-osc2 2.8s ease-in-out infinite'}}/>
+      {/* Labels */}
+      <text x="52" y="22" textAnchor="middle" fontSize="8" fill="#64748b">Ion 1</text>
+      <text x="108" y="22" textAnchor="middle" fontSize="8" fill="#64748b">Ion 2</text>
+      <text x="80" y="66" textAnchor="middle" fontSize="7.5" fill="#475569">Mølmer-Sørensen gate via shared phonon</text>
+    </svg>
+  );
+}
+
+function NeutralAtomAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Rydberg blockade sphere */}
+      <circle cx="80" cy="36" r="5" fill={color} style={{animation:'rydberg-expand 3s ease-in-out infinite', opacity:0}} />
+      {/* Gate arc between two atoms */}
+      <path d="M 56 32 Q 72 18 88 32" fill="none" stroke={color} strokeWidth="1.5"
+        style={{animation:'atom-gate-pulse 3s ease-in-out infinite', opacity:0}} />
+      {/* 3x3 atom grid */}
+      {[28,56,84,112,140].map((x,xi) =>
+        [18,36,54].map((y,yi) => {
+          const isQubit = (xi===1&&yi===1)||(xi===2&&yi===1);
+          return <circle key={`${xi}-${yi}`} cx={x} cy={y} r={isQubit?5:3}
+            fill={isQubit ? color : '#334155'}
+            opacity={isQubit ? 0.9 : 0.4} />;
+        })
+      )}
+      {/* Reconfigurable label */}
+      <text x="80" y="66" textAnchor="middle" fontSize="7.5" fill="#475569">Rydberg blockade CZ — reconfigurable connectivity</text>
+    </svg>
+  );
+}
+
+function SuperconductingAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Coupling bus */}
+      <line x1="52" y1="36" x2="108" y2="36" stroke="#1e293b" strokeWidth="3" strokeLinecap="round"/>
+      <line x1="52" y1="36" x2="108" y2="36" stroke={color} strokeWidth="2" strokeDasharray="60 10" strokeDashoffset="80"
+        style={{animation:'sc-pulse-travel 2.6s ease-in-out infinite', opacity:0}} />
+      {/* Qubit 1 square */}
+      <rect x="30" y="22" width="22" height="22" rx="4" fill={color} opacity="0.15" stroke={color} strokeWidth="1.2" style={{animation:'sc-idle-osc 2.6s ease-in-out infinite', transformOrigin:'41px 33px'}}/>
+      <text x="41" y="35" textAnchor="middle" fontSize="8" fill={color} fontWeight="700">Q1</text>
+      {/* Qubit 2 square */}
+      <rect x="108" y="22" width="22" height="22" rx="4" fill={color} opacity="0.15" stroke={color} strokeWidth="1.2" style={{animation:'sc-idle-osc 2.6s ease-in-out infinite 0.4s', transformOrigin:'119px 33px'}}/>
+      <text x="119" y="35" textAnchor="middle" fontSize="8" fill={color} fontWeight="700">Q2</text>
+      {/* Error flicker on Q2 */}
+      <rect x="108" y="22" width="22" height="22" rx="4" fill="#ef4444" opacity="0"
+        style={{animation:'sc-error-flicker 2.6s ease-in-out infinite'}}/>
+      <text x="119" y="35" fontSize="8" fill="#ef4444" opacity="0" textAnchor="middle"
+        style={{animation:'sc-error-flicker 2.6s ease-in-out infinite'}}>ERR</text>
+      {/* Nearest-neighbor label */}
+      <text x="80" y="55" textAnchor="middle" fontSize="7.5" fill="#475569">iSWAP/CZ via coupling bus — nearest-neighbor</text>
+      <text x="80" y="65" textAnchor="middle" fontSize="7" fill="#ef4444" opacity="0.7">~0.5% error rate</text>
+    </svg>
+  );
+}
+
+function CatQubitAnim({ color }) {
+  // Double well potential for each qubit, CNOT shown as conditional flip
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Well 1 - control */}
+      <path d="M 10 52 Q 20 28 30 20 Q 38 52 46 52" fill="none" stroke="#334155" strokeWidth="1.5"/>
+      <path d="M 30 20 Q 38 52 46 52 Q 54 52 62 20" fill="none" stroke="#334155" strokeWidth="1.5"/>
+      {/* Particle in left well (stable) */}
+      <circle cx="28" cy="46" r="4.5" fill={color} opacity="0.9"/>
+      <text x="36" y="14" textAnchor="middle" fontSize="7" fill="#64748b">Control</text>
+      {/* Phase error flash */}
+      <circle cx="28" cy="46" r="4.5" fill="#f59e0b" opacity="0"
+        style={{animation:'catwell-phase-err 3.2s ease-in-out infinite'}}/>
+      {/* Arrow: no X-error */}
+      <text x="36" y="62" textAnchor="middle" fontSize="7" fill="#10b981">✗ bit-flip</text>
+      {/* Well 2 - target, flips conditionally */}
+      <path d="M 90 52 Q 100 28 110 20 Q 118 52 126 52" fill="none" stroke="#334155" strokeWidth="1.5"/>
+      <path d="M 110 20 Q 118 52 126 52 Q 134 52 142 20" fill="none" stroke="#334155" strokeWidth="1.5"/>
+      <circle cx="108" cy="46" r="4.5" fill={color} opacity="0.9"
+        style={{animation:'catwell-hop 3.2s ease-in-out infinite'}}/>
+      <text x="116" y="14" textAnchor="middle" fontSize="7" fill="#64748b">Target</text>
+      <text x="116" y="62" textAnchor="middle" fontSize="7" fill="#f59e0b">± phase err</text>
+      {/* CNOT label */}
+      <text x="80" y="36" textAnchor="middle" fontSize="7.5" fill="#475569">Bias-preserving CNOT</text>
+    </svg>
+  );
+}
+
+function PhotonicAnim({ color }) {
+  const [tick, setTick] = React.useState(0);
+  React.useEffect(() => {
+    const id = setInterval(() => setTick(t => (t + 1) % 100), 60);
+    return () => clearInterval(id);
+  }, []);
+  // Every 3 cycles (~18s of ticks), fail once
+  const cyclePos = tick % 100;
+  const isFail = tick % 300 < 100 && cyclePos > 55 && cyclePos < 75;
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Input waveguide */}
+      <line x1="0" y1="36" x2="72" y2="36" stroke="#1e293b" strokeWidth="1.5"/>
+      {/* Beam splitter */}
+      <rect x="68" y="28" width="8" height="16" rx="2" fill="#334155" stroke="#475569" strokeWidth="1"/>
+      <text x="72" y="24" textAnchor="middle" fontSize="7" fill="#64748b">BS</text>
+      {/* Output waveguides */}
+      <line x1="76" y1="36" x2="148" y2="18" stroke="#1e293b" strokeWidth="1.5"/>
+      <line x1="76" y1="36" x2="148" y2="54" stroke="#1e293b" strokeWidth="1.5"/>
+      {/* Traveling photon */}
+      <circle cx="36" cy="36" r="4" fill={color} opacity="0"
+        style={{animation:'photon-travel 3s ease-in-out infinite'}}/>
+      {/* Exit photon A (success upper) */}
+      {!isFail && <circle cx="76" cy="36" r="4" fill={color} opacity="0"
+        style={{animation:'photon-exit-a 3s ease-in-out infinite'}}/>}
+      {/* Exit photon B (success lower) */}
+      {!isFail && <circle cx="76" cy="36" r="4" fill={color} opacity="0"
+        style={{animation:'photon-exit-b 3s ease-in-out infinite 0.05s'}}/>}
+      {/* Fail flash */}
+      <rect x="60" y="28" width="24" height="16" rx="3" fill="#ef4444" opacity={isFail ? 0.5 : 0}/>
+      <text x="72" y="39" textAnchor="middle" fontSize="7" fill="#ef4444" opacity={isFail ? 1 : 0} fontWeight="700">FAIL</text>
+      {/* Label */}
+      <text x="80" y="66" textAnchor="middle" fontSize="7.5" fill="#475569">Linear optical — ~50% success rate per gate</text>
+    </svg>
+  );
+}
+
+function TopologicalAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Nanowire */}
+      <line x1="20" y1="36" x2="140" y2="36" stroke="#334155" strokeWidth="3" strokeLinecap="round"/>
+      {/* Braid paths — abstract crossing paths */}
+      <path d="M 55 20 C 55 36 85 36 85 52" fill="none" stroke={color} strokeWidth="1.5" opacity="0.6"/>
+      <path d="M 85 20 C 85 36 55 36 55 52" fill="none" stroke={color} strokeWidth="1.5" opacity="0.4"/>
+      <text x="70" y="14" textAnchor="middle" fontSize="7" fill="#64748b">Braiding = the gate</text>
+      {/* Majorana modes at endpoints */}
+      <circle cx="20" cy="36" r="5" fill={color} style={{animation:'anyon-pulse 2s ease-in-out infinite', opacity:0.5}}/>
+      <circle cx="140" cy="36" r="5" fill={color} style={{animation:'anyon-pulse 2s ease-in-out infinite 1s', opacity:0.5}}/>
+      <text x="20" y="52" textAnchor="middle" fontSize="6.5" fill="#64748b">γ₁</text>
+      <text x="140" y="52" textAnchor="middle" fontSize="6.5" fill="#64748b">γ₂</text>
+      {/* Undemonstrated overlay */}
+      <rect x="30" y="56" width="100" height="13" rx="3" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.3)" strokeWidth="0.8"/>
+      <text x="80" y="65" textAnchor="middle" fontSize="7.5" fill="#f87171" fontWeight="700">2Q GATES NOT DEMONSTRATED</text>
+    </svg>
+  );
+}
+
+function SiliconSpinAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Silicon lattice dots */}
+      {[20,40,60,80,100,120,140].map(x =>
+        [14,36,58].map(y =>
+          <circle key={`${x}-${y}`} cx={x} cy={y} r="2.5" fill="#1e293b" stroke="#334155" strokeWidth="0.8"/>
+        )
+      )}
+      {/* Quantum dot 1 */}
+      <circle cx="60" cy="36" r="10" fill={color} opacity="0.1" stroke={color} strokeWidth="1" strokeDasharray="3 2"/>
+      <circle cx="60" cy="36" r="5" fill={color} opacity="0.8"/>
+      {/* Spin arrow 1 */}
+      <line x1="60" y1="44" x2="60" y2="28" stroke="white" strokeWidth="1.5"
+        style={{animation:'spin-flip 3s ease-in-out infinite', transformOrigin:'60px 36px'}}/>
+      <polygon points="60,27 57,32 63,32" fill="white"
+        style={{animation:'spin-flip 3s ease-in-out infinite', transformOrigin:'60px 36px'}}/>
+      {/* Quantum dot 2 */}
+      <circle cx="100" cy="36" r="10" fill={color} opacity="0.1" stroke={color} strokeWidth="1" strokeDasharray="3 2"/>
+      <circle cx="100" cy="36" r="5" fill={color} opacity="0.8"/>
+      {/* Spin arrow 2 */}
+      <line x1="100" y1="44" x2="100" y2="28" stroke="white" strokeWidth="1.5"
+        style={{animation:'spin-flip 3s ease-in-out infinite 1.5s', transformOrigin:'100px 36px'}}/>
+      <polygon points="100,27 97,32 103,32" fill="white"
+        style={{animation:'spin-flip 3s ease-in-out infinite 1.5s', transformOrigin:'100px 36px'}}/>
+      {/* Exchange interaction line */}
+      <line x1="70" y1="36" x2="90" y2="36" stroke={color} strokeWidth="2" opacity="0"
+        style={{animation:'spin-gate-line 3s ease-in-out infinite'}}/>
+      <text x="80" y="66" textAnchor="middle" fontSize="7.5" fill="#475569">Exchange interaction (J-coupling) — 300mm CMOS fab</text>
+    </svg>
+  );
+}
+
+function AnnealingAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* Energy landscape — two humps with a global minimum */}
+      <path d="M 8 14 Q 20 14 28 40 Q 34 56 44 56 Q 54 56 60 40 Q 66 24 72 56 Q 78 68 90 68 Q 102 68 108 56 Q 114 40 120 40 Q 132 56 140 14 Q 148 0 152 14"
+        fill="none" stroke="#334155" strokeWidth="1.8"/>
+      {/* Shading under curve */}
+      <path d="M 8 14 Q 20 14 28 40 Q 34 56 44 56 Q 54 56 60 40 Q 66 24 72 56 Q 78 68 90 68 Q 102 68 108 56 Q 114 40 120 40 Q 132 56 140 14 L 152 72 L 0 72 Z"
+        fill="rgba(139,92,246,0.05)"/>
+      {/* Global minimum marker */}
+      <line x1="90" y1="62" x2="90" y2="72" stroke={color} strokeWidth="1" strokeDasharray="2 2" opacity="0.5"/>
+      <text x="90" y="70" textAnchor="middle" fontSize="6.5" fill={color} opacity="0.6">min</text>
+      {/* Rolling ball (animated from left toward minimum) */}
+      <circle r="5" fill={color} opacity="0" style={{animation:'ball-reset 4s ease-in-out infinite'}}>
+        <animate attributeName="cx" values="20;90" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="20;68" keyTimes="0;1" dur="4s" calcMode="spline" keySplines="0.42 0 0.58 1" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;0.6;0.7;0.85;1" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <text x="80" y="10" textAnchor="middle" fontSize="7.5" fill="#475569">Energy landscape optimization — no gate model</text>
+    </svg>
+  );
+}
+
+function SFQAnim({ color }) {
+  return (
+    <svg viewBox="0 0 160 72" width="100%" height="72" style={{display:'block'}}>
+      {/* SFQ chip in center */}
+      <rect x="60" y="26" width="40" height="22" rx="3" fill="#0f172a" stroke="#334155" strokeWidth="1.2"/>
+      <text x="80" y="40" textAnchor="middle" fontSize="7.5" fill="#64748b" fontWeight="700">SFQ</text>
+      <text x="80" y="49" textAnchor="middle" fontSize="6" fill="#475569">control</text>
+      {/* Left qubit */}
+      <rect x="14" y="30" width="26" height="14" rx="3" fill={color} opacity="0.12" stroke={color} strokeWidth="1"/>
+      <text x="27" y="40" textAnchor="middle" fontSize="7" fill={color}>QPU</text>
+      {/* Right qubit */}
+      <rect x="120" y="30" width="26" height="14" rx="3" fill={color} opacity="0.12" stroke={color} strokeWidth="1"/>
+      <text x="133" y="40" textAnchor="middle" fontSize="7" fill={color}>QPU</text>
+      {/* Connecting lines */}
+      <line x1="40" y1="37" x2="60" y2="37" stroke="#1e293b" strokeWidth="2"/>
+      <line x1="100" y1="37" x2="120" y2="37" stroke="#1e293b" strokeWidth="2"/>
+      {/* SFQ pulses — left */}
+      <rect x="44" y="27" width="3" height="10" rx="1" fill={color}
+        style={{animation:'sfq-pulse-a 2s ease-in-out infinite', transformOrigin:'45.5px 37px'}}/>
+      {/* SFQ pulses — right */}
+      <rect x="104" y="27" width="3" height="10" rx="1" fill={color}
+        style={{animation:'sfq-pulse-b 2s ease-in-out infinite', transformOrigin:'105.5px 37px'}}/>
+      {/* Label */}
+      <text x="80" y="64" textAnchor="middle" fontSize="7.5" fill="#475569">Single flux quantum pulses — 97% cost reduction</text>
+    </svg>
+  );
+}
+
+const ANIM_MAP = {
+  'Trapped Ion':       TrappedIonAnim,
+  'Neutral Atom':      NeutralAtomAnim,
+  'Superconducting':   SuperconductingAnim,
+  'Cat Qubits (SC)':   CatQubitAnim,
+  'Photonic':          PhotonicAnim,
+  'Topological':       TopologicalAnim,
+  'Silicon Spin':      SiliconSpinAnim,
+  'Annealing':         AnnealingAnim,
+  'SFQ Infrastructure':SFQAnim,
+};
+
+const FIDELITY_2Q = {
+  'Trapped Ion':        { pct: 99.99, label: '99.99%' },
+  'Neutral Atom':       { pct: 99.0,  label: '~99%+' },
+  'Superconducting':    { pct: 99.5,  label: '99.5–99.9%' },
+  'Cat Qubits (SC)':    { pct: 99.0,  label: '~99%+ bit-flip' },
+  'Photonic':           { pct: 50,    label: '~50% success' },
+  'Silicon Spin':       { pct: 99.0,  label: '>99% on 300mm' },
+};
+
+function FidelityBar({ name, color }) {
+  const f = FIDELITY_2Q[name];
+  if (!f) return <div className="mod-na-badge">2Q GATE: N/A</div>;
+  return (
+    <div className="mod-fidelity-bar">
+      <span className="mod-fidelity-label">2Q Gate</span>
+      <div className="mod-fidelity-track">
+        <div className="mod-fidelity-fill" style={{ width: f.pct + '%', background: color }}/>
+      </div>
+      <span className="mod-fidelity-pct" style={{ color }}>{f.label}</span>
+    </div>
+  );
+}
+
 function ModalityRef() {
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', marginBottom: 3 }}>Modality Reference</div>
-        <div style={{ fontSize: 11, color: '#475569' }}>Physical properties, error rates, and cost curve by qubit type. Source: Fein (2024) + primary research.</div>
+        <div style={{ fontSize: 13, fontWeight: 700, color: '#f1f5f9', marginBottom: 6 }}>Modality Explanation</div>
+        <div style={{ fontSize: 11, color: '#94a3b8', lineHeight: 1.7, maxWidth: 820 }}>
+          A qubit modality is the physical system chosen to implement a qubit — trapped ions, superconducting circuits, neutral atoms, photons, and others. Every choice is a tradeoff: fidelity, gate speed, coherence time, cooling overhead, and manufacturing cost all follow from the underlying physics. The <strong style={{color:'#e2e8f0'}}>two-qubit gate</strong> — the operation that creates entanglement — is where these tradeoffs are most consequential. Higher fidelity means lower error correction overhead, fewer physical qubits per logical qubit, and a fundamentally different cost structure at scale.
+        </div>
       </div>
       <div className="modality-grid">
-        {MODALITY_DATA.map(m => (
-          <div className="mod-card" key={m.name} style={{ borderColor: m.color + '30' }}>
-            <div className="mod-name" style={{ color: m.color }}>{m.name}</div>
-            <div className="mod-companies">{m.companies}</div>
-            {[['Coherence', m.coherence],['Gate Speed', m.gateSpeed],['Cryo', m.cryo],['Error Rate', m.errorRate],['Logical Ratio', m.physicalRatio]].map(([l,v]) => (
-              <div className="mod-row" key={l}>
-                <span className="mod-row-label">{l}</span>
-                <span className="mod-row-val" style={l === 'Logical Ratio' ? { color: m.color } : {}}>{v}</span>
+        {MODALITY_DATA.map(m => {
+          const AnimComp = ANIM_MAP[m.name];
+          return (
+            <div className="mod-card" key={m.name} style={{ borderColor: m.color + '30' }}>
+              {AnimComp && (
+                <div className="mod-anim-wrap">
+                  <AnimComp color={m.color} />
+                </div>
+              )}
+              <FidelityBar name={m.name} color={m.color} />
+              <div className="mod-name" style={{ color: m.color }}>{m.name}</div>
+              <div className="mod-companies">{m.companies}</div>
+              {[['Coherence', m.coherence],['Gate Speed', m.gateSpeed],['Cryo', m.cryo],['Error Rate', m.errorRate],['Logical Ratio', m.physicalRatio]].map(([l,v]) => (
+                <div className="mod-row" key={l}>
+                  <span className="mod-row-label">{l}</span>
+                  <span className="mod-row-val" style={l === 'Logical Ratio' ? { color: m.color } : {}}>{v}</span>
+                </div>
+              ))}
+              <div className="mod-row" style={{ marginBottom: 0 }}>
+                <span className="mod-row-label">Cost Curve</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: m.costCurve.includes('Deflationary') ? '#10b981' : m.costCurve.includes('Inflationary') ? '#ef4444' : '#94a3b8' }}>{m.costCurve}</span>
               </div>
-            ))}
-            <div className="mod-row" style={{ marginBottom: 0 }}>
-              <span className="mod-row-label">Cost Curve</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: m.costCurve.includes('Deflationary') ? '#10b981' : m.costCurve.includes('Inflationary') ? '#ef4444' : '#94a3b8' }}>{m.costCurve}</span>
+              <div className="mod-note">{m.note}</div>
             </div>
-            <div className="mod-note">{m.note}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -2490,12 +3502,781 @@ function ChangelogTab() {
   );
 }
 
+/* ─── VALUATION TAB (MARKET MAP) ──────────────────────── */
+
+function ValuationTab({ portfolioStatuses }) {
+  const [typeFilter, setTypeFilter] = React.useState('all');
+  const [liveCaps, setLiveCaps] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
+
+  const PUBLIC_TICKERS = { ionq:'IONQ', rigetti:'RGTI', dwave:'QBTS', infleqtion:'INFQ', xanadu:'XNDU', arqit:'ARQQ', btq:'BTQ-A.TO', ibm:'IBM', microsoft:'MSFT' };
+
+  React.useEffect(() => {
+    let active = true;
+    Promise.all(Object.entries(PUBLIC_TICKERS).map(([id, ticker]) =>
+      fetchYahooMarketCap(ticker).then(r => [id, r]).catch(() => [id, { capB: null, live: false }])
+    )).then(results => {
+      if (active) { setLiveCaps(Object.fromEntries(results)); setLoading(false); }
+    });
+    return () => { active = false; };
+  }, []);
+
+  const getEffectiveCap = (id) => {
+    const mc = MARKET_CAPS[id];
+    if (!mc) return { capB: null, live: false };
+    const live = liveCaps[id];
+    if (live?.capB) return { capB: live.capB, live: true };
+    return { capB: mc.capB, live: false };
+  };
+
+  const companies = COMPANIES.map(c => ({ ...c, mc: MARKET_CAPS[c.id] || {} }));
+  const mainCos = companies.filter(c => c.mc.capStatus && c.mc.capStatus !== 'conglomerate' && getEffectiveCap(c.id).capB !== null);
+  const undisclosed = companies.filter(c => c.mc.capStatus && c.mc.capStatus !== 'conglomerate' && getEffectiveCap(c.id).capB === null);
+  const conglomerates = companies.filter(c => c.mc.capStatus === 'conglomerate');
+
+  const filtered = typeFilter === 'all' ? mainCos : mainCos.filter(c => c.quantumType === typeFilter);
+  const sorted = [...filtered].sort((a, b) => (getEffectiveCap(b.id).capB || 0) - (getEffectiveCap(a.id).capB || 0));
+  const maxCap = Math.max(...sorted.map(c => getEffectiveCap(c.id).capB || 0), 0.1);
+
+  const qtTypes = ['platform','hardware','infrastructure','sensing','software','security','networking'];
+  const totalTracked = mainCos.reduce((s, c) => s + (getEffectiveCap(c.id).capB || 0), 0);
+
+  const statusChip = (capStatus) => ({
+    public:         <span style={{ fontSize:9, color:'#10b981', display:'inline-flex', alignItems:'center', gap:3 }}><span style={{ width:6, height:6, borderRadius:'50%', background:'#10b981', display:'inline-block', animation:'vt-pulse 2s infinite' }} />LIVE</span>,
+    ipo_expected:   <span style={{ fontSize:9, color:'#94a3b8' }}>○ IPO Target</span>,
+    spac:           <span style={{ fontSize:9, color:'#a78bfa' }}>○ SPAC</span>,
+    private_funded: <span style={{ fontSize:9, color:'#64748b' }}>○ Private</span>,
+    acquired:       <span style={{ fontSize:9, color:'#64748b' }}>○ Acquired</span>,
+  })[capStatus] || <span style={{ fontSize:9, color:'#64748b' }}>○</span>;
+
+  return (
+    <div>
+      {/* Type filter buttons */}
+      <div className="qtum-filters" style={{ marginBottom: 20 }}>
+        <button className={`qtum-filter-btn ${typeFilter === 'all' ? 'active' : ''}`} onClick={() => setTypeFilter('all')}>All</button>
+        {qtTypes.map(t => {
+          const tc = QUANTUM_TYPE_COLORS[t];
+          const on = typeFilter === t;
+          return (
+            <button key={t} onClick={() => setTypeFilter(on ? 'all' : t)} style={{
+              padding:'5px 12px', fontSize:10, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
+              letterSpacing:'0.3px', borderRadius:4, transition:'all 0.15s',
+              background: on ? tc.bg : 'rgba(255,255,255,0.04)',
+              border: `1px solid ${on ? `rgba(${tc.rgb},0.5)` : 'var(--border)'}`,
+              color: on ? tc.color : 'var(--dim)',
+            }}>{tc.label}</button>
+          );
+        })}
+        {loading && <span style={{ fontSize:10, color:'var(--dim)', marginLeft:8, animation:'vt-pulse 2s infinite' }}>fetching live prices…</span>}
+      </div>
+
+      <div className="vt-wrap">
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
+          <div style={{ fontSize:13, fontWeight:700, color:'#f1f5f9' }}>Quantum Market Map</div>
+          <div style={{ fontSize:10, color:'var(--dim)', display:'flex', gap:12 }}>
+            <span style={{ display:'inline-flex', alignItems:'center', gap:4 }}>
+              <span style={{ width:7, height:7, borderRadius:'50%', background:'#10b981', display:'inline-block' }} /> Live (Yahoo Finance)
+            </span>
+            <span style={{ display:'inline-flex', alignItems:'center', gap:4 }}>
+              <span style={{ width:7, height:7, borderRadius:'50%', border:'1.5px solid #475569', display:'inline-block' }} /> Estimated / Target
+            </span>
+          </div>
+        </div>
+
+        {sorted.map(c => {
+          const { capB, live } = getEffectiveCap(c.id);
+          if (!capB) return null;
+          const pct = (capB / maxCap) * 100;
+          const tc = QUANTUM_TYPE_COLORS[c.quantumType] || QUANTUM_TYPE_COLORS.hardware;
+          const valStr = capB >= 1 ? `$${capB.toFixed(1)}B` : `$${(capB * 1000).toFixed(0)}M`;
+          return (
+            <div key={c.id} className="vt-bar-row">
+              <div className="vt-bar-label" title={c.name}>
+                <span style={{ fontWeight:700 }}>{c.name}</span>
+                {c.ticker && c.ticker !== 'Private' && c.ticker !== 'Pre-IPO' &&
+                  <span style={{ fontSize:9, color:'var(--dim)', marginLeft:4 }}>{c.ticker}</span>}
+              </div>
+              <div className="vt-bar-track">
+                <div className="vt-bar-fill" style={{ width:`${Math.max(pct,0.5)}%`, background:`rgba(${tc.rgb},0.18)`, borderRight:`2px solid rgba(${tc.rgb},0.6)` }}>
+                  {pct > 12 && <span style={{ fontSize:9, fontWeight:700, color:tc.color }}>{valStr}</span>}
+                </div>
+              </div>
+              <div className="vt-bar-val">
+                {statusChip(c.mc.capStatus)}
+                <span style={{ color:'#e2e8f0', minWidth:54, textAlign:'right' }}>{valStr}</span>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Undisclosed section */}
+        {(typeFilter === 'all' ? undisclosed : undisclosed.filter(c => c.quantumType === typeFilter)).length > 0 && (
+          <div style={{ marginTop:20, paddingTop:16, borderTop:'1px solid var(--border)' }}>
+            <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.6px', color:'var(--dim)', textTransform:'uppercase', marginBottom:10 }}>Undisclosed / Estimated from Funding</div>
+            <div style={{ display:'flex', flexWrap:'wrap' }}>
+              {(typeFilter === 'all' ? undisclosed : undisclosed.filter(c => c.quantumType === typeFilter)).map(c => {
+                const tc = QUANTUM_TYPE_COLORS[c.quantumType] || QUANTUM_TYPE_COLORS.hardware;
+                return (
+                  <div key={c.id} className="vt-chip" style={{ borderColor:`rgba(${tc.rgb},0.25)` }}>
+                    <span className="qt-badge" style={{ background:tc.bg, color:tc.color }}>{tc.label}</span>
+                    <span style={{ color:'#e2e8f0', fontWeight:600 }}>{c.name}</span>
+                    {c.ticker && c.ticker !== 'Private' && <span style={{ fontSize:9, color:'var(--dim)' }}>{c.ticker}</span>}
+                    <span style={{ fontSize:9, color:'#475569' }}>{c.mc.capNote?.split('·')[0]?.trim()}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Conglomerates */}
+        {typeFilter === 'all' && conglomerates.length > 0 && (
+          <div style={{ marginTop:20, paddingTop:16, borderTop:'1px solid var(--border)' }}>
+            <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.6px', color:'var(--dim)', textTransform:'uppercase', marginBottom:10 }}>Conglomerates — Quantum is Optionality on the Parent</div>
+            <div style={{ display:'flex', flexWrap:'wrap' }}>
+              {conglomerates.map(c => {
+                const tc = QUANTUM_TYPE_COLORS[c.quantumType] || QUANTUM_TYPE_COLORS.platform;
+                const { capB } = getEffectiveCap(c.id);
+                const valStr = capB ? (capB >= 1000 ? `$${(capB/1000).toFixed(1)}T` : `$${capB.toFixed(0)}B`) : '';
+                return (
+                  <div key={c.id} className="vt-chip">
+                    <span className="qt-badge" style={{ background:tc.bg, color:tc.color }}>{tc.label}</span>
+                    <span style={{ color:'#e2e8f0', fontWeight:600 }}>{c.name}</span>
+                    <span style={{ fontSize:9, color:'var(--dim)' }}>{c.ticker}</span>
+                    <span style={{ fontSize:9, color:'#475569' }}>{valStr} parent · quantum = optionality</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="vt-summary">
+          <div className="vt-stat"><strong>${totalTracked.toFixed(0)}B+</strong> total tracked (excl. conglomerates)</div>
+          <div className="vt-stat"><strong>{mainCos.filter(c => c.mc.capStatus === 'public').length}</strong> public</div>
+          <div className="vt-stat"><strong>{mainCos.filter(c => c.mc.capStatus === 'spac' || c.mc.capStatus === 'ipo_expected').length}</strong> SPAC / IPO pipeline</div>
+          <div className="vt-stat"><strong>{mainCos.filter(c => c.mc.capStatus === 'private_funded').length}</strong> private (valued)</div>
+          <div className="vt-stat"><strong>{undisclosed.length}</strong> undisclosed</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── DONUT CHART (shared) ─────────────────────────────── */
+
+function DonutChart({ slices, size = 180 }) {
+  if (!slices || slices.length === 0 || slices.every(s => !s.pct)) {
+    return (
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        <circle cx={size/2} cy={size/2} r={size/2 - 14} fill="none" stroke="var(--border)" strokeWidth={2} strokeDasharray="4 4" />
+        <text x={size/2} y={size/2 + 5} textAnchor="middle" fontSize={10} fill="var(--dim)" fontFamily="SF Mono, monospace">Empty</text>
+      </svg>
+    );
+  }
+  const total = slices.reduce((s, c) => s + (c.pct || 0), 0);
+  const cx = size / 2, cy = size / 2, r = size / 2 - 14, ir = r * 0.54;
+  let startA = -Math.PI / 2;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {slices.filter(s => s.pct > 0).map((s, i) => {
+        const angle = (s.pct / total) * 2 * Math.PI;
+        const endA = startA + angle;
+        const x1 = cx + r * Math.cos(startA), y1 = cy + r * Math.sin(startA);
+        const x2 = cx + r * Math.cos(endA),   y2 = cy + r * Math.sin(endA);
+        const ix1 = cx + ir * Math.cos(endA),  iy1 = cy + ir * Math.sin(endA);
+        const ix2 = cx + ir * Math.cos(startA), iy2 = cy + ir * Math.sin(startA);
+        const lg = angle > Math.PI ? 1 : 0;
+        const d = `M ${x1} ${y1} A ${r} ${r} 0 ${lg} 1 ${x2} ${y2} L ${ix1} ${iy1} A ${ir} ${ir} 0 ${lg} 0 ${ix2} ${iy2} Z`;
+        const res = <path key={i} d={d} fill={`rgba(${s.rgb || '59,130,246'},0.25)`} stroke={s.color} strokeWidth={1.5} />;
+        startA = endA;
+        return res;
+      })}
+      <text x={cx} y={cy - 7} textAnchor="middle" fontSize={9} fill="#64748b" fontFamily="SF Mono, monospace">Allocated</text>
+      <text x={cx} y={cy + 10} textAnchor="middle" fontSize={15} fontWeight="800" fill="#f1f5f9" fontFamily="SF Mono, monospace">{total.toFixed(0)}%</text>
+    </svg>
+  );
+}
+
+/* ─── REBALANCER TAB ───────────────────────────────────── */
+
+const TIER_CONFIG_RB = {
+  anchor:  { label:'Anchor',  pct:10, rgb:'139,92,246',  color:'#a78bfa', range:'7-13%' },
+  booster: { label:'Booster', pct:5,  rgb:'59,130,246',  color:'#60a5fa', range:'3-7%' },
+  taster:  { label:'Taster',  pct:2,  rgb:'16,185,129',  color:'#34d399', range:'1-3%' },
+};
+
+function RebalancerTab({ portfolioStatuses, onStatusChange }) {
+  const [allocation, setAllocation] = React.useState(() => {
+    try { return parseInt(localStorage.getItem('qi-allocation') || '100000'); } catch(e) { return 100000; }
+  });
+  const [tiers, setTiers] = React.useState(() => {
+    try { return JSON.parse(localStorage.getItem('qi-tiers') || '{}'); } catch(e) { return {}; }
+  });
+  const [prices, setPrices] = React.useState({});
+
+  React.useEffect(() => { localStorage.setItem('qi-allocation', allocation); }, [allocation]);
+  React.useEffect(() => { localStorage.setItem('qi-tiers', JSON.stringify(tiers)); }, [tiers]);
+
+  const setTierFor = (id, val) => setTiers(prev => ({ ...prev, [id]: val }));
+
+  // Fetch live prices for public companies in portfolio
+  React.useEffect(() => {
+    const PUBLIC = { ionq:'IONQ', rigetti:'RGTI', dwave:'QBTS', infleqtion:'INFQ', xanadu:'XNDU', arqit:'ARQQ', btq:'BTQ-A.TO', ibm:'IBM', microsoft:'MSFT' };
+    Object.entries(PUBLIC).forEach(([id, ticker]) => {
+      if (!prices[id]) {
+        fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`, { headers:{ 'Accept':'application/json' } })
+          .then(r => r.json()).then(data => {
+            const price = data?.chart?.result?.[0]?.meta?.regularMarketPrice;
+            if (price) setPrices(prev => ({ ...prev, [id]: price }));
+          }).catch(() => {});
+      }
+    });
+  }, []);
+
+  const portfolioCos = COMPANIES.filter(c => portfolioStatuses[c.id] === 'portfolio');
+  const watchCos = COMPANIES.filter(c => portfolioStatuses[c.id] === 'watching' || portfolioStatuses[c.id] === 'questionable');
+
+  const getTierPct = (id) => {
+    const t = tiers[id];
+    if (!t) return 0;
+    return TIER_CONFIG_RB[t]?.pct || 0;
+  };
+
+  const totalPct = portfolioCos.reduce((s, c) => s + getTierPct(c.id), 0);
+  const deployed = portfolioCos.reduce((s, c) => {
+    const pct = getTierPct(c.id);
+    const mc = MARKET_CAPS[c.id];
+    const isPublic = mc?.capStatus === 'public';
+    if (isPublic && prices[c.id]) return s + (allocation * pct / 100);
+    return s;
+  }, 0);
+
+  // Donut slices by quantum type
+  const donutSlices = Object.entries(
+    portfolioCos.reduce((acc, c) => {
+      const pct = getTierPct(c.id);
+      if (pct > 0) acc[c.quantumType] = (acc[c.quantumType] || 0) + pct;
+      return acc;
+    }, {})
+  ).map(([type, pct]) => ({ pct, color: QUANTUM_TYPE_COLORS[type]?.color || '#60a5fa', rgb: QUANTUM_TYPE_COLORS[type]?.rgb, label: QUANTUM_TYPE_COLORS[type]?.label }));
+
+  return (
+    <div>
+      {/* Allocation input */}
+      <div style={{ display:'flex', alignItems:'center', gap:16, marginBottom:20 }}>
+        <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:8, padding:'12px 16px', display:'flex', alignItems:'center', gap:10 }}>
+          <span style={{ fontSize:11, color:'var(--dim)', fontWeight:600 }}>Total Allocation</span>
+          <span style={{ color:'#94a3b8', fontSize:13 }}>$</span>
+          <input type="number" value={allocation}
+            onChange={e => setAllocation(parseInt(e.target.value) || 100000)}
+            style={{ background:'transparent', border:'none', outline:'none', color:'#f1f5f9', fontSize:16, fontWeight:800, fontFamily:'inherit', width:120 }}
+          />
+        </div>
+        <div style={{ fontSize:11, color:'var(--dim)' }}>
+          Mark companies as <strong style={{ color:'#60a5fa' }}>Portfolio</strong> in Phase Grid or other tabs to add them here
+        </div>
+      </div>
+
+      {portfolioCos.length === 0 ? (
+        <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:10, padding:40, textAlign:'center', color:'var(--dim)', fontSize:13 }}>
+          No companies marked as Portfolio yet. Use the <strong style={{ color:'#e2e8f0' }}>Phase Grid</strong> tab to set company interest.
+        </div>
+      ) : (
+        <>
+          {/* Summary stats */}
+          <div className="rb-summary">
+            {[
+              { label:'Allocated', val:`${totalPct.toFixed(0)}%`, sub: totalPct > 100 ? '⚠ Over 100%' : `${(100 - totalPct).toFixed(0)}% remaining` },
+              { label:'Target Deployed', val:`$${(allocation * totalPct / 100).toLocaleString()}`, sub:'across portfolio' },
+              { label:'Public Positions', val:portfolioCos.filter(c => MARKET_CAPS[c.id]?.capStatus === 'public').length, sub:'shares calculable' },
+              { label:'Private / SPAC', val:portfolioCos.filter(c => MARKET_CAPS[c.id]?.capStatus !== 'public').length, sub:'WATCH' },
+            ].map(s => (
+              <div key={s.label} className="rb-stat">
+                <div className="rb-stat-label">{s.label}</div>
+                <div className="rb-stat-val">{s.val}</div>
+                <div className="rb-stat-sub">{s.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Donut + legend */}
+          <div style={{ display:'flex', gap:24, background:'var(--card)', border:'1px solid var(--border)', borderRadius:10, padding:20, marginBottom:20, alignItems:'center' }}>
+            <DonutChart slices={donutSlices} size={160} />
+            <div style={{ display:'flex', flexWrap:'wrap', gap:10, flex:1 }}>
+              {donutSlices.map((s, i) => (
+                <div key={i} style={{ display:'flex', alignItems:'center', gap:6, fontSize:11, color:'#94a3b8' }}>
+                  <span style={{ width:10, height:10, borderRadius:'50%', background:s.color, display:'inline-block' }} />
+                  <span>{s.label}</span>
+                  <span style={{ color:'#e2e8f0', fontWeight:700 }}>{s.pct.toFixed(0)}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Position table */}
+          <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:10, padding:20, overflowX:'auto' }}>
+            <table className="rb-table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Type</th>
+                  <th>Tier</th>
+                  <th>Target %</th>
+                  <th>Target $</th>
+                  <th>Price</th>
+                  <th>Shares</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {portfolioCos.map(c => {
+                  const mc = MARKET_CAPS[c.id] || {};
+                  const tier = tiers[c.id] || '';
+                  const tierCfg = TIER_CONFIG_RB[tier];
+                  const pct = getTierPct(c.id);
+                  const targetDollars = allocation * pct / 100;
+                  const isPublic = mc.capStatus === 'public';
+                  const price = prices[c.id];
+                  const shares = isPublic && price && pct > 0 ? Math.floor(targetDollars / price) : null;
+                  const tc = QUANTUM_TYPE_COLORS[c.quantumType] || QUANTUM_TYPE_COLORS.hardware;
+                  return (
+                    <tr key={c.id}>
+                      <td>
+                        <div style={{ fontWeight:700, color:'#f1f5f9' }}>{c.name}</div>
+                        <div style={{ fontSize:9, color:'var(--dim)' }}>{c.ticker}</div>
+                      </td>
+                      <td>
+                        <span className="qt-badge" style={{ background:tc.bg, color:tc.color }}>{tc.label}</span>
+                      </td>
+                      <td>
+                        <select value={tier} onChange={e => setTierFor(c.id, e.target.value)}
+                          style={{
+                            background: tierCfg ? `rgba(${tierCfg.rgb},0.12)` : 'rgba(255,255,255,0.04)',
+                            border: `1px solid ${tierCfg ? `rgba(${tierCfg.rgb},0.4)` : 'var(--border)'}`,
+                            color: tierCfg ? tierCfg.color : 'var(--dim)',
+                            borderRadius:3, padding:'2px 6px', fontSize:9, fontWeight:700,
+                            fontFamily:'inherit', cursor:'pointer', outline:'none',
+                          }}
+                        >
+                          <option value="">—</option>
+                          <option value="anchor">Anchor (7-13%)</option>
+                          <option value="booster">Booster (3-7%)</option>
+                          <option value="taster">Taster (1-3%)</option>
+                        </select>
+                      </td>
+                      <td style={{ color: pct > 0 ? '#f1f5f9' : 'var(--dim)', fontWeight:700 }}>{pct > 0 ? `${pct}%` : '—'}</td>
+                      <td style={{ color:'#94a3b8' }}>{pct > 0 ? `$${targetDollars.toLocaleString()}` : '—'}</td>
+                      <td style={{ color:'#94a3b8' }}>{isPublic && price ? `$${price.toFixed(2)}` : <span style={{ color:'#2d3748' }}>—</span>}</td>
+                      <td style={{ color:'#94a3b8' }}>{shares !== null ? shares.toLocaleString() : '—'}</td>
+                      <td>
+                        {isPublic && shares !== null ? (
+                          <span style={{ background:'rgba(16,185,129,0.12)', color:'#34d399', padding:'3px 8px', borderRadius:3, fontSize:9, fontWeight:700 }}>
+                            BUY {shares.toLocaleString()}
+                          </span>
+                        ) : (
+                          <span style={{ background:'rgba(100,116,139,0.12)', color:'#94a3b8', padding:'3px 8px', borderRadius:3, fontSize:9, fontWeight:700 }}>
+                            {mc.capStatus === 'public' ? 'NO PRICE' : 'WATCH'}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {/* Watchlist */}
+      {watchCos.length > 0 && (
+        <div style={{ marginTop:20 }}>
+          <div style={{ fontSize:10, fontWeight:700, letterSpacing:'0.6px', color:'var(--dim)', textTransform:'uppercase', marginBottom:10 }}>Watchlist</div>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+            {watchCos.map(c => {
+              const ps = portfolioStatuses[c.id];
+              const psC = PS_COLORS[ps];
+              const tc = QUANTUM_TYPE_COLORS[c.quantumType] || QUANTUM_TYPE_COLORS.hardware;
+              return (
+                <div key={c.id} style={{ background:'var(--card)', border:`1px solid rgba(${psC?.rgb || '100,116,139'},0.3)`, borderRadius:6, padding:'8px 12px', display:'flex', gap:8, alignItems:'center' }}>
+                  <span className="qt-badge" style={{ background:tc.bg, color:tc.color }}>{tc.label}</span>
+                  <span style={{ fontSize:12, fontWeight:700, color:'#f1f5f9' }}>{c.name}</span>
+                  <span style={{ fontSize:9, padding:'1px 6px', borderRadius:3, background:`rgba(${psC?.rgb || '100,116,139'},0.12)`, color:psC?.color || '#94a3b8', fontWeight:700 }}>
+                    {ps === 'watching' ? 'WATCHING' : 'QUESTIONABLE'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── FUND PITCH TAB ───────────────────────────────────── */
+
+function FundPitchTab({ portfolioStatuses, tiers }) {
+  const portfolioCos = COMPANIES.filter(c => portfolioStatuses[c.id] === 'portfolio');
+  const storedTiers = React.useMemo(() => {
+    try { return JSON.parse(localStorage.getItem('qi-tiers') || '{}'); } catch(e) { return {}; }
+  }, [portfolioStatuses]);
+
+  const getTierPct = (id) => {
+    const t = storedTiers[id];
+    return t ? (TIER_CONFIG_RB[t]?.pct || 0) : 0;
+  };
+
+  const totalPct = portfolioCos.reduce((s, c) => s + getTierPct(c.id), 0);
+  const publicPct = portfolioCos.filter(c => MARKET_CAPS[c.id]?.capStatus === 'public').reduce((s, c) => s + getTierPct(c.id), 0);
+  const spacPct = portfolioCos.filter(c => ['spac','ipo_expected'].includes(MARKET_CAPS[c.id]?.capStatus)).reduce((s, c) => s + getTierPct(c.id), 0);
+  const privatePct = portfolioCos.filter(c => MARKET_CAPS[c.id]?.capStatus === 'private_funded').reduce((s, c) => s + getTierPct(c.id), 0);
+
+  const donutSlices = Object.entries(
+    portfolioCos.reduce((acc, c) => {
+      const pct = getTierPct(c.id);
+      if (pct > 0) acc[c.quantumType] = (acc[c.quantumType] || 0) + pct;
+      return acc;
+    }, {})
+  ).map(([type, pct]) => ({ pct, color: QUANTUM_TYPE_COLORS[type]?.color || '#60a5fa', rgb: QUANTUM_TYPE_COLORS[type]?.rgb, label: QUANTUM_TYPE_COLORS[type]?.label }));
+
+  const TIMELINE_NODES = [
+    { year:'2024', label:'NISQ Era', color:'#f59e0b' },
+    { year:'2026', label:'Eng. Execution', color:'#10b981' },
+    { year:'2030', label:'Fault Tolerant', color:'#3b82f6' },
+    { year:'2040', label:'Utility Scale', color:'#8b5cf6' },
+  ];
+
+  return (
+    <div>
+      {/* Section A: Hero */}
+      <div className="fund-hero">
+        <div className="fund-hero-title">Quantum Intelligence Fund</div>
+        <div className="fund-hero-sub">
+          A concentrated, research-driven fund capturing the quantum computing platform shift — before institutional capital arrives.
+        </div>
+        <div className="fund-hero-tags">
+          {[
+            { label:'Mixed: Public + Private', rgb:'59,130,246', color:'#60a5fa' },
+            { label:'Family Office · HNW', rgb:'139,92,246', color:'#a78bfa' },
+            { label:'Concentrated · Research-Driven', rgb:'6,182,212', color:'#22d3ee' },
+          ].map(t => (
+            <span key={t.label} style={{ fontSize:11, fontWeight:600, padding:'4px 12px', borderRadius:20, background:`rgba(${t.rgb},0.12)`, border:`1px solid rgba(${t.rgb},0.3)`, color:t.color }}>
+              {t.label}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Section B: The Thesis */}
+      <div className="fund-section">
+        <div className="fund-section-title">The Thesis</div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:12 }}>
+          {[
+            { num:'01', title:'Platform Shift', body:'Quantum computing is transitioning from lab to commercial — the same inflection that defined early semiconductor, internet, and cloud investing. We are at the beginning of that curve.' },
+            { num:'02', title:'Engineering Execution', body:'2026 marks the transition to the Engineering Execution phase: physics is solved at the leading edge, scaling is the work. First commercial revenue milestones are being crossed now.' },
+            { num:'03', title:'Asymmetric Access', body:'The SPAC wave and private co-investment opportunities give sophisticated investors access to quantum economics before institutional capital recognizes the inflection.' },
+          ].map(p => (
+            <div key={p.num} className="fund-pillar">
+              <div className="fund-pillar-num">Pillar {p.num}</div>
+              <div className="fund-pillar-title">{p.title}</div>
+              <div className="fund-pillar-body">{p.body}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Section C: Market Opportunity */}
+      <div className="fund-section">
+        <div className="fund-section-title">Market Opportunity</div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+            {[
+              { num:'$170B', label:'Global quantum market by 2040 (BCG/McKinsey projections)' },
+              { num:'$10B+', label:'Government funding committed (Japan $7.4B, Spain $900M, US DARPA)' },
+              { num:'$130M', label:'IonQ FY2025 revenue — first pure-play to cross $100M' },
+              { num:'~2037', label:'50% probability of cryptographically relevant quantum (CRQC)' },
+            ].map(s => (
+              <div key={s.num} className="fund-stat-card">
+                <div className="fund-stat-num">{s.num}</div>
+                <div className="fund-stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:8, padding:20 }}>
+            <div style={{ fontSize:11, fontWeight:700, color:'#94a3b8', marginBottom:20 }}>Quantum Computing Timeline</div>
+            <div style={{ position:'relative', paddingBottom:30 }}>
+              <div style={{ position:'absolute', top:10, left:0, right:0, height:2, background:'rgba(255,255,255,0.08)', borderRadius:1 }} />
+              <div style={{ display:'flex', justifyContent:'space-between', position:'relative' }}>
+                {TIMELINE_NODES.map((n, i) => (
+                  <div key={n.year} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+                    <div style={{ width:14, height:14, borderRadius:'50%', background:n.color, border:`2px solid ${n.color}`, boxShadow:`0 0 8px ${n.color}66`, zIndex:1 }} />
+                    <div style={{ fontSize:12, fontWeight:800, color:n.color }}>{n.year}</div>
+                    <div style={{ fontSize:10, color:'#64748b', textAlign:'center', maxWidth:70, lineHeight:1.4 }}>{n.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Section D: Portfolio */}
+      <div className="fund-section">
+        <div className="fund-section-title">Portfolio</div>
+        {portfolioCos.length === 0 ? (
+          <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:10, padding:32, textAlign:'center', color:'var(--dim)', fontSize:12 }}>
+            Portfolio is empty — set company interest to <strong style={{ color:'#60a5fa' }}>Portfolio</strong> in the Phase Grid or Portfolio tab.
+          </div>
+        ) : (
+          <div style={{ display:'grid', gridTemplateColumns:'auto 1fr', gap:24, background:'var(--card)', border:'1px solid var(--border)', borderRadius:10, padding:20, alignItems:'flex-start' }}>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:12 }}>
+              <DonutChart slices={donutSlices} size={160} />
+              {totalPct > 0 && (
+                <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center' }}>
+                  {[{ label:`Public ${publicPct.toFixed(0)}%`, color:'#60a5fa' }, { label:`SPAC ${spacPct.toFixed(0)}%`, color:'#a78bfa' }, { label:`Private ${privatePct.toFixed(0)}%`, color:'#34d399' }]
+                    .filter(s => parseFloat(s.label) > 0)
+                    .map(s => <span key={s.label} style={{ fontSize:10, color:s.color, fontWeight:600 }}>{s.label}</span>)}
+                </div>
+              )}
+            </div>
+            <div>
+              {portfolioCos.map(c => {
+                const mc = MARKET_CAPS[c.id] || {};
+                const tc = QUANTUM_TYPE_COLORS[c.quantumType] || QUANTUM_TYPE_COLORS.hardware;
+                const t = storedTiers[c.id];
+                const tierCfg = TIER_CONFIG_RB[t];
+                const statusLabel = { public:'Public', ipo_expected:'IPO Target', spac:'SPAC', private_funded:'Private', acquired:'Acquired' }[mc.capStatus] || 'Private';
+                return (
+                  <div key={c.id} className="fund-company-row">
+                    <span className="qt-badge" style={{ background:tc.bg, color:tc.color }}>{tc.label}</span>
+                    <span style={{ fontSize:13, fontWeight:700, color:'#f1f5f9', flex:1 }}>{c.name}</span>
+                    {c.ticker && c.ticker !== 'Private' && c.ticker !== 'Pre-IPO' &&
+                      <span style={{ fontSize:10, color:'var(--dim)' }}>{c.ticker}</span>}
+                    <span style={{ fontSize:9, padding:'2px 7px', borderRadius:3, background:'rgba(255,255,255,0.05)', color:'#94a3b8', fontWeight:700 }}>{statusLabel}</span>
+                    {tierCfg && <span style={{ fontSize:9, padding:'2px 7px', borderRadius:3, background:`rgba(${tierCfg.rgb},0.12)`, color:tierCfg.color, fontWeight:700 }}>{tierCfg.label} {tierCfg.pct}%</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Section E: Investment Strategy */}
+      <div className="fund-section">
+        <div className="fund-section-title">Investment Strategy</div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+          <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:8, padding:20 }}>
+            <div style={{ fontSize:12, fontWeight:800, color:'#f1f5f9', marginBottom:10 }}>Selection Framework</div>
+            <div style={{ fontSize:12, color:'#94a3b8', lineHeight:1.8 }}>
+              {['Physics execution & QEC ratio', 'Moat strength & defensibility', 'Commercialization clarity', 'Valuation vs. quantum premium', 'Management track record', 'Timing on the LRAC cost curve', 'Portfolio construction balance'].map((d, i) => (
+                <div key={i} style={{ display:'flex', gap:8, marginBottom:2 }}>
+                  <span style={{ color:'var(--dim)', flexShrink:0 }}>{i+1}.</span>
+                  <span>{d}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ background:'var(--card)', border:'1px solid var(--border)', borderRadius:8, padding:20 }}>
+            <div style={{ fontSize:12, fontWeight:800, color:'#f1f5f9', marginBottom:10 }}>Position Sizing</div>
+            {Object.entries(TIER_CONFIG_RB).map(([key, t]) => (
+              <div key={key} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:10 }}>
+                <span style={{ fontSize:11, fontWeight:700, padding:'3px 10px', borderRadius:3, background:`rgba(${t.rgb},0.12)`, color:t.color, minWidth:70, textAlign:'center' }}>{t.label}</span>
+                <div>
+                  <div style={{ fontSize:12, fontWeight:700, color:'#f1f5f9' }}>{t.range}</div>
+                  <div style={{ fontSize:10, color:'#64748b' }}>
+                    {key === 'anchor' && 'Demonstrated leaders with proven moat'}
+                    {key === 'booster' && 'Proving-phase companies with clear path'}
+                    {key === 'taster' && 'High-conviction early stage, binary upside'}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Section F: Risk Factors */}
+      <div className="fund-section">
+        <div className="fund-section-title">Risk Factors</div>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+          {[
+            { title:'Timeline Risk', body:'Fault-tolerant quantum computing may be 5-10 years from utility scale. Near-term catalysts are milestones, not revenue guarantees.' },
+            { title:'Modality Risk', body:'The winning hardware architecture is not yet determined. Trapped ion, neutral atom, superconducting, and photonic all have viable paths.' },
+            { title:'Valuation Risk', body:'Quantum premiums can compress rapidly. SPAC post-close performance illustrates the downside. Patience and conviction sizing are required.' },
+            { title:'Liquidity Risk', body:'Private positions are illiquid on 3-7 year horizons. SPAC and pre-IPO positions have lock-up periods and limited secondary markets.' },
+            { title:'Concentration Risk', body:'Sector-specific fund with no hedge against a quantum winter or paradigm-level setback. This is a concentrated thesis investment.' },
+          ].map(r => (
+            <div key={r.title} className="fund-risk-card">
+              <div className="fund-risk-title">{r.title}</div>
+              <div className="fund-risk-body">{r.body}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Section G: Footer */}
+      <div className="fund-footer">
+        <div style={{ fontSize:13, fontWeight:700, color:'#f1f5f9', marginBottom:8 }}>Investment Inquiries</div>
+        <div style={{ fontSize:12, color:'#64748b', marginBottom:16 }}>[contact placeholder]</div>
+        <div style={{ fontSize:10, color:'#2d3748', maxWidth:600, margin:'0 auto', lineHeight:1.7 }}>
+          For qualified investors only. Not investment advice. This document is for informational purposes and does not constitute an offer to sell or a solicitation of an offer to buy any securities. Past performance does not predict future results. All investments involve risk including possible loss of principal.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── ALL COMPANIES TAB ─────────────────────────────────── */
+
+function AllCompaniesTab() {
+  const [search, setSearch] = React.useState('');
+  const [catFilter, setCatFilter] = React.useState('All');
+  const [statusFilter, setStatusFilter] = React.useState('All');
+
+  const CATS = ['All','Hardware','Software','Security','Infrastructure','Applications','Consulting'];
+  const CAT_COLOR = {Hardware:'#3b82f6',Software:'#8b5cf6',Security:'#ef4444',Infrastructure:'#f97316',Applications:'#10b981',Consulting:'#f59e0b'};
+
+  const filtered = React.useMemo(() => {
+    const q = search.toLowerCase();
+    return ALL_QUANTUM_COMPANIES.filter(c => {
+      const matchQ = !q || c.name.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.tech.toLowerCase().includes(q) || (c.country||'').toLowerCase().includes(q);
+      const matchCat = catFilter === 'All' || c.category === catFilter;
+      const matchStatus = statusFilter === 'All'
+        || (statusFilter === 'Tracked' && c.tracked)
+        || (statusFilter === 'Changes' && c.status);
+      return matchQ && matchCat && matchStatus;
+    });
+  }, [search, catFilter, statusFilter]);
+
+  const counts = React.useMemo(() => {
+    const m = {};
+    ALL_QUANTUM_COMPANIES.forEach(c => { m[c.category] = (m[c.category]||0)+1; });
+    return m;
+  }, []);
+
+  const trackedTotal = ALL_QUANTUM_COMPANIES.filter(c=>c.tracked).length;
+  const changesTotal = ALL_QUANTUM_COMPANIES.filter(c=>c.status).length;
+
+  const StatusBadge = ({c}) => {
+    if (c.tracked) return <span className="tag" style={{background:'rgba(16,185,129,0.15)',color:'#34d399',fontSize:8,padding:'1px 5px'}}>TRACKED</span>;
+    if (c.status==='acquired') return <span className="tag" style={{background:'rgba(239,68,68,0.12)',color:'#f87171',fontSize:8,padding:'1px 5px'}}>ACQUIRED</span>;
+    if (c.status==='merged') return <span className="tag" style={{background:'rgba(245,158,11,0.12)',color:'#fbbf24',fontSize:8,padding:'1px 5px'}}>MERGED</span>;
+    if (c.status==='renamed') return <span className="tag" style={{background:'rgba(245,158,11,0.12)',color:'#fbbf24',fontSize:8,padding:'1px 5px'}}>RENAMED</span>;
+    if (c.status==='defunct') return <span className="tag" style={{background:'rgba(100,116,139,0.12)',color:'#94a3b8',fontSize:8,padding:'1px 5px'}}>DEFUNCT</span>;
+    return null;
+  };
+
+  return (
+    <div>
+      {/* Summary counts */}
+      <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+        {CATS.filter(c=>c!=='All').map(cat=>(
+          <div key={cat} onClick={()=>setCatFilter(prev=>prev===cat?'All':cat)}
+            style={{background:'var(--card)',border:`1px solid ${catFilter===cat?CAT_COLOR[cat]:'var(--border)'}`,borderRadius:7,padding:'7px 13px',cursor:'pointer',transition:'all 0.15s'}}>
+            <div style={{fontSize:8,fontWeight:700,letterSpacing:0.6,color:CAT_COLOR[cat],textTransform:'uppercase',marginBottom:2}}>{cat}</div>
+            <div style={{fontSize:18,fontWeight:800,color:'#f1f5f9'}}>{counts[cat]||0}</div>
+          </div>
+        ))}
+        <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:7,padding:'7px 13px'}}>
+          <div style={{fontSize:8,fontWeight:700,letterSpacing:0.6,color:'#34d399',textTransform:'uppercase',marginBottom:2}}>TRACKED</div>
+          <div style={{fontSize:18,fontWeight:800,color:'#f1f5f9'}}>{trackedTotal}</div>
+        </div>
+        <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:7,padding:'7px 13px'}}>
+          <div style={{fontSize:8,fontWeight:700,letterSpacing:0.6,color:'#f59e0b',textTransform:'uppercase',marginBottom:2}}>CHANGES</div>
+          <div style={{fontSize:18,fontWeight:800,color:'#f1f5f9'}}>{changesTotal}</div>
+        </div>
+        <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:7,padding:'7px 13px'}}>
+          <div style={{fontSize:8,fontWeight:700,letterSpacing:0.6,color:'var(--dim)',textTransform:'uppercase',marginBottom:2}}>TOTAL</div>
+          <div style={{fontSize:18,fontWeight:800,color:'#f1f5f9'}}>{ALL_QUANTUM_COMPANIES.length}</div>
+        </div>
+      </div>
+
+      {/* Filter bar */}
+      <div style={{display:'flex',gap:6,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
+        <input type="text" placeholder="Search name, tech, country..."
+          value={search} onChange={e=>setSearch(e.target.value)}
+          style={{background:'rgba(255,255,255,0.04)',border:'1px solid var(--border)',borderRadius:5,color:'#e2e8f0',fontSize:11,padding:'5px 11px',fontFamily:'inherit',width:230,outline:'none'}}
+        />
+        <div style={{display:'flex',gap:3}}>
+          {['All','Tracked','Changes'].map(s=>(
+            <button key={s} className={`invest-filter-btn ${statusFilter===s?'active':''}`} onClick={()=>setStatusFilter(s)}>{s}</button>
+          ))}
+        </div>
+        <span style={{fontSize:10,color:'var(--dim)',marginLeft:4}}>{filtered.length} of {ALL_QUANTUM_COMPANIES.length} companies</span>
+      </div>
+
+      {/* Table */}
+      <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:10,overflow:'auto',maxHeight:'72vh'}}>
+        <table style={{width:'100%',borderCollapse:'collapse',fontSize:11}}>
+          <thead style={{position:'sticky',top:0,background:'var(--card)',zIndex:1}}>
+            <tr style={{borderBottom:'1px solid var(--border)'}}>
+              {['Company','Category','Tech Focus','Description','Country','Status'].map(h=>(
+                <th key={h} style={{textAlign:'left',padding:'8px 12px',fontSize:9,fontWeight:700,letterSpacing:0.6,color:'var(--dim)',textTransform:'uppercase',whiteSpace:'nowrap',borderRight:'1px solid rgba(255,255,255,0.03)'}}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((c,i)=>(
+              <tr key={c.name} style={{borderBottom:'1px solid rgba(255,255,255,0.025)',background:i%2===0?'transparent':'rgba(255,255,255,0.008)'}}>
+                <td style={{padding:'7px 12px',fontWeight:700,color:'#f1f5f9',whiteSpace:'nowrap',borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.name}</td>
+                <td style={{padding:'7px 12px',whiteSpace:'nowrap',borderRight:'1px solid rgba(255,255,255,0.03)'}}>
+                  <span style={{fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:3,background:`${CAT_COLOR[c.category]}18`,color:CAT_COLOR[c.category]}}>{c.category}</span>
+                </td>
+                <td style={{padding:'7px 12px',color:'#94a3b8',whiteSpace:'nowrap',fontSize:10,borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.tech}</td>
+                <td style={{padding:'7px 12px',color:'#64748b',maxWidth:400,lineHeight:1.5,borderRight:'1px solid rgba(255,255,255,0.03)'}}>
+                  {c.desc}
+                  {c.statusNote && <span style={{color:'#f59e0b',marginLeft:6,fontSize:10}}>[{c.statusNote}]</span>}
+                </td>
+                <td style={{padding:'7px 12px',color:'#475569',whiteSpace:'nowrap',fontSize:10,borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.country||'—'}</td>
+                <td style={{padding:'7px 12px',whiteSpace:'nowrap'}}><StatusBadge c={c}/></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{marginTop:10,fontSize:9,color:'#2d3748',lineHeight:1.8}}>
+        TRACKED = full analysis in Scatter/Investability views · ACQUIRED/MERGED/RENAMED = notable corporate change · Sources: industry directories + Wikipedia · {ALL_QUANTUM_COMPANIES.length} companies · Apr 2026
+      </div>
+    </div>
+  );
+}
+
 /* ─── APP ──────────────────────────────────────────────── */
 
 function App() {
   const [tab, setTab] = React.useState('scatter');
+  const [openMenu, setOpenMenu] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
+
+  const INVEST_TABS = [
+    ['invest','Investability'],['valuation','Market Map'],['rebalancer','Portfolio'],
+    ['fund','Fund Overview'],['qtum','QTUM ETF'],
+  ];
+  const RESEARCH_TABS = [
+    ['scatter','Scatter View'],['grid','Phase Grid'],['allcos','All Companies'],
+    ['comparator','Modality Comparator'],['modality','Modality Explanation'],
+    ['lrac','Scale Economics'],['glossary','Glossary'],['changelog','Changelog'],
+  ];
+
+  React.useEffect(() => {
+    if (!openMenu) return;
+    const close = () => setOpenMenu(null);
+    document.addEventListener('click', close, {once: true});
+    return () => document.removeEventListener('click', close);
+  }, [openMenu]);
   const handleSelect = (c) => setSelected(prev => prev?.id === c.id ? null : c);
+
+  const [portfolioStatuses, setPortfolioStatuses] = React.useState(() => {
+    try { return JSON.parse(localStorage.getItem('qi-portfolio-statuses') || '{}'); } catch(e) { return {}; }
+  });
+  React.useEffect(() => {
+    localStorage.setItem('qi-portfolio-statuses', JSON.stringify(portfolioStatuses));
+  }, [portfolioStatuses]);
+  const handleStatusChange = (id, status) => setPortfolioStatuses(prev => ({ ...prev, [id]: status || null }));
 
   const phaseOrder = ['engineering', 'commercial', 'proving'];
   const byPhase = phaseOrder.map(p => ({ phase: p, companies: COMPANIES.filter(c => c.phase === p && !c.contextTier) }));
@@ -2521,10 +4302,33 @@ function App() {
         </div>
       </div>
 
-      <div className="tabs">
-        {[['scatter','Scatter View'],['grid','Phase Grid'],['modality','Modality Ref'],['invest','Investability'],['comparator','Modality Comparator'],['lrac','Scale Economics'],['glossary','Glossary'],['changelog','Changelog'],['qtum','QTUM ETF']].map(([id, label]) => (
-          <button key={id} className={`tab ${tab === id ? 'active' : ''}`} onClick={() => setTab(id)}>{label}</button>
-        ))}
+      <div className="nav-wrap">
+        {[['invest','Investment',INVEST_TABS],['research','Computing Research',RESEARCH_TABS]].map(([groupId,groupLabel,groupTabs]) => {
+          const activeLabel = groupTabs.find(([tid]) => tid === tab)?.[1];
+          return (
+            <div key={groupId} className="nav-group" onClick={e => e.stopPropagation()}>
+              <button
+                className={`nav-btn ${activeLabel ? 'nav-active' : ''}`}
+                onClick={() => setOpenMenu(prev => prev === groupId ? null : groupId)}
+              >
+                <span className="nav-btn-group">{groupLabel}</span>
+                <span className="nav-sep">·</span>
+                <span className="nav-btn-cur">{activeLabel || groupTabs[0][1]}</span>
+                <span className="nav-btn-caret">{openMenu === groupId ? '▲' : '▼'}</span>
+              </button>
+              {openMenu === groupId && (
+                <div className="nav-dropdown">
+                  {groupTabs.map(([tid,tlabel]) => (
+                    <button key={tid}
+                      className={`nav-item ${tab === tid ? 'nav-item-active' : ''}`}
+                      onClick={() => { setTab(tid); setOpenMenu(null); }}
+                    >{tlabel}</button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* SCATTER */}
@@ -2570,7 +4374,7 @@ function App() {
                   <span className="phase-count" style={{ background: cfg.borderColor, color: cfg.color, marginLeft: 'auto' }}>{companies.length}</span>
                 </div>
                 <div className="cards">
-                  {companies.map(c => <CompanyCard key={c.id} c={c} selected={selected?.id === c.id} onSelect={handleSelect} />)}
+                  {companies.map(c => <CompanyCard key={c.id} c={c} selected={selected?.id === c.id} onSelect={handleSelect} portfolioStatus={portfolioStatuses[c.id]} onStatusChange={handleStatusChange} />)}
                 </div>
               </div>
             );
@@ -2583,7 +4387,7 @@ function App() {
               <span className="phase-sub" style={{ color: '#64748b' }}>Big Tech / R&D — not ranked against pure-plays</span>
             </div>
             <div className="cards">
-              {contextCompanies.map(c => <CompanyCard key={c.id} c={c} selected={selected?.id === c.id} onSelect={handleSelect} />)}
+              {contextCompanies.map(c => <CompanyCard key={c.id} c={c} selected={selected?.id === c.id} onSelect={handleSelect} portfolioStatus={portfolioStatuses[c.id]} onStatusChange={handleStatusChange} />)}
             </div>
           </div>
 
@@ -2611,6 +4415,18 @@ function App() {
 
       {/* QTUM ETF ANALYSIS */}
       {tab === 'qtum' && <QTUMTab />}
+
+      {/* ALL COMPANIES */}
+      {tab === 'allcos' && <AllCompaniesTab />}
+
+      {/* MARKET MAP */}
+      {tab === 'valuation' && <ValuationTab portfolioStatuses={portfolioStatuses} />}
+
+      {/* PORTFOLIO REBALANCER */}
+      {tab === 'rebalancer' && <RebalancerTab portfolioStatuses={portfolioStatuses} onStatusChange={handleStatusChange} />}
+
+      {/* FUND OVERVIEW */}
+      {tab === 'fund' && <FundPitchTab portfolioStatuses={portfolioStatuses} />}
     </div>
   );
 }

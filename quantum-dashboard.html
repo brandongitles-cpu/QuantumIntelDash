@@ -818,6 +818,22 @@ const COMPANIES = [
     quantumType: 'infrastructure',
   },
   {
+    id: 'qboson', name: 'QBoson', ticker: 'Private', modality: 'Photonic (Room-Temp Optimization)',
+    phase: 'commercial', phaseX: 3.2,
+    physicsStatus: 'proving',
+    physicsNote: 'Room-temperature photonic quantum computers for specialized optimization. Product line: 100, 550, and 1,000-qubit systems (standard mode); precision mode 550 qubits; overclocking mode 3,000+ qubits (Estimated). AI-driven control platform enabling 7×16-hour continuous operation. China\'s first photonic quantum computer factory launched Shenzhen Nov 2025. Deployed to National Supercomputing Center Chengdu, China Mobile, North China University of Technology. Gate fidelity: Unknown.',
+    logicalRatio: null, ratioType: 'na',
+    ratioNote: 'N/A — specialized optimization machines, not universal gate-based QC. No QEC framework disclosed. Room-temperature photonic sidesteps cryogenic decoherence but is fundamentally limited to optimization use cases.',
+    scalingPath: 'optics', scalingNote: 'China\'s first photonic quantum computer factory, Shenzhen (launched Nov 2025). Series B ($145M CNY 1B, April 2026) to build pilot chip production line and expand factory. State-backed investors: Beijing Financial Holdings Group, ICBC Capital. Designated sole pure-play quantum company in China\'s 15th Five-Year Plan (2026-2030).',
+    costCurve: 'Deflationary', contextTier: false,
+    expectations: 'Significant commercial traction in China\'s state-backed quantum ecosystem. Room-temp photonic sidesteps cryogenics but systems are optimization-specific — analogous to D-Wave\'s annealing, not universal gate-model QC. $145M Series B for factory scale-up signals strong state conviction. Key risk: limited utility without gate-universal capability.',
+    moatCurrent: 'Moderate', moatCurrentNote: 'Only company designated in China\'s 15th Five-Year Plan for quantum computing. State-backed investors (ICBC Capital, Beijing Financial Holdings). Deployed systems at National Supercomputing Center Chengdu, China Mobile, North China University of Technology. Own factory = production moat.',
+    moatPotential: 'Strong', moatPotentialNote: 'China sovereign quantum ecosystem lock-in. Factory-scale production + state mandate = distribution moat hard to replicate outside China. If photonic optimization proves commercially superior to classical solvers, position strengthens significantly.',
+    commerceRating: 'Clear', commerceNote: 'Delivered systems to National Supercomputing Center Chengdu, China Mobile, North China University of Technology. Factory operational Nov 2025. $145M Series B (April 2026) for production scaling.',
+    valuationRating: null, valuationNote: 'Private. Series B CNY 1B ($145M, April 2026). Lead investors: Beijing Financial Holdings Group, ICBC Capital. Valuation undisclosed.',
+    quantumType: 'hardware',
+  },
+  {
     id: 'multiverse', name: 'Multiverse Computing', ticker: 'Private', modality: 'Software (Quantum-Inspired AI)',
     phase: 'commercial', phaseX: 3.6,
     physicsStatus: 'solved',
@@ -1028,6 +1044,7 @@ const ALL_QUANTUM_COMPANIES = [
   {name:'Photonic Inc.',category:'Hardware',tech:'Silicon Photonic',desc:'Silicon-based photonic quantum hardware addressing core scalability challenges.',country:'Canada',tracked:false},
   {name:'PsiQuantum',category:'Hardware',tech:'Photonic',desc:'Large-scale error-corrected photonic quantum computer; GlobalFoundries partnership.',country:'USA',tracked:true},
   {name:'Q.ANT',category:'Hardware',tech:'Photonic',desc:'Novel photonic sensors and photonic computing chips based on quantum photonic framework.',country:'Germany',tracked:false},
+  {name:'QBoson',category:'Hardware',tech:'Photonic (Room-Temp)',desc:'China\'s largest photonic QC company; 1,000+ qubit room-temp systems; own Shenzhen factory (Nov 2025); $145M Series B (April 2026); sole company in China\'s 15th Five-Year Plan quantum mandate.',country:'China',tracked:true},
   {name:'Quandela',category:'Hardware',tech:'Photonic',desc:'Solid-state single-photon sources and photonic quantum computing algorithms.',country:'France',tracked:false},
   {name:'Quantum Brilliance',category:'Hardware',tech:'NV-Diamond',desc:'Diamond quantum accelerators operating at room temperature for edge deployment.',country:'Australia',tracked:true},
   {name:'Quantum Motion',category:'Hardware',tech:'Silicon',desc:'Silicon fault-tolerant quantum computers targeting 1M+ qubits via semiconductor leverage.',country:'UK',tracked:false},
@@ -1146,6 +1163,7 @@ const ALL_QUANTUM_COMPANIES = [
   {name:'JoS QUANTUM',category:'Applications',tech:'Finance',desc:'Next-generation quantum calculation engine for capital and energy markets.',country:'Germany',tracked:false},
   {name:'Kvantify',category:'Applications',tech:'Industry (Nordic)',desc:'Making Denmark and Northern Europe the global leader in quantum computing benefits.',country:'Denmark',tracked:false},
   {name:'Menten AI',category:'Applications',tech:'Drug Discovery',desc:'Machine learning and quantum computing methods to accelerate drug discovery.',country:'USA',tracked:false},
+  {name:'Moth Quantum',category:'Applications',tech:'Creative / Entertainment',desc:'Quantum reservoir computing for music, gaming, and arts; Sphinx generative music app; Space Moths Roblox game; CEO formerly led Oxford Quantum Circuits. £3M seed (2024).',country:'UK',tracked:false},
   {name:'NetraMark',category:'Applications',tech:'Drug Discovery / AI',desc:'Research-accelerating augmented intelligence platform using causal AI.',country:'Canada',tracked:false},
   {name:'Next Generation Quantum',category:'Applications',tech:'Multi-QPU Clustering',desc:'Interconnecting multiple quantum processors into one large quantum computing cluster.',country:'Netherlands',tracked:false},
   {name:'nodeQ',category:'Applications',tech:'Quantum Network SW',desc:'Software tools for designing, optimizing, and controlling quantum networks.',country:'Netherlands',tracked:false},
@@ -1232,6 +1250,7 @@ const MARKET_CAPS = {
   xeedq:             { capB: null,  capStatus:'private_funded', capNote:'~€87M DLR govt contracts · valuation undisclosed · XQ1 deployed' },
   memq:              { capB: null,  capStatus:'private_funded', capNote:'~$10M raised (Series A Mar 2026) · UChicago/Argonne spinout' },
   oqc:               { capB: null,  capStatus:'private_funded', capNote:'$138M+ raised · $100M Series B Apr 2024 · Coaxmon · OQC Toshiko on AWS' },
+  qboson:            { capB: null,  capStatus:'private_funded', capNote:'$145M Series B (April 2026) · CNY 1B · Beijing Financial Holdings + ICBC Capital · valuation undisclosed' },
 };
 
 // Live Yahoo Finance market cap fetch (15-min cache via localStorage)
@@ -4248,7 +4267,7 @@ function AllCompaniesTab() {
 /* ─── APP ──────────────────────────────────────────────── */
 
 function App() {
-  const [tab, setTab] = React.useState('scatter');
+  const [tab, setTab] = React.useState('allcos');
   const [openMenu, setOpenMenu] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
 
@@ -4257,7 +4276,7 @@ function App() {
     ['fund','Fund Overview'],['qtum','QTUM ETF'],
   ];
   const RESEARCH_TABS = [
-    ['scatter','Scatter View'],['grid','Phase Grid'],['allcos','All Companies'],
+    ['scatter','Scatter View'],['grid','Phase Grid'],
     ['comparator','Modality Comparator'],['modality','Modality Explanation'],
     ['lrac','Scale Economics'],['glossary','Glossary'],['changelog','Changelog'],
   ];
@@ -4303,6 +4322,10 @@ function App() {
       </div>
 
       <div className="nav-wrap">
+        <button
+          className={`nav-btn ${tab === 'allcos' ? 'nav-active' : ''}`}
+          onClick={() => setTab('allcos')}
+        >All Companies</button>
         {[['invest','Investment',INVEST_TABS],['research','Computing Research',RESEARCH_TABS]].map(([groupId,groupLabel,groupTabs]) => {
           const activeLabel = groupTabs.find(([tid]) => tid === tab)?.[1];
           return (

@@ -404,10 +404,45 @@ const VALUATION_COLORS = {
   Stretched:  { bg: 'rgba(239,68,68,0.15)',  color: '#f87171' },
 };
 
-const VERSION = 'v1.3';
-const LAST_UPDATED = 'May 2026';
+const VERSION = 'v1.6';
+const LAST_UPDATED = 'Jun 2026';
 
 const CHANGELOG = [
+  {
+    version: 'v1.6',
+    date: 'Jun 2026',
+    changes: [
+      'All Companies tab — NEW company intelligence: CEO + Total Raised columns, plus a click-to-expand row per tracked name showing CEO background, lead investors, last round, and an Asymmetric Advantage / Asymmetric Risk read',
+      'Intel populated for the ~79 tracked companies from a parallel free-sources research sweep (IR pages, Wikipedia, press, The Quantum Insider), CEO + funding corroborated across 2+ sources; fields left blank where free sources had nothing rather than guessing',
+      'Data injected as a name-keyed COMPANY_INTEL lookup merged at render — sidesteps the duplicated-array issue in the universe roster',
+    ]
+  },
+  {
+    version: 'v1.5',
+    date: 'Jun 2026',
+    changes: [
+      'Audit fixes (from the ~67-agent dashboard quality audit) — Value Capture + Market Map hardened',
+      'LIVE market caps actually work now — fetchYahooMarketCap was reading meta.marketCap (which the chart endpoint never returns) so 100% of caps silently fell back to stale statics while showing a green LIVE dot. Now computes cap = live regularMarketPrice × SHARES_OUT_M (real shares pulled from Yahoo v7 quote, Jun 2026); caches negatives to stop refetch storms',
+      'Stale static caps refreshed to live values (all were ~2x low): IonQ $12B→$26.7B, D-Wave $6B→$11.1B, Rigetti $3B→$8.9B, Infleqtion $2.5B→$4.3B, Xanadu $3.6B→$5.1B (now public), Arqit $0.19B→$0.28B, IBM $150B→$309B, Microsoft $3.0T→$3.28T, Quantinuum $20B→$14.3B',
+      'Capture-rate default 20%→12% (Mid); presets relabeled (20% = "BCG TAM ceiling", 6% = "bottom-up") — shipping the bull case as base was the opposite of a skeptical tool',
+      'poolPoint desync bug fixed — implied-share denominator is now derived reactively from capture×econ (auto = band midpoint) with an optional manual override + Auto button, so dragging the capture slider to the bear case no longer silently divides by the 20%-world pool',
+      'Conglomerates (IBM/Microsoft) no longer pollute the implied-share table with full parent caps — they now use an editable quantum-segment estimate (SEG·EST), so the >100% over-pricing flag fires where it is meaningful',
+      'fmt() zero/negative guard; assumptions now persist under a v2 localStorage key',
+    ]
+  },
+  {
+    version: 'v1.4',
+    date: 'Jun 2026',
+    changes: [
+      'NEW Value Capture tab (Investment menu) — top-down BCG-pool / market-share / implied-share layer on top of the company-level roster, from the 19-agent BCG-legitimacy workflow (Jun 2 2026)',
+      'Editable assumptions (persist to localStorage): capture-rate scenario (Bull 20% / Mid 12% / Bear 6%), economic-value band, pool size, terminal P/S, discount rate, target year — every number is a tunable assumption, none hardcoded',
+      'Pool-reality header — $90-170B provider revenue (the only equity-relevant number) vs $450-850B economic value (~80% to END USERS) vs ~$0.2-0.6B real revenue today (~80% govt-funded)',
+      'Provider-revenue share by layer (deduced) — all 48 companies tagged to 7 stack layers + Adjacent, with AGNOSTIC / cash-timing / hyperscaler-absorption / revenue-audit flags; durable margin at two poles (FT-QPU winner + cloud distribution)',
+      'Hardware modality share (Today / ~2030 / 2035-40 FT era) — trapped-ion-leads-now → neutral-atom + IBM/Google-lead-later rotation',
+      'Implied 2040 share the market cap is pricing in — reverse-math per name (cap → implied 2040 rev → % of pool); >100% flags runaway-revenue pricing (the IonQ lens)',
+      'Revenue-anchor corrections — Quantinuum ~$30.9M S-1 (not ~$115M); Multiverse €100M ARR flagged as company-claimed vs ~$5.5M third-party + AI pivot; Infleqtion ~75% of $29M is sensing not gate-model QC',
+    ]
+  },
   {
     version: 'v1.3',
     date: 'May 2026',
@@ -495,10 +530,10 @@ const COMPANIES = [
     costCurve: 'Deflationary',
     expectations: 'The ~2:1 ratio is a potential game-changer for the entire QEC narrative. If iceberg codes scale, Quantinuum\'s qubit count disadvantage vs. SC becomes irrelevant. Gate speed (~1kHz vs SC ~100MHz) remains the Achilles heel — no breakthrough closing this gap.',
     contextTier: false,
-    moatCurrent: 'Strong', moatCurrentNote: 'Best physics execution in the industry. ~2:1 logical ratio. Helios = "most accurate QC in the world." $115M revenue (Sept 2025). 561 employees.',
+    moatCurrent: 'Strong', moatCurrentNote: 'Best physics execution in the industry. ~2:1 logical ratio. Helios = "most accurate QC in the world." S-1: ~$30.9M FY2025 revenue (NOT the ~$115M earlier third-party estimate), $192.6M net loss. 561 employees.',
     moatPotential: 'Exceptional', moatPotentialNote: 'Iceberg codes + Azure integration = premium enterprise quantum provider. If ratio scales: lowest total system cost per logical qubit.',
-    commerceRating: 'Clear', commerceNote: 'QCaaS + enterprise pilots. $115M revenue. Confidential S-1 filed Jan 14, 2026. Expected ~$20B+ valuation, ~$1B raise.',
-    valuationRating: null, valuationNote: 'Expected $20B+ at IPO (up from $10B Sept 2025). Honeywell ~54% stake, exit in 12-36 months post-listing. Premium justified by ~2:1 ratio breakthrough.',
+    commerceRating: 'Clear', commerceNote: 'QCaaS + enterprise pilots. S-1 (public, May 2026): ~$30.9M FY2025 rev; Q1-2026 rev FELL 73% to $5.2M (from $19.1M). IPO upsized to ~$14.3B.',
+    valuationRating: null, valuationNote: 'IPO ~$14.3B (26.5M sh @ $53-55) — ~462x trailing revenue. Honeywell + Cambridge Quantum holders retain ~82%. The whole-industry math: BCG caps the ENTIRE provider market at $90-170B by 2040.',
     quantumType: 'platform',
   },
   {
@@ -715,7 +750,7 @@ const COMPANIES = [
     contextTier: false,
     moatCurrent: 'Moderate', moatCurrentNote: '$29M revenue (only NA company with meaningful revenue). NVIDIA, DoD, NASA customers. 12 logical qubits. Sensing durability advantage.',
     moatPotential: 'Strong', moatPotentialNote: 'Sensing + compute sharing physics = fastest path to commercial revenue. 1,000 logical by 2030 roadmap. If compute catches up: dual-platform moat.',
-    commerceRating: 'Clear', commerceNote: '$29M LTM revenue. Listed INFQ (NYSE, Feb 2026). $540M+ proceeds. Sensing is real TODAY, compute is optionality.',
+    commerceRating: 'Clear', commerceNote: '$29M LTM revenue — but ~75% is SENSING; only ~$7M is gate-model QC (don\'t count the whole $29M into the compute pool). Listed INFQ (NYSE, Feb 2026). $540M+ proceeds.',
     valuationRating: 'Fair', valuationNote: '$2.52B mkt cap on $29M revenue (~87x P/S). Revenue is real and diversified (sensing). Most defensible near-term revenue story in quantum.',
     quantumType: 'sensing',
   },
@@ -994,9 +1029,9 @@ const COMPANIES = [
     scalingPath: 'outsourced', scalingNote: 'ARR €100M (Jan 2026). Spain-based. Series B June 2025. Current valuation ~$500M+. Targeting €1.5B for new €500M round (Feb 2026). CompactifAI = AI, not quantum — positioning risk.',
     costCurve: 'Deflationary', contextTier: false,
     expectations: 'Highest revenue of any quantum software company (€100M ARR). CompactifAI AI pivot: near-term strength, long-term category risk. €500M new raise confirms scale ambition.',
-    moatCurrent: 'Strong', moatCurrentNote: '€100M ARR (Jan 2026). CompactifAI deployed. Finance + industrial customers. Series B funded.',
+    moatCurrent: 'Strong', moatCurrentNote: '€100M ARR is COMPANY-CLAIMED (Jan 2026); third-party data (CB Insights) shows ~$5.5M — unreconciled, flag for diligence. CompactifAI deployed. Finance + industrial customers.',
     moatPotential: 'Moderate', moatPotentialNote: 'AI pivot dilutes quantum thesis. If CompactifAI scales: AI company with quantum heritage. Core quantum finance remains valuable.',
-    commerceRating: 'Clear', commerceNote: '€100M ARR (Jan 2026). Highest revenue in quantum software. Targeting €1.5B for new €500M raise.',
+    commerceRating: 'Clear', commerceNote: '€100M ARR company-claimed vs ~$5.5M third-party (unreconciled). CompactifAI is increasingly an AI/LLM-compression play, not pure QC. Targeting €1.5B for new €500M raise.',
     valuationRating: null, valuationNote: '~$500M+ current (post-Series B June 2025). Targeting €1.5B for new €500M round. ARR €100M.',
     quantumType: 'software',
   },
@@ -1789,8 +1824,8 @@ const ALL_QUANTUM_COMPANIES = [
 /* ─── MARKET CAPS ──────────────────────────────────────── */
 
 const MARKET_CAPS = {
-  ionq:              { capB: 12.0,  capStatus:'public',         capNote:'$12B mkt cap (Mar 2026) · P/S ~93x · $130M FY2025 rev' },
-  quantinuum:        { capB: 20.0,  capStatus:'ipo_expected',   capNote:'$20B+ IPO target · S-1 filed Jan 14 2026 · $10B was Sept 2025 private round' },
+  ionq:              { capB: 26.7,  capStatus:'public',         capNote:'~$26.7B mkt cap (live Jun 2026, ~$71/sh) · $130M FY2025 rev' },
+  quantinuum:        { capB: 14.3,  capStatus:'ipo_expected',   capNote:'~$14.3B IPO (QNT, 26.5M sh @ $53-55, prices Jun 3 2026) · ~462x trailing rev · was $20B whisper' },
   quera:             { capB: 1.0,   capStatus:'private_funded', capNote:'$1B (Feb 2025 Series B) · $230M+ raised · Google QAI + SoftBank' },
   alice_bob:         { capB: null,  capStatus:'private_funded', capNote:'EUR130M raised (Series B Jan 2025) · valuation undisclosed' },
   aqt:               { capB: null,  capStatus:'private_funded', capNote:'~$12M raised (govt grants: Austria Wirtschaftsservice, FFG) · valuation undisclosed · €22M+ in gov hardware contracts (EuroHPC Poland + LRZ Munich)' },
@@ -1804,15 +1839,15 @@ const MARKET_CAPS = {
   yaqumo:            { capB: null,  capStatus:'private_funded', capNote:'¥700M seed (Aug 2025, ANRI + Beyond Next + KU IC) + Quantonation extension (Apr 2026, first Japan investment) · Kyoto Univ + IMS spinout' },
   cavilinq:          { capB: null,  capStatus:'private_funded', capNote:'$8.8M seed (Apr 2026, QVT-led) · UChicago Polsky spinout · Bernien + Lukin scientific founders · seed stage' },
   welinq:            { capB: null,  capStatus:'private_funded', capNote:'€2.5M EIC Transition + €4M InterQo (joint with Pasqal, France 2030 i-Demo) · Pasqal partner for networked neutral-atom · valuation undisclosed' },
-  rigetti:           { capB: 3.0,   capStatus:'public',         capNote:'~$2-4B mkt cap (Mar 2026) · P/S extreme on $7.1M declining rev' },
+  rigetti:           { capB: 8.9,   capStatus:'public',         capNote:'~$8.9B mkt cap (live Jun 2026, ~$27/sh) · P/S extreme on small rev base' },
   pasqal:            { capB: 2.0,   capStatus:'spac',           capNote:'$2B SPAC (Bleichroeder II, Nasdaq H2 2026)' },
-  infleqtion:        { capB: 2.52,  capStatus:'public',         capNote:'$2.52B mkt cap · NYSE Feb 2026 · $29M rev (75% sensing)' },
+  infleqtion:        { capB: 4.34,  capStatus:'public',         capNote:'~$4.3B mkt cap (live Jun 2026, ~$20/sh) · $29M rev (~75% sensing → only ~$7M is gate-model QC)' },
   psiquantum:        { capB: 7.0,   capStatus:'private_funded', capNote:'$7B Series E (Sept 2025) · DARPA Stage C · zero computation demonstrated' },
-  microsoft:         { capB: 3000,  capStatus:'conglomerate',   capNote:'~$3T parent · quantum = DARPA Stage C optionality on Azure' },
-  dwave:             { capB: 6.0,   capStatus:'public',         capNote:'~$5.8-6.5B mkt cap (Mar 2026) · P/S ~236x · QCI gate pivot' },
-  ibm:               { capB: 150,   capStatus:'conglomerate',   capNote:'~$150B parent · qLDPC breakthrough = long-term thesis' },
+  microsoft:         { capB: 3278,  capStatus:'conglomerate',   capNote:'~$3.28T parent (live Jun 2026) · quantum = optionality on Azure (use segment est., not parent cap)' },
+  dwave:             { capB: 11.1,  capStatus:'public',         capNote:'~$11.1B mkt cap (live Jun 2026, ~$30/sh) · P/S extreme · QCI gate pivot' },
+  ibm:               { capB: 309,   capStatus:'conglomerate',   capNote:'~$309B parent (live Jun 2026) · ~$1B cumulative quantum bookings · qLDPC (use segment est.)' },
   iqm:               { capB: 1.8,   capStatus:'spac',           capNote:'$1.8B SPAC (Real Asset Acq., NYSE + Helsinki Q2 2026)' },
-  xanadu:            { capB: 3.6,   capStatus:'spac',           capNote:'$3.6B SPAC (Crane Harbor, XNDU Nasdaq + TSX)' },
+  xanadu:            { capB: 5.05,  capStatus:'public',         capNote:'~$5.1B mkt cap (live Jun 2026, ~$17/sh, XNDU) · thin float ~43M sh' },
   quantum_machines:  { capB: 0.7,   capStatus:'private_funded', capNote:'$700M (Series C Feb 2025) · $280M raised · Intel Capital, PSG Equity' },
   kipu_quantum:      { capB: null,  capStatus:'private_funded', capNote:'~€25M raised · valuation undisclosed' },
   classiq:           { capB: null,  capStatus:'private_funded', capNote:'$180M+ raised (Series C Nov 2025) · valuation undisclosed' },
@@ -1823,7 +1858,7 @@ const MARKET_CAPS = {
   horizon_quantum:   { capB: 0.5,   capStatus:'private_funded', capNote:'$500M valuation · raising $100M+ (Apr 2026) · Singapore' },
   saxonq:            { capB: null,  capStatus:'private_funded', capNote:'Seed stage · Q.24 backed · University of Leipzig spinout' },
   nu_quantum:        { capB: null,  capStatus:'private_funded', capNote:'Series B (June 2025) · Amadeus Capital · UK networking' },
-  arqit:             { capB: 0.19,  capStatus:'public',         capNote:'$192M mkt cap (Apr 2026) · ARQQ · volatile post-SPAC' },
+  arqit:             { capB: 0.28,  capStatus:'public',         capNote:'~$280M mkt cap (live Jun 2026, ARQQ) · volatile post-SPAC' },
   btq:               { capB: 0.36,  capStatus:'public',         capNote:'$357M mkt cap · BTQ.CN (CSE) · PQC microcap' },
   xeedq:             { capB: null,  capStatus:'private_funded', capNote:'~€87M DLR govt contracts · valuation undisclosed · XQ1 deployed' },
   memq:              { capB: null,  capStatus:'private_funded', capNote:'~$10M raised (Series A Mar 2026) · UChicago/Argonne spinout' },
@@ -1893,6 +1928,585 @@ function applyImportOverlay(baseArr) {
   return [...basePatched, ...additionsClean];
 }
 
+const COMPANY_INTEL = {
+ "Alice & Bob": {
+  "ceo": "Théau Peronnin",
+  "ceoNote": "Co-founder and CEO; quantum physicist (PhD ENS Lyon/Paris), spun the company out of his cat-qubit doctoral research.",
+  "totalRaised": "~$130M",
+  "leadInvestors": "Bpifrance, Future French Champions (Qatar-France JV), Elaia, Supernova Invest, AVP",
+  "lastRound": "Series B · €100M ($104M) · 2024",
+  "asymAdvantage": "Cat qubits are intrinsically biased against bit-flip errors, so error correction only fights phase-flips — Alice & Bob argues this cuts the physical-qubit overhead for a logical qubit by orders of magnitude (roadmap targets a useful FT machine with ~hundreds of cat qubits vs millions of transmons).",
+  "asymRisk": "The bias-preserving advantage may not survive at scale if residual phase-flip rates or fab/control imperfections push overheads back toward conventional superconducting qubits."
+ },
+ "Alpine Quantum Technologies": {
+  "ceo": "Thomas Monz",
+  "ceoNote": "Co-founder and CEO; trapped-ion physicist and Innsbruck professor (Rainer Blatt lineage).",
+  "totalRaised": "~€80M (~$85M)",
+  "leadInvestors": "Bpifrance Large Venture, iLavska VC, Tencent (early), Eurazeo, Innsbruck founders",
+  "lastRound": "Series B · €43M · 2025",
+  "asymAdvantage": "Builds full trapped-ion computers in 19-inch rack form factor at world-leading gate fidelities from the Innsbruck lineage — if rack-scale ion systems hit high-fidelity logical qubits, AQT delivers data-center-deployable quantum hardware without the cryogenic burden of superconducting rivals.",
+  "asymRisk": "Trapped-ion gate speeds and qubit-count scaling lag superconducting/neutral-atom, so AQT could win on fidelity but lose the race to commercially useful qubit counts."
+ },
+ "Atom Computing": {
+  "ceo": "Rob Hays",
+  "ceoNote": "Not a founder; operator — ex-Intel data-center strategy chief, ex-Lenovo CSO; CEO since 2022.",
+  "totalRaised": "~$95M",
+  "leadInvestors": "Microsoft (strategic), Third Point Ventures, Prime Movers Lab, Innovation Endeavors, Venrock",
+  "lastRound": "Series B · $60M · 2022",
+  "asymAdvantage": "Neutral-atom arrays scaled to 1,180+ physical qubits (2023) and, with Microsoft (2024), demonstrated 24 entangled logical qubits — largest at the time; nuclear-spin atomic qubits offer long coherence + optical-tweezer scalability, and the Azure partnership is a built-in commercial channel.",
+  "asymRisk": "Neutral-atom systems face slow gate speeds and atom-loss/reloading challenges, and Atom must convert demos into a reliable error-corrected machine before better-capitalized rivals (or partner Microsoft's other bets) take the market."
+ },
+ "CavilinQ": {
+  "ceo": null,
+  "ceoNote": null,
+  "totalRaised": null,
+  "leadInvestors": null,
+  "lastRound": null,
+  "asymAdvantage": null,
+  "asymRisk": null
+ },
+ "D-Wave Systems Inc.": {
+  "ceo": "Alan Baratz",
+  "ceoNote": "Not a founder; PhD computer scientist & operator — ex-president of JavaSoft (Sun), D-Wave CEO since 2020.",
+  "totalRaised": "Public (NYSE:QBTS); ~$340M SPAC (2024) + $150M & $400M ATM offerings (2025)",
+  "leadInvestors": "PSP Investments, Goldman Sachs AM, NEC, In-Q-Tel, Aegis Group Partners",
+  "lastRound": "ATM equity · $400M · 2025",
+  "asymAdvantage": "Quantum annealing is already running production optimization workloads today (VW scheduling, Lockheed, telecom, pharma supply chains) while gate-model rivals stay pre-commercial — if annealing's near-term ROI edge holds, D-Wave books real enterprise revenue years before competitors monetize.",
+  "asymRisk": "Annealing's addressable set (combinatorial optimization) is narrower than universal gate-model QC, so if gate-model error correction matures faster than expected, D-Wave's lead could be structurally bypassed."
+ },
+ "EeroQ": {
+  "ceo": "Nick Farina",
+  "ceoNote": "Co-founder and CEO; operator (not the physicist) — paired with physicist co-founders Steve Lyon (CSO) and Johannes Pollanen (CTO).",
+  "totalRaised": null,
+  "leadInvestors": "SEALSQ (SEALQUANTUM Fund), B Capital (Ascent), V Capital, Calibrate Ventures, Alumni Ventures",
+  "lastRound": "Strategic (SEALSQ-led) · undisclosed · 2026",
+  "asymAdvantage": "Electron-on-helium qubits need far less control wiring than superconducting — a Jan 2026 demo moved electrons on-chip without loss using under 50 control lines while targeting ~1M qubits, a wiring-density edge that could sidestep the I/O bottleneck if fidelity holds at scale.",
+  "asymRisk": "Unproven beyond small-scale lab demos — may fail to translate into the multi-qubit gate fidelity and error correction superconducting/trapped-ion rivals already reached."
+ },
+ "IBM Quantum": {
+  "ceo": "Jay Gambetta",
+  "ceoNote": "VP & Director of IBM Quantum (division lead, not founder); IBM Fellow and physicist driving IBM's roadmap for a decade.",
+  "totalRaised": "Public (NYSE:IBM)",
+  "leadInvestors": null,
+  "lastRound": "—",
+  "asymAdvantage": "The 2025 'Starling' roadmap commits to a fault-tolerant machine by 2029 using qLDPC codes that cut error-correction overhead ~10x vs surface codes, paired with Qiskit as the de facto software stack — if both the qLDPC bet and developer lock-in hold, IBM owns hardware frontier and platform layer.",
+  "asymRisk": "qLDPC needs high-fidelity long-range connectivity IBM hasn't shown at scale, and a Starling slip would erase its FT lead over neutral-atom and trapped-ion rivals."
+ },
+ "Infleqtion": {
+  "ceo": "Matthew Kinsella",
+  "ceoNote": "Not a founder; operator — ex-Maverick Ventures MD (deep-tech investor), CEO since 2024.",
+  "totalRaised": "~$200M+",
+  "leadInvestors": "In-Q-Tel, Maverick Capital, DARPA/DoD, L3Harris, SineWave Ventures",
+  "lastRound": "Series C · ~$100M · 2025",
+  "asymAdvantage": "Monetizes its cold-atom platform across quantum computing AND sensing/timing/RF — already shipping atomic clocks and quantum sensors with defense revenue today, funding the long QC bet from real near-term cash flow rather than pure speculative capital.",
+  "asymRisk": "Spreading across computing, sensing and timing risks under-resourcing the neutral-atom QC effort, letting focused rivals (Atom, QuEra, Pasqal) win the computing race."
+ },
+ "IonQ": {
+  "ceo": "Niccolo de Masi",
+  "ceoNote": "Not a founder; operator (3x public-co CEO, dMY SPAC sponsor), Cambridge physics M.Sci, took over Feb 2025.",
+  "totalRaised": "Public (NYSE:IONQ) — ~$804.6M cumulative incl. pre-IPO + PIPE + post-IPO equity",
+  "leadInvestors": "Fidelity, Silver Lake, Hyundai, Kia, Breakthrough Energy Ventures",
+  "lastRound": "Post-IPO Equity · 2025",
+  "asymAdvantage": "Barium-ion qubits plus photonic interconnects (Lightsynq) let it network many small high-fidelity trapped-ion modules into a fault-tolerant machine — claims ~13:1 physical-to-logical vs 500:1–1000:1 for superconducting. If modular networking scales, it reaches error-corrected qubit counts with far less hardware overhead.",
+  "asymRisk": "Trapped-ion gate speeds are orders of magnitude slower than superconducting; if photonic inter-module entanglement rates can't keep pace at scale, the modular bet stalls before fault tolerance."
+ },
+ "IQM Quantum Computers": {
+  "ceo": "Jan Goetz",
+  "ceoNote": "Co-founder and sole CEO (2026 reorg); physicist (PhD Aalto) — scientist-operator, not an outside hire.",
+  "totalRaised": "$600M (pre-SPAC); pursuing SPAC listing (target NASDAQ:IQMX)",
+  "leadInvestors": "Ten Eleven Ventures, Tesi, Schwarz Group, Winbond, BlackRock",
+  "lastRound": "Series B · $320M (€275M) · 2025",
+  "asymAdvantage": "Full-stack on-prem co-design — owning chip topology (Star/Crystal), cryo control electronics, and QEC code design together — lets it tune superconducting processors for error-correcting codes faster than cloud-only rivals, capturing the HPC/national-lab niche hyperscaler-hosted rivals can't structurally serve.",
+  "asymRisk": "Superconducting coherence and crosstalk limits persist at scale, and IQM's smaller balance sheet may not fund the chip-iteration cycles needed to hit its 2030 FT roadmap against better-capitalized rivals."
+ },
+ "memQ": {
+  "ceo": "Charles Foley",
+  "ceoNote": "Not a founder; veteran operator (IBM/Memorex/Amdahl/NetApp) as Chairman & CEO; cofounder Manish Singh now CPO.",
+  "totalRaised": "~$13M ($2M seed + $1M DOE/ASCR + $10M Series A)",
+  "leadInvestors": "Quantonation, Exposition Ventures, Hyde Park Venture Partners, DOE/ASCR, Argonne",
+  "lastRound": "Series A · $10M · 2026",
+  "asymAdvantage": "Claims wafer-scale, CMOS-foundry-compatible integration of erbium-doped quantum memory using standard semiconductor manufacturing — if it works, it makes quantum repeaters/memory mass-manufacturable at commercial foundries, solving the interconnect bottleneck for distributed quantum.",
+  "asymRisk": "Erbium-based optical quantum memory at telecom wavelengths has never been demonstrated at the coherence times and yields needed for foundry-scale production."
+ },
+ "Microsoft Quantum": {
+  "ceo": "Chetan Nayak",
+  "ceoNote": "Title is Technical Fellow & Distinguished Engineer (not CEO); physicist leading Azure Quantum hardware since 2014.",
+  "totalRaised": "Public (NASDAQ:MSFT)",
+  "leadInvestors": null,
+  "lastRound": "—",
+  "asymAdvantage": "The only major player betting on topological qubits via engineered Majorana zero-mode 'topoconductors' instead of superconducting/trapped-ion. If the physics holds, topological qubits are intrinsically more error-resistant at the hardware level, potentially leapfrogging rivals' error-correction overhead.",
+  "asymRisk": "Independent physicists have publicly disputed Microsoft's Majorana 1 measurement claims as insufficient proof of topological protection — the whole approach could be invalidated if the physics doesn't reproduce."
+ },
+ "Oxford Quantum Circuits": {
+  "ceo": "Gerald Mullally",
+  "ceoNote": "Operator, not founder; founder/CSO is Dr. Peter Leek — Mullally is the commercial CEO.",
+  "totalRaised": "~$490M (£38M A + $100M B + £260M C 2026)",
+  "leadInvestors": "Bullhound Capital, British Business Bank, Chevron Technology Ventures, SBI, Oxford Science Enterprises",
+  "lastRound": "Series C · £260M ($350M) · 2026",
+  "asymAdvantage": "Patented 'dual-rail dimon' qubit encodes two physical qubits as one logical qubit with built-in erasure-error detection in hardware, claiming ~10x suppression of the dominant superconducting error mode — could need far fewer physical qubits per logical qubit than rivals' surface codes.",
+  "asymRisk": "Dual-rail erasure conversion has only been shown at small qubit counts and may not preserve its advantage at the thousands of qubits needed for fault tolerance."
+ },
+ "PASQAL": {
+  "ceo": "Wasiq Bokhari",
+  "ceoNote": "Operator/Executive Chairman, not founder; co-founders include Nobel laureate Alain Aspect on the science side.",
+  "totalRaised": "~$538M (sources range $300M+ to ~$539M)",
+  "leadInvestors": "Temasek, Aramco (Wa'ed), Bpifrance, EIC Fund, Eni",
+  "lastRound": "Pre-SPAC PIPE · ~€340M · 2026 (combination w/ Bleichroeder II, $2B valuation)",
+  "asymAdvantage": "Neutral-atom platform natively runs analog mode, directly encoding optimization/simulation as Hamiltonians on 1,000+ reconfigurable atoms today — near-term commercial path that doesn't wait for full fault tolerance. PIC atom control (Aeponyx) is the non-consensus scaling lever toward 10,000 qubits without the wiring bottleneck.",
+  "asymRisk": "Analog/near-term use cases may not translate into a defensible enterprise revenue base before better-funded gate-based rivals close the practical-advantage gap."
+ },
+ "PsiQuantum": {
+  "ceo": "Victor Peng",
+  "ceoNote": "Interim CEO, not founder — ex-Xilinx CEO (sold to AMD $49B), ex-AMD President; founder Jeremy O'Brien now Exec Chairman.",
+  "totalRaised": "~$2.32B (8 rounds); $7B valuation Sept 2025",
+  "leadInvestors": "BlackRock, Temasek, Qatar Investment Authority, Microsoft, NVentures (NVIDIA)",
+  "lastRound": "Series E · $1B · 2025",
+  "asymAdvantage": "Bets photonic qubits' room-temperature operation and native fiber-optic networking let it scale to millions of qubits via modular, mass-manufacturable silicon photonic chips, sidestepping the cryogenic wiring bottleneck that caps superconducting approaches.",
+  "asymRisk": "Fusion-Based Quantum Computation needs extremely high-rate, high-fidelity photon generation and low-loss interconnects at massive scale — a yield problem with no full-system demonstration yet at the claimed scale."
+ },
+ "QBoson": {
+  "ceo": "Wen Kai",
+  "ceoNote": "Founder-CEO; Stanford EE PhD, previously at Google.",
+  "totalRaised": "~$160M (six rounds, Chinese-press aggregation; single-source)",
+  "leadInvestors": "Beijing Financial Holdings, ICBC Capital, CMB International, Qifu Capital, China Mobile fund",
+  "lastRound": "Series B · CNY 1B (~$145M) · 2026",
+  "asymAdvantage": "Coherent/photonic quantum computing at room temperature with an AI-driven control platform — if it scales past the 1,000-qubit class already delivered, it sidesteps the cryogenic cost/complexity constraining superconducting rivals, backed by direct Chinese state capital.",
+  "asymRisk": "Coherent/photonic approaches historically struggle with deterministic two-qubit gate fidelity at scale, and heavy state-funding reliance ties survival to Chinese industrial policy not independent demand."
+ },
+ "Quantum Brilliance": {
+  "ceo": "Mark Luo",
+  "ceoNote": "Co-founder, ex-COO; operator (finance/banking — UNSW, Credit Suisse, UBS, CSIRO), not scientist.",
+  "totalRaised": "$77.7M",
+  "leadInvestors": "In-Q-Tel, National Reconstruction Fund Corp, Breakthrough Victoria, Main Sequence, Bosch",
+  "lastRound": "Series A · $20M · 2025",
+  "asymAdvantage": "NV-diamond qubits hold millisecond coherence at room temperature without dilution refrigeration — if bottom-up atomic-scale fabrication scales NV-center placement precisely, it enables chip-scale, edge/mobile quantum accelerators that superconducting and trapped-ion rigs structurally cannot reach.",
+  "asymRisk": "NV-center creation has relied on probabilistic ion implantation that doesn't scale qubit count or connectivity — the bottom-up fab fix is still unproven outside early papers."
+ },
+ "Quantum Motion": {
+  "ceo": "James Palles-Dimmock",
+  "ceoNote": "Not a founder (founders: Profs John Morton/Simon Benjamin); PhD quantum physics, operator-CEO.",
+  "totalRaised": "$224M",
+  "leadInvestors": "DCVC, Kembara, Bosch Ventures, Porsche SE, British Business Bank",
+  "lastRound": "Series C · $160M · 2026",
+  "asymAdvantage": "Builds qubits from near-standard silicon CMOS transistors fabbed at GlobalFoundries, inheriting decades of semiconductor yield/scaling infrastructure — claims 100x cost/space and 1,000x energy reduction vs superconducting, letting systems slot into standard data-center racks.",
+  "asymRisk": "Silicon spin qubit fidelity and inter-qubit coupling at million-qubit densities remains unproven at commercial scale — the NQCC 2025 deployment is an early demo, not proof the CMOS path beats rivals' error rates at scale."
+ },
+ "QuantWare": {
+  "ceo": "Matt Rijlaarsdam",
+  "ceoNote": "Co-founder/CEO; operator, spun out of QuTech/TU Delft with co-founder Alessandro Bruno.",
+  "totalRaised": "$211M (Seed + $27M A + $178M B)",
+  "leadInvestors": "Intel Capital, In-Q-Tel, ETF Partners, FORWARD.one, Invest-NL Deep Tech Fund",
+  "lastRound": "Series B · $178M · 2026",
+  "asymAdvantage": "Merchant-foundry model: sells QPUs/foundry + chiplet packaging to other quantum companies and labs (50+ customers, 20 countries) instead of building one closed stack — monetizing the whole industry's qubit-count race rather than betting on a single architecture.",
+  "asymRisk": "If hyperscalers/national labs verticalize their own fabs (as IBM, Google, IonQ already do), QuantWare's merchant base could shrink to second-tier players only."
+ },
+ "QuEra Computing": {
+  "ceo": "Andy Ory",
+  "ceoNote": "Acting/Interim CEO since mid-2024 (not a founder); serial operator — founded Acme Packet ($2B Oracle sale), 128 Technology (sold Juniper).",
+  "totalRaised": "$247M",
+  "leadInvestors": "Google (Quantum AI), SoftBank Vision Fund 2, NVIDIA (NVentures), Valor Equity Partners, QVT",
+  "lastRound": "Series B (expanded) · $230M · 2025",
+  "asymAdvantage": "Neutral-atom architecture allows reconfigurable 2D/3D atom arrays with near all-to-all connectivity and a path to fault tolerance via erasure conversion / mid-circuit leakage detection — needing far fewer physical qubits per logical qubit than superconducting surface codes if the approach scales.",
+  "asymRisk": "The CEO seat has been 'Acting/Interim' for nearly two years with no permanent successor named — leadership uncertainty at a company promising large-scale fault-tolerant hardware."
+ },
+ "Quobly": {
+  "ceo": "Maud Vinet",
+  "ceoNote": "Founder; scientist (PhD physics, ex-CEA-Leti quantum program director, 300+ papers, 70+ patents).",
+  "totalRaised": "~EUR155M (~$180M) cumulative",
+  "leadInvestors": "STMicroelectronics, Bpifrance, SEALSQ, European Innovation Council, Air Liquide (ALIAD)",
+  "lastRound": "Series A · EUR115M (~$133M) · Jun 2026",
+  "asymAdvantage": "Silicon spin qubits on FD-SOI let Quobly ride STMicroelectronics' and CEA-Leti's existing industrial CMOS fab lines instead of bespoke exotic-materials infrastructure — if spin coherence/fidelity scales, qubit density and cost fall toward a semiconductor cost curve, not a lab-scale one.",
+  "asymRisk": "Silicon spin qubits have lagged superconducting and trapped-ion on two-qubit gate fidelity at scale, so the fab-cost advantage is moot if Quobly can't close that fidelity gap."
+ },
+ "Rigetti Computing": {
+  "ceo": "Subodh Kulkarni",
+  "ceoNote": "Non-founder operator; 30+ yrs semiconductor, prior public-co CEO (CyberOptics), MIT PhD chem eng.",
+  "totalRaised": "~$198M pre-SPAC; Public (NASDAQ:RGTI) since 2022 (~$458M in deal)",
+  "leadInvestors": "Quanta Computer (strategic), Andreessen Horowitz, Vy Capital, In-Q-Tel, Bessemer",
+  "lastRound": "Strategic · $35M (Quanta Computer) · 2025",
+  "asymAdvantage": "Bets its multi-chip/chiplet architecture (108-qubit system at 99.1-99.5% median 2Q fidelity) scales qubit count via interconnected smaller dies rather than larger monolithic chips — if modular tiling keeps fidelity flat while qubit count compounds toward 1,000+ by 2027, it sidesteps the yield problem sinking monolithic superconducting scaling.",
+  "asymRisk": "As a public pure-play burning cash well ahead of revenue, persistent dilution from equity raises could destroy shareholder value faster than the hardware roadmap creates it."
+ },
+ "SaxonQ": {
+  "ceo": "Frank Schlichting",
+  "ceoNote": "Co-CEO (operator, not founder); ex-CEO Kiwigrid, prior roles Atmel/VW/Nanotron; PhD physics TU Berlin.",
+  "totalRaised": "7-figure (EUR) seed; larger round in progress (2026)",
+  "leadInvestors": "TGFS (Technologiegruenderfonds Sachsen), Anders Indset",
+  "lastRound": "Seed/Angel · 7-figure EUR · 2025",
+  "asymAdvantage": "Room-temperature, no-cryogenics NV-diamond qubits let SaxonQ ship a mobile, field-deployable quantum unit (QC2026 Dual Core) instead of a lab-bound cryostat — if coherence/fidelity scales, it opens edge/defense/industrial use cases cryo-bound rivals can't reach.",
+  "asymRisk": "NV-diamond qubit counts and gate fidelities lag superconducting/neutral-atom/trapped-ion leaders by orders of magnitude, and chip-scale miniaturization is unproven."
+ },
+ "SEEQC": {
+  "ceo": "John Levy",
+  "ceoNote": "Co-founder and CEO; operator/exec background, thought-leader on scalable quantum control (Columbia EE).",
+  "totalRaised": "$64.3M+ cumulative",
+  "leadInvestors": "M Ventures (Merck KGaA), EQT Ventures, Booz Allen Ventures, NordicNinja VC, BlueYard",
+  "lastRound": "Series A extension · $30M · Jan 2025",
+  "asymAdvantage": "Bets digital Single Flux Quantum (SFQ) control chips, bonded onto the cryostat next to the qubits, replace the rack of analog microwave electronics and per-qubit cabling that bottlenecks superconducting rivals — a 2026 Nature Electronics result showed on-chip digital control at millikelvin with >99.5% gate fidelity, cutting error-correction bandwidth ~1000x.",
+  "asymRisk": "SFQ digital control adds its own heat-dissipation and fab-integration complexity at the chip level; if that doesn't outpace the wiring-density problem it solves, the edge over IBM/Rigetti's analog control disappears."
+ },
+ "Sygaldry Technologies": {
+  "ceo": "Chad Rigetti",
+  "ceoNote": "Founder/operator; previously founded Rigetti Computing and took it public on Nasdaq (RGTI) in 2022.",
+  "totalRaised": "$139M",
+  "leadInvestors": "Breakthrough Energy Ventures, Initialized Capital, Y Combinator, In-Q-Tel, RRE Ventures",
+  "lastRound": "Series A · $105M · 2026",
+  "asymAdvantage": "Bets on a multi-modal qubit architecture packaged as a plug-in accelerator for existing AI data centers, not a standalone general-purpose quantum computer — a narrower, faster commercialization path than most quantum peers pursue.",
+  "asymRisk": "Combining multiple qubit modalities into one fault-tolerant system is unproven engineering, stacking integration and error-correction complexity on scaling problems no single qubit type has solved, with no committed product timeline."
+ },
+ "Xanadu": {
+  "ceo": "Christian Weedbrook",
+  "ceoNote": "Founder-CEO and physicist (PhD quantum information, Univ. of Queensland); founded Xanadu 2014, still CEO 2026.",
+  "totalRaised": "Public (NASDAQ/TSX:XNDU); ~$250M+ pre-IPO VC + ~$500M gross at Mar 2026 SPAC close",
+  "leadInvestors": "In-Q-Tel, BDC Capital, AMD, OMERS Ventures, Bessemer Venture Partners",
+  "lastRound": "SPAC (Crane Harbor) · ~$500M gross · 2026",
+  "asymAdvantage": "Photonic qubits operate at room temperature and network over standard telecom fiber, letting Xanadu pursue fault tolerance via modular interconnection of many small chips (Aurora: 12 qubits, 35 chips, 13km fiber) rather than brute-force scaling of one cryogenic chip.",
+  "asymRisk": "Depends on solving optical-loss in photonic chips before cash runs out — Weedbrook said ~$1B is needed for the first data center (~$700M still to raise at SPAC close); the stock's 50-67% May 2026 plunge shows the market already pricing heavy dilution."
+ },
+ "XeedQ": {
+  "ceo": "Gopalakrishnan Balasubramanian",
+  "ceoNote": "Co-founder; scientist-entrepreneur, 16+ yrs diamond spin-qubit research at Stuttgart/Max-Planck/Helmholtz.",
+  "totalRaised": "~EUR30M+ German government grants/contracts (DLR QCI); no disclosed equity",
+  "leadInvestors": "DLR (German Aerospace Center), BMWK, BMBF",
+  "lastRound": "Government contract · EUR30M (DLR QCI, part of EUR57M w/ SaxonQ) · 2022",
+  "asymAdvantage": "NV-diamond spin qubits run at room temperature with no cryogenics or vacuum, so the XQ1 runs off standard power — the only architecture plausibly small/rugged enough for in-flight or satellite deployment, a use case cryogenic platforms structurally cannot serve.",
+  "asymRisk": "Two-qubit entangling-gate fidelity between NV centers remains the field's core bottleneck (sub-threshold fidelities, nanometer placement precision), so XeedQ may never scale past small demonstrators."
+ },
+ "Yaqumo": {
+  "ceo": "Kazuhiro Nakashoji",
+  "ceoNote": "Founder/CEO; operator not scientist — ex-Dream Incubator (cross-border new-business), Kyoto Univ. innovation program.",
+  "totalRaised": "~JPY700M seed (2025) + extensions (Quantonation $4.4M) + NEDO grant (undisclosed)",
+  "leadInvestors": "Quantonation, Beyond Next Ventures, ANRI, Kyoto Univ. Innovation Capital, NEDO",
+  "lastRound": "Seed Extension (J-KISS) · undisclosed · 2026",
+  "asymAdvantage": "Built on Kyoto University's ytterbium neutral-atom expertise, targeting hardware-software co-design for faster clock rates than rival neutral-atom platforms — faster clocks make quantum error correction tractable sooner, a path to fault tolerance ahead of larger-funded rivals.",
+  "asymRisk": "Severely outgunned on capital and timeline vs QuEra (Google) and Atom Computing (Microsoft), both already past 256-1,000+ atom systems — seed-stage funding unlikely to close the scaling gap before the field consolidates."
+ },
+ "Classiq": {
+  "ceo": "Nir Minerbi",
+  "ceoNote": "Co-founder; Talpiot alum, MSc physics/EE; led tech R&D units before Classiq (operator, not academic).",
+  "totalRaised": "$200M+ cumulative (through Nov 2025 Series C extension)",
+  "leadInvestors": "SoftBank Vision Fund 2, Entree Capital, AMD Ventures, Qualcomm Ventures, IonQ",
+  "lastRound": "Series C extension (strategic) · ~$30M · Nov 2025",
+  "asymAdvantage": "Automated circuit synthesis from high-level functional models that abstracts away gate-level design — potentially the universal 'compiler layer' every quantum hardware backend depends on regardless of which modality wins, not just another quantum software vendor.",
+  "asymRisk": "If hardware vendors build adequate native compilers (or one modality verticalizes its own stack), Classiq's hardware-agnostic abstraction becomes redundant middleware nobody pays for."
+ },
+ "Fermioniq": {
+  "ceo": "Jorgen Sandig",
+  "ceoNote": "Co-founder and CEO, MSc; operator alongside PhD co-founders (Cade/Niesen) and advisor Harry Buhrman (QuSoft).",
+  "totalRaised": null,
+  "leadInvestors": "Quantum Delta NL (QDNL Participations), Ground State Ventures, UvA Ventures, Amsterdam UMC Venture Holding",
+  "lastRound": "Seed VC · undisclosed · Feb 2026",
+  "asymAdvantage": "Classical tensor-network simulation (Ava) accurate enough to emulate and benchmark near-term noisy quantum circuits (50-100+ qubits) cheaply on GPUs via NVIDIA CUDA-Q — hardware-agnostic validation/benchmarking infrastructure useful regardless of which modality wins.",
+  "asymRisk": "As real hardware scales past the regime where classical tensor-network methods stay tractable (high entanglement/depth), Fermioniq's core approach hits a complexity wall and loses relevance for exactly the workloads that matter most."
+ },
+ "Haiqu": {
+  "ceo": "Richard Givhan",
+  "ceoNote": "Co-founder/CEO, operator not scientist — Stanford engineering physics, ex-exec-in-residence Mitsubishi Electric.",
+  "totalRaised": "$15M ($4M pre-seed + $11M seed)",
+  "leadInvestors": "Primary Venture Partners, Toyota Ventures, MaC Venture Capital, Qudit Investments, Collaborative Fund",
+  "lastRound": "Seed · $11M · 2026",
+  "asymAdvantage": "Middleware/agentic OS that compresses circuits, mitigates errors, and schedules hardware-aware execution to extract useful results from noisy near-term hardware years before fault tolerance — hardware-agnostic, monetizes regardless of modality (claims a molecular-dynamics run cut from ~$30,000/9hrs to ~$25/30s).",
+  "asymRisk": "If hardware error rates improve fast enough, or vendors (IBM, IonQ, Quantinuum) absorb equivalent optimization natively, Haiqu's independent middleware gets squeezed out or commoditized."
+ },
+ "Horizon Quantum Computing": {
+  "ceo": "Joe Fitzsimons",
+  "ceoNote": "Founder and scientist-CEO; ex-tenured associate professor at SUTD, led CQT's Quantum Info & Theory group.",
+  "totalRaised": "Public (NASDAQ:HQ) — ~$21.3M pre-IPO + $110M PIPE at SPAC listing",
+  "leadInvestors": "IonQ, Sequoia Capital India, Tencent, SGInnovate, Pappas Capital",
+  "lastRound": "Public listing (SPAC) · $110M PIPE / $120M gross · 2026",
+  "asymAdvantage": "Its compiler ('c2q'/Triple Alpha) auto-transpiles classical C/C++ into optimized quantum circuit subroutines without hand-coded reversible-circuit design — if it generalizes, it removes the talent bottleneck (only a few hundred quantum-algorithm specialists exist) and opens quantum dev to mainstream software engineers.",
+  "asymRisk": "Bets classical-to-quantum compilation produces efficient-enough circuits before hardware qubit/coherence limits cap what's useful — if hardware stalls or quantum advantage proves narrow, the expanded-developer-base bet never gets tested."
+ },
+ "Kipu Quantum": {
+  "ceo": "Enrique Solano",
+  "ceoNote": "Co-founder & scientist-CEO; quantum physicist who took the CEO role after co-founder Daniel Volz stepped down Dec 2025.",
+  "totalRaised": "~$14.5M (EUR10.5M/$11.5M seed 2023 + ~$3M pre-seed); no Series A on free sources mid-2026",
+  "leadInvestors": "HV Capital, Quantonation, First Momentum Ventures, DeepTech & Climate Fonds, Entrada Ventures",
+  "lastRound": "Seed · EUR10.5M (~$11.5M) · 2023",
+  "asymAdvantage": "Hardware-agnostic, compiler-level algorithm compression (BF-DCQO / counterdiabatic) that shrinks circuit depth so far that today's noisy NISQ machines solve industrially useful optimization years before fault-tolerant QEC — a value-capture software layer atop every hardware vendor rather than a hardware bet.",
+  "asymRisk": "If hardware error rates and native compilers improve fast enough that raw circuits run fine without aggressive compression, Kipu's depth-reduction edge becomes a marginal optimization, not the enabler of quantum advantage."
+ },
+ "Multiverse Computing": {
+  "ceo": "Enrique Lizaso Olmos",
+  "ceoNote": "Co-founder & operator-CEO; career banker (ex-deputy CEO Unnim Banc), not a physicist — co-founded with physicist Roman Orus.",
+  "totalRaised": "~$250M+ cumulative (incl. EUR189M/$215M Series B 2025)",
+  "leadInvestors": "Bullhound Capital, HP Tech Ventures, Toshiba, Santander, Quantonation",
+  "lastRound": "Series B · EUR189M (~$215M) · 2025",
+  "asymAdvantage": "Pivots quantum-inspired tensor-network math away from far-off quantum hardware into a here-and-now product (CompactifAI) that compresses LLMs up to ~95% with minimal accuracy loss — if it holds at scale, it collapses AI inference cost/energy and monetizes a massive classical-AI market today instead of waiting for quantum.",
+  "asymRisk": "Tensor-network compression competes directly with fast-moving open-source quantization/distillation/pruning (and hyperscalers' own efficiency work), so a commoditized 'good enough' free alternative could erase its pricing power."
+ },
+ "Q-CTRL": {
+  "ceo": "Michael J. Biercuk",
+  "ceoNote": "Founder; physicist-operator — ex-Univ. of Sydney quantum-control professor, founded Q-CTRL 2017.",
+  "totalRaised": "~$133M-$166M cumulative (company-stated $133M after Oct 2024 Series B-2)",
+  "leadInvestors": "GP Bullhound, Lockheed Martin Ventures, Airbus Ventures, In-Q-Tel, Salesforce Ventures",
+  "lastRound": "Series B-2 · $59M new ($113M total Series B) · 2024",
+  "asymAdvantage": "Bets software-only error suppression (real-time pulse-level control, no extra qubits) extends useful circuit depth on NISQ hardware faster than hardware-heavy QEC roadmaps — a cross-vendor 'toll booth' (IBM, Rigetti, OQC) to commercial advantage years before fault tolerance, plus an independent quantum-sensing line.",
+  "asymRisk": "If hardware vendors' in-house error-mitigation/correction stacks get good enough, Q-CTRL's middleware layer gets disintermediated or absorbed."
+ },
+ "Quantum Elements": {
+  "ceo": "Izhar Medalsy",
+  "ceoNote": "Co-founder & operator (PhD physical chemistry); ex-CPO/CTO/COO Nexa3D, exec Bruker/Wyatt — co-founded with QEC pioneer Daniel Lidar (USC).",
+  "totalRaised": null,
+  "leadInvestors": "Firgun Ventures, QDNL Participations, Quantacet, R-Squared Ventures",
+  "lastRound": "SAFE (extension) · undisclosed · 2026",
+  "asymAdvantage": "AI-trained, hardware-faithful digital twins of qubits (modeling real per-device noise/error channels) let developers debug and tune circuits almost entirely off-hardware — collapsing the scarce, expensive QPU-time bottleneck and positioning it as the simulation layer every hardware vendor needs.",
+  "asymRisk": "If the digital twins can't track fast hardware drift/calibration, simulated results diverge from real devices and the platform becomes non-predictive rather than the load-bearing pre-hardware design layer."
+ },
+ "Arqit": {
+  "ceo": "Andy Leaver",
+  "ceoNote": "Not a founder — career SaaS operator (Ariba, Workday, Hortonworks); hired 2024 (founder David Williams stepped aside).",
+  "totalRaised": "Public (NASDAQ:ARQQ); ~$400M 2021 Centricus SPAC + subsequent ATM raises",
+  "leadInvestors": "Heritage Group (~38.6%), Sumitomo Corporation, Notion Capital, Seraphim Space, UK Future Fund",
+  "lastRound": "ATM program · ~$18M drawn (H1 FY26); $125M shelf Jan 2026 · 2026",
+  "asymAdvantage": "Bets the real quantum threat is key distribution, not the algorithm — its Symmetric Key Agreement generates one-time keys independently on each endpoint with none transiting a network, bypassing the NIST lattice KEM stack incumbents bolt on. If regulators judge PQC KEMs too immature for data-in-transit, Arqit becomes default for classified/critical-infrastructure (first DoD program-of-record win 2025).",
+  "asymRisk": "NIST ML-KEM/ML-DSA are already standardized and integrated by dominant platforms, so Arqit's proprietary approach could stay niche while ~$34M annual burn on ~$0.5M revenue forces continuous dilutive ATM raises (plus a June 2026 $7M securities class-action settlement overhang)."
+ },
+ "BTQ Technologies": {
+  "ceo": "Olivier Roussy Newton",
+  "ceoNote": "Founder, Chairman & CEO; serial blockchain/fintech financier (HIVE Blockchain, DeFi Technologies), not a cryptographer.",
+  "totalRaised": "Public (NASDAQ:BTQ; also Cboe Canada:BTQ, Frankfurt:NG3); C$10M (Dec 2024) + C$40M (Jul 2025) placements",
+  "leadInvestors": "Keypair (Korea, co-owns PQC IP), ICTK ($15M JV), Daou Data, A.G.P./Alliance Global Partners",
+  "lastRound": "ATM program (Cantor Fitzgerald) · up to C$150M · 2026",
+  "asymAdvantage": "Bets quantum risk to Bitcoin's $2T+ ECDSA is near-term and the fix runs in hardware: its CASH/QCIM processing-in-memory claims ~1M post-quantum (Falcon/ML-DSA) signatures/sec — the missing piece making on-chain post-quantum signatures (200x larger than ECDSA) viable. Shipped a quantum-safe Bitcoin testnet fork and is pushing a Quantum Proof-of-Work standard via QuINSA.",
+  "asymRisk": "The thesis depends on a contentious Bitcoin hard fork (BIP-360-style) the core community may reject and that is 5-10 years out — meanwhile a cash-burning microcap on sub-$0.5M revenue funding via a C$150M ATM, so dilution and a too-early timeline can gut it before the catalyst."
+ },
+ "Q*Bird": {
+  "ceo": "Ingrid Romijn",
+  "ceoNote": "Co-founder & scientist-founder (PhD physics; ex-QuTech/TU Delft), not a pure business operator.",
+  "totalRaised": "~EUR10M+ (EUR2.5M seed 2024 + EUR7.5M EIC grant+equity 2025-26)",
+  "leadInvestors": "European Innovation Council (EIC), QDNL Participations, Cottonwood Technology Fund, InnovationQuarter, National Growth Fund (NL)",
+  "lastRound": "Grant + Equity (EIC Accelerator) · EUR7.5M · 2025-2026",
+  "asymAdvantage": "Bets MDI-QKD's hub-and-spoke design — all detectors in a central node that never touches the keys — is the only QKD topology that scales to multi-tenant, untrusted-node metro networks, letting it own government/critical-infrastructure quantum-secure networking; live 3-node Spanish government deployment is an early proof point.",
+  "asymRisk": "Post-quantum cryptography (pure software, no special fiber/hardware) wins as the global default — as NIST/NSA already favor — making QKD hardware, including MDI-QKD's detector-security edge, commercially moot."
+ },
+ "QuintessenceLabs": {
+  "ceo": "Vikram Sharma",
+  "ceoNote": "Founder-CEO since 2008; PhD quantum physics (ANU) + Stanford MS management — scientist-operator hybrid.",
+  "totalRaised": "~$50-55M across multiple rounds (some sizes undisclosed)",
+  "leadInvestors": "In-Q-Tel, Australian Government (National Reconstruction Fund), Westpac, TELUS Global Ventures, Main Sequence",
+  "lastRound": "Venture (government-led) · A$20M (~$13M) · 2025",
+  "asymAdvantage": "Quantum-tunneling QRNG (qStream, NIST SP 800-90B certified) bundled with crypto-agile key management (qCrypt) as one integrated stack — a defense/government channel moat (In-Q-Tel, Australian government) pure-software PQC vendors can't easily replicate before NIST PQC mandates force enterprise migration.",
+  "asymRisk": "QRNG gets commoditized as a checkbox feature absorbed into larger HSM/cloud security platforms, leaving QuintessenceLabs without independent commercial scale outside government."
+ },
+ "EuQlid": {
+  "ceo": "Sanjive Agarwala",
+  "ceoNote": "Co-founder/CEO; ex-Cadence CVP/GM IP Group, ex-Texas Instruments SoC lead — operator, not scientist.",
+  "totalRaised": "~$4.5M ($3M seed + ~$1.5M customer revenue)",
+  "leadInvestors": "QDNL Participations, Quantonation, Audacia",
+  "lastRound": "Seed · $3M · 2025",
+  "asymAdvantage": "Qu-MRI uses NV-diamond quantum magnetometry to non-destructively map buried current flow inside fully packaged, powered-on chips at ~1-micron resolution — something no existing metrology tool does without destructive cross-sectioning or cryo/vacuum. Could become the standard inspection layer for advanced packaging (HBM, chiplets), where defect localization is currently blind.",
+  "asymRisk": "Unproven at production fab throughput/cost — quantum diamond sensing has been a slow lab-bench technique, and EuQlid must prove it runs fast and cheap enough to displace incumbent metrology at scale."
+ },
+ "Nu Quantum": {
+  "ceo": "Carmen Palacios-Berraquero",
+  "ceoNote": "Founder & CEO; Cambridge physicist (Cavendish spin-out), award-winning quantum inventor, not an operator-hire.",
+  "totalRaised": "~$72M cumulative",
+  "leadInvestors": "National Grid Partners, Amadeus Capital Partners, IQ Capital, Sumitomo (Presidio Ventures), Cambridge Enterprise",
+  "lastRound": "Series A · $60M · 2025",
+  "asymAdvantage": "Bets the binding constraint on quantum scale-out is not qubit count but high-fidelity qubit-photon entanglement between separate processors — using optical microcavities (mirror spacing stabilized to <80pm) plus sub-microsecond photonic switching to network heterogeneous QPUs into one fabric. If distributed/modular beats monolithic, the company owning the interconnect layer captures value across every modality.",
+  "asymRisk": "If a single qubit modality solves monolithic scaling cheaply enough, the networking/interconnect layer becomes unnecessary and the company loses product-market fit."
+ },
+ "QphoX": {
+  "ceo": "Simon Groblacher",
+  "ceoNote": "Co-founder/CEO; also TU Delft Professor of Quantum Physics (Kavli Institute) — scientist-operator.",
+  "totalRaised": "~EUR10.7M (EUR2M seed 2022 + EUR8.7M Series A 2024)",
+  "leadInvestors": "QDNL Participations, EIC Fund, Quantonation, High-Tech Gruenderfonds, Speedinvest",
+  "lastRound": "Series A · EUR8.7M · 2024",
+  "asymAdvantage": "Its transducer converts quantum states between microwave and optical signals, letting superconducting qubit processors (the dominant modality — IBM, Rigetti) link over standard telecom fiber instead of monolithic chips or fridge-to-fridge links. If it scales, it removes the largest bottleneck to distributed quantum, with IBM already testing it on its Quantum Networking Unit.",
+  "asymRisk": "Microwave-to-optical conversion fidelity and bandwidth must clear a very high bar to avoid degrading entanglement during transduction — if losses stay too high at scale, the modem approach loses and IBM's interest never converts to deployment."
+ },
+ "Quantum Machines": {
+  "ceo": "Itamar Sivan",
+  "ceoNote": "Co-founder/CEO; PhD physicist (Weizmann); ex-director of Weizmann's entrepreneurship program.",
+  "totalRaised": "~$280M (private)",
+  "leadInvestors": "PSG Equity, Intel Capital, Samsung NEXT, Qualcomm Ventures, Battery Ventures",
+  "lastRound": "Series C · $170M · 2025",
+  "asymAdvantage": "Bets real-time classical control/calibration, not the qubit modality, becomes the scaling bottleneck past ~1,000 qubits: OPX1000's FPGA Pulse Processing Units do pulse-level sub-microsecond feedback for error correction, positioning QM as a horizontal control layer across every qubit type rather than a single-modality wager.",
+  "asymRisk": "If major qubit platforms (Google, IBM, Quantinuum) vertically integrate control electronics in-house as they scale, QM's biggest customers become its competitors and erode its neutral-platform position."
+ },
+ "WelinQ": {
+  "ceo": "Tom Darras",
+  "ceoNote": "Co-founder/CEO; physicist (PhD Laboratoire Kastler Brossel under Julien Laurat); ex-Xanadu postdoc.",
+  "totalRaised": "~EUR7.5M disclosed (~EUR5M pre-seed equity + EUR2.5M EIC grant)",
+  "leadInvestors": "Quantonation, Runa Capital, Bpifrance, European Commission/EIC",
+  "lastRound": "Pre-Seed · EUR5M · 2023",
+  "asymAdvantage": "Bets room-temperature neutral-atom quantum memory (90%+ photon storage-retrieval efficiency, rack-mountable) becomes the standard interconnect linking incompatible quantum processors into quantum data centers — a picks-and-shovels play instead of competing on qubit count.",
+  "asymRisk": "If quantum scale-up proceeds via large monolithic processors rather than networked/modular architectures, the interconnect layer WelinQ is building becomes unnecessary."
+ },
+ "QT Sense": {
+  "ceo": "Deepak Veeregowda",
+  "ceoNote": "Co-founder/CEO; mechanical engineer turned biomedical operator (~15 yrs); lab science led by co-founder Romana Schirhagl (UMCG). [HQ: Netherlands, not Switzerland]",
+  "totalRaised": "~EUR10M (EUR6M seed 2025 + EUR4M extension 2026, incl. grants)",
+  "leadInvestors": "Cottonwood Technology Fund, QDNL Participations, ONCO-Q (grant), Interreg NWE (grant), EU Quantum Forward (grant)",
+  "lastRound": "Seed extension · EUR4M · 2026",
+  "asymAdvantage": "Bets NV-diamond magnetometry can read oxidative-stress/free-radical kinetics inside living single cells in real time — something no fixed-tissue or spatial-biology assay does — turning quantum sensing into a live-cell drug-discovery readout for oncology/sepsis pharma pipelines.",
+  "asymRisk": "Its sensing resolution exceeds what existing reference techniques can benchmark against, so clinical validation and regulatory approval could stall indefinitely without an accepted gold-standard comparator."
+ },
+ "Quantum Circuits (QCI)": {
+  "ceo": "Ray Smets",
+  "ceoNote": "Operator (not a founder); joined Feb 2024 as President/CEO; prior exec roles at Cisco, A10 Networks, Motorola, AT&T.",
+  "totalRaised": "~$90M venture (2015-2025); ACQUIRED by D-Wave (Nasdaq:QBTS) for $550M, Jan 2026",
+  "leadInvestors": "ARCH Venture Partners, Sequoia Capital, F-Prime Capital, In-Q-Tel, Connecticut Innovations",
+  "lastRound": "Series B · $60M+ · 2024 (then acquired by D-Wave for $550M, Jan 2026)",
+  "asymAdvantage": "Schoelkopf's dual-rail qubit encodes one logical qubit across two coupled superconducting resonators so the dominant failure mode (photon loss) becomes a detectable 'erasure' rather than a silent bit/phase-flip error, letting the system catch and discard errors in real time — could cut physical qubits per logical qubit by ~an order of magnitude vs surface codes.",
+  "asymRisk": "Erasure-detection has only been shown on a handful of dual-rail pairs in the lab; unproven whether the suppression advantage holds at the hundreds/thousands of qubits a useful logical-qubit count needs, now under D-Wave's control."
+ },
+ "Archer Materials": {
+  "ceo": "Simon Ruffell",
+  "ceoNote": "Scientist-operator (not a founder); PhD physics; ex-Microsoft, Applied Materials, Univ. of Sydney; CTO promoted to CEO Mar 2025.",
+  "totalRaised": "Public (ASX:AXE); funded from cash (A$10.3M at 31 Dec 2025) + R&D tax rebates, no fresh raise 2025-26",
+  "leadInvestors": "No named >=5% holders on free sources; partners: CSIRO, Paragraf, Emergence Quantum, EPFL",
+  "lastRound": "—",
+  "asymAdvantage": "The 12CQ qubit is a carbon-based nanomaterial claimed to sustain electron-spin coherence at room temperature, sidestepping cryogenic cooling, pursued via wafer-scale CMOS/foundry-compatible fabrication so chips could be made on existing semiconductor lines rather than bespoke quantum fabs.",
+  "asymRisk": "Has not yet demonstrated a fully working qubit (only material-level coherence and on-chip detection), so missing the 2026 qubit-demonstration target on declining cash would likely force a dilutive raise or threaten going-concern status."
+ },
+ "XtalPi": {
+  "ceo": "Jian Ma",
+  "ceoNote": "Co-founder, quantum physicist (PhD Zhejiang, MIT postdoc); 2024 EY Entrepreneur of the Year, MIT TR35 China.",
+  "totalRaised": "Public (HKEX:2228); ~$732M pre-IPO + ~$413M in two 2025 post-IPO placements",
+  "leadInvestors": "Tencent, SoftBank Vision Fund 2, Google, Hongshan (Sequoia China), Sino Biopharmaceutical",
+  "lastRound": "Follow-on placement · $268M · Feb 2025",
+  "asymAdvantage": "Couples quantum first-principles binding-affinity/ADMET calculation (XFEP/XMolGen) with a robotic wet-lab-in-the-loop, creating a proprietary feedback dataset AlphaFold-style static-structure rivals can't replicate, and capturing downstream milestone/royalty economics (e.g. DoveTree's up-to-$5.9B deal) rather than just selling software.",
+  "asymRisk": "The thesis rests on a few mega-partnerships (Lilly, DoveTree, Pfizer) converting preclinical hits into royalty-paying approved drugs years out; if those deals stall in trials, the dry/wet-lab loop's edge may never reach cash flow."
+ },
+ "SEALSQ": {
+  "ceo": "Carlos Creus Moreira",
+  "ceoNote": "Founder of parent WISeKey; UN cybersecurity/trust-models expert, serial entrepreneur — operator, not a PQC research scientist.",
+  "totalRaised": "Public (NASDAQ:LAES); $125M registered direct offering Mar 2026 + prior ATM/equity since 2024 WISeKey spin-off",
+  "leadInvestors": "WISeKey International Holding (controlling parent), IC'ALPS (acquired ASIC unit), Wecan Group",
+  "lastRound": "Registered Direct Offering · $125M gross · Mar 2026",
+  "asymAdvantage": "Its QS7001 secure element embeds NIST-standardized ML-KEM (Kyber) and ML-DSA (Dilithium) directly in silicon (claimed ~10x performance and side-channel gains), and the 2025 IC'ALPS acquisition gives in-house ASIC design/supply-chain control — positioned for the CNSA 2.0 / ANSSI quantum-safe procurement mandates landing by Jan 2027 that a ~$18M-revenue microcap may not be priced for.",
+  "asymRisk": "Heavy serial dilution (shares up ~257% in a year) amid cash burn (FY25 net loss ~$34M on ~$18M revenue) means the thesis dies if PQC chip demand and certification wins don't convert to revenue before investor confidence erodes."
+ },
+ "Senetas": {
+  "ceo": "Andrew Wilson",
+  "ceoNote": "Long-tenured operator, not founder; joined 2000, CFO 2006-12, CEO since Aug 2012; CA/BEcon, ex-KPMG/NatWest.",
+  "totalRaised": "Public (ASX:SEN); ~A$5M placement/rights (2024) + A$60M Votiro sale proceeds (2025)",
+  "leadInvestors": "Thales (OEM/distribution partner), Southbank Capital, MST Financial Services",
+  "lastRound": "Rights offer + placement · A$5M · 2024",
+  "asymAdvantage": "One of few vendors already shipping NIST FIPS 203/204/205-compliant hybrid classical+PQC encryption in certified hardware (CN-series, CV1000), sold at scale through Thales's government/defense channel into 60+ countries — an embedded certified incumbent the market prices as a sub-A$50M micro-cap rather than a quantum-safe infrastructure leader.",
+  "asymRisk": "Revenue is heavily concentrated through Thales as global distributor, leaving Senetas exposed if Thales deprioritizes the line, renegotiates terms, or builds competing capability in-house."
+ },
+ "Toshiba": {
+  "ceo": "Taro Shimada",
+  "ceoNote": "President & CEO of Toshiba Corp since 2022; ex-Siemens digital-business operator, drove the digital-services pivot — not a quantum scientist.",
+  "totalRaised": "Private — taken private by JIP-led consortium, delisted Dec 2023 (formerly TYO:6502)",
+  "leadInvestors": "Japan Industrial Partners, Orix, Chubu Electric Power, Rohm",
+  "lastRound": "Going-private tender · ~$14B (JPY2T) · 2023",
+  "asymAdvantage": "The QKD unit (led from Cambridge by Royal Society Fellow Andrew Shields) is the only QKD vendor with real revenue-generating commercial telecom deployments (BT/Openreach London metro, Orange France, KT/Shinhan Korea); twin-field QKD holds the ~600km fiber distance record — a multi-year lead in fielded quantum-safe infrastructure over lab-only rivals.",
+  "asymRisk": "QKD needs dedicated point-to-point fiber/trusted-node infrastructure that doesn't scale like software, and as a financially immaterial sub-segment of now-private Toshiba it could be deprioritized at any time."
+ },
+ "CIQTEK": {
+  "ceo": "He Yu",
+  "ceoNote": "Founder; USTC quantum-info PhD, entered USTC gifted-youth program at 16; GM at 24, Chairman since 2021.",
+  "totalRaised": "Going public (Shanghai STAR Market; IPO registered Jun 2026, ticker pending) — targeting ~RMB1.169B",
+  "leadInvestors": "Hillhouse Capital, iFlytek, IDG Capital, CAS Capital, Cornerstone Capital",
+  "lastRound": "IPO · ~RMB1.169B target · 2026",
+  "asymAdvantage": "The only player pushing diamond NV-center quantum magnetometry out of the lab into paid production lines — supplying CATL and Gotion with quantum diamond magnetic-imaging tools for battery-cell QC — while owning the full NV-center supply chain in-house (diamond growth, ion implantation, micro-nano processing) that Bruker and Thermo Fisher don't control.",
+  "asymRisk": "Over half of revenue still comes from commodity electron microscopes rather than quantum instruments, and the company is unprofitable into a STAR Market listing exposed to China-tech delisting and export-control sentiment."
+ },
+ "QuantumDiamonds": {
+  "ceo": "Kevin Berghoff",
+  "ceoNote": "Operator-founder, not the scientist; ex-McKinsey (Advanced Electronics); paired with a PhD-physicist CTO co-founder. TUM spinout.",
+  "totalRaised": "~EUR7M seed (2023)",
+  "leadInvestors": "IQ Capital, Earlybird, Onsight Ventures, First Momentum, UnternehmerTUM",
+  "lastRound": "Seed · EUR7M (EUR3M equity + EUR4M grants) · 2023",
+  "asymAdvantage": "Its NV-diamond magnetometer images electrical current and buried defects inside fully-packaged 2.5D/3D advanced chips at room temperature in minutes, non-destructively — replacing destructive cross-sectioning that takes hours to days; if it generalizes across packaging types it becomes a mandatory yield/failure-analysis tool as advanced packaging becomes the bottleneck.",
+  "asymRisk": "Faces substitution from entrenched failure-analysis incumbents (X-ray/CT, e-beam, scanning-probe), and must convert a few pilot installs into recurring production orders before larger metrology players move into the niche."
+ },
+ "Bluefors": {
+  "ceo": "Kim Povlsen",
+  "ceoNote": "Operator, not founder/scientist; ex-CEO of Universal Robots, prior Schneider Electric leadership; started Oct 2025.",
+  "totalRaised": "Private — DevCo Partners co-ownership stake (2021, undisclosed)",
+  "leadInvestors": "DevCo Partners, Tesi (Finnish Industry Investment), Finnvera",
+  "lastRound": "PE co-ownership stake (undisclosed) · DevCo Partners · 2021",
+  "asymAdvantage": "Holds an estimated 34-40% global share of the dilution-refrigerator market, has shipped 1,500+ systems, and runs near-fully-booked production with 6-9 month lead times that lock in major quantum labs — while its 2023 Cryomech acquisition vertically integrated the cryocooler supply chain beneath its own refrigerators.",
+  "asymRisk": "A qubit-modality shift toward room-temperature neutral-atom or photonic architectures that need no dilution refrigerator would structurally shrink Bluefors' addressable market regardless of its share within cryogenics."
+ },
+ "Keysight Technologies": {
+  "ceo": "Satish Dhanasekaran",
+  "ceoNote": "Operator, not founder/scientist; career Agilent/Keysight engineer since 2006, COO before becoming CEO 2022.",
+  "totalRaised": "Public (NYSE:KEYS)",
+  "leadInvestors": "Vanguard, BlackRock, T. Rowe Price, State Street, Geode Capital",
+  "lastRound": "—",
+  "asymAdvantage": "Its Quantum Control System is modality-agnostic infrastructure sold to nearly every quantum hardware lab regardless of which qubit type wins, and was first to support 1,000+ qubits commercially (Japan's AIST G-QuAT, Fujitsu/RIKEN's 256-qubit machine) — high-growth optionality sitting almost invisibly inside a ~$5.4B legacy test-and-measurement business the market isn't pricing.",
+  "asymRisk": "Quantum could stay a permanent rounding error inside Keysight's far larger core test-and-measurement business if specialized pure-plays (Quantum Machines, Zurich Instruments, Qblox) keep winning control electronics on price and specialization."
+ },
+ "imec": {
+  "ceo": "Patrick Vandenameele",
+  "ceoNote": "Career imec researcher/entrepreneur since 1996, not founder; deeptech operator, CEO from April 2026.",
+  "totalRaised": "Non-profit research institute; ~EUR1.2B 2025 revenue from Flemish Govt, EU Chips Act, industry partners",
+  "leadInvestors": "Flemish Government, European Commission (EU Chips Act), ASML, JSR",
+  "lastRound": "—",
+  "asymAdvantage": "A neutral, multi-customer 300mm foundry/IP hub (SPINS pilot line) that can industrialize multiple competing spin-qubit and packaging approaches at once, capturing value across the whole quantum-hardware race rather than betting on one modality.",
+  "asymRisk": "As a neutral non-profit consortium, imec captures no equity upside for itself if a partner's qubit platform wins — its quantum bet pays off as ecosystem influence and licensing fees, not outsized financial returns."
+ },
+ "TOPTICA Photonics": {
+  "ceo": null,
+  "ceoNote": "No single CEO; led by a Vorstand (executive board); founder Wilhelm Kaenders steps down as CTO Oct 2026, stays on as founder.",
+  "totalRaised": "Privately/founder-held (TOPTICA Photonics SE); no disclosed external funding; ~EUR140M group revenue",
+  "leadInvestors": null,
+  "lastRound": "—",
+  "asymAdvantage": "A near-monopoly supplier of the ultra-stable diode lasers required to cool, trap, and gate ions/neutral atoms, and its move into chip-scale photonic integration (e.g. DoD QUPICS) could capture outsized value as quantum computers scale past hundreds of qubits and optical-table laser racks become the binding constraint.",
+  "asymRisk": "If trapped-ion/neutral-atom modalities lose to superconducting or photonic qubits that don't need bulk laser systems, TOPTICA's quantum-specific revenue opportunity shrinks even though its core scientific-laser business survives."
+ },
+ "FormFactor": {
+  "ceo": "Mike Slessor",
+  "ceoNote": "Operator, not founder; PhD physicist (Caltech) who rose via MicroProbe CEO and KLA-Tencor; CEO since 2014.",
+  "totalRaised": "Public (NASDAQ:FORM)",
+  "leadInvestors": null,
+  "lastRound": "—",
+  "asymAdvantage": "The largest US commercial supplier of cryogen-free dilution refrigerators (via JanisULT) plus wafer/chip-scale cryo-probers; as quantum scales past lab-bench qubit counts, every superconducting/spin-qubit player needs sub-10mK test infrastructure, making FormFactor a structural toll-taker on quantum hardware validation regardless of which modality wins.",
+  "asymRisk": "Quantum hardware test/cryogenics is still a tiny fraction of FormFactor's revenue (dwarfed by DRAM/foundry probe-card cycles), so the quantum optionality can stay financially invisible for years even if the thesis is correct."
+ },
+ "GlobalFoundries": {
+  "ceo": "Tim Breen",
+  "ceoNote": "Operator (ex-McKinsey partner, ex-Mubadala exec); joined GF 2018, COO 2023, CEO April 2025 (succeeding Tom Caulfield, now Chair).",
+  "totalRaised": "Public (NASDAQ:GFS); pre-IPO backed by ~$2.1B+ from Abu Dhabi's ATIC/Mubadala since 2009 AMD spin-off",
+  "leadInvestors": "Mubadala Investment Company, AMD (original anchor customer), US Department of Commerce (CHIPS Act)",
+  "lastRound": "Secondary offering · $840M (Mubadala) + $300M buyback · Mar 2026",
+  "asymAdvantage": "GF Fotonix is the only foundry-scale platform that monolithically integrates silicon photonics, RF, and digital logic on one die with turnkey packaging; both PsiQuantum and Xanadu build their photonic quantum chips on it — positioning GF as the de facto interconnect fab for fault-tolerant quantum scaling and AI-datacenter optical I/O simultaneously, a dual-market bottleneck rivals haven't replicated at volume.",
+  "asymRisk": "GF's CHIPS Act-funded fabs are sized for mainstream auto/IoT/RF volume, not photonics-specific yield curves — if Fotonix capacity or process maturity lags PsiQuantum's/Xanadu's timelines, the photonics upside gets crowded out by GF's core legacy-node commodity business."
+ },
+ "Hamamatsu Photonics": {
+  "ceo": "Tadashi Maruno",
+  "ceoNote": "40-year Hamamatsu veteran/operator (not a research scientist); rose through Systems Division management, President since 2022.",
+  "totalRaised": "Public (TYO:6965)",
+  "leadInvestors": null,
+  "lastRound": "—",
+  "asymAdvantage": "One of only a handful of global suppliers of high-end SPADs/MPPCs and photomultiplier tubes, making it a structural chokepoint component supplier for photonic quantum computing, quantum sensing, and quantum communication that nearly every photonic-qubit and quantum-comms builder must source from.",
+  "asymRisk": "Photonic and superconducting architectures could shift toward integrated/on-chip detectors (SNSPDs or silicon-photonics-integrated detectors) that bypass discrete Hamamatsu components, eroding its chokepoint position."
+ },
+ "Zurich Instruments": {
+  "ceo": "Andrea Orzati",
+  "ceoNote": "Operator with a PhD (ETH Zurich) and EMBA; prior scaling roles at u-blox and Sensirion; CEO from May 2024 (succeeding founder Sadik Hafizovic).",
+  "totalRaised": "Subsidiary of Rohde & Schwarz (private, Germany) since 2021; pre-acquisition VC amount undisclosed",
+  "leadInvestors": "Rohde & Schwarz",
+  "lastRound": "Acquisition · undisclosed · 2021",
+  "asymAdvantage": "Its lock-in amplifiers and integrated qubit-control systems (UHFLI, SHFQC, ZQCS) are embedded as the default control/readout electronics in a large share of academic and commercial superconducting- and spin-qubit labs (ETH Zurich, TU Delft), an entrenched standards-like position in the quantum control layer that compounds as the install base scales.",
+  "asymRisk": "Vertically integrated quantum computing companies increasingly build proprietary in-house control electronics to cut cost/latency, which could disintermediate Zurich Instruments from its largest future customers."
+ },
+ "Maybell Quantum Industries": {
+  "ceo": "Corban Tillemann-Dick",
+  "ceoNote": "Founder/CEO; ex-BCG Partner (10 yrs) leading BCG's Quantum Computing practice — operator, not a research scientist.",
+  "totalRaised": "$65M confirmed (Series A $25M + Series B $40M); aggregators cite $112M, earlier round unconfirmed",
+  "leadInvestors": "In-Q-Tel, Cerberus Capital Management, Addition, Lavrock Ventures, Decisive Point",
+  "lastRound": "Series B · $40M · 2025",
+  "asymAdvantage": "ColdCloud's patented centralized/distributed cooling architecture decouples cooling generation from qubit nodes, unlike one-fridge-per-system dilution refrigerators (Bluefors/Oxford Instruments), claiming 90% less electricity, 90% less cooling water, up to 80% less helium-3 per qubit — directly attacking helium-3 scarcity/cost and per-fridge footprint, the two hardest constraints on scaling past thousands of superconducting qubits.",
+  "asymRisk": "Bluefors and Oxford Instruments hold ~70%+ of the dilution-refrigerator market with entrenched relationships at IBM, Google and others, so Maybell must win share against well-capitalized incumbents before its efficiency advantage becomes table stakes."
+ },
+ "Sparrow Quantum": {
+  "ceo": "Kurt Stokbro",
+  "ceoNote": "Serial entrepreneur, PhD; founded Atomistix (2003) and QuantumWise (2008, sold to Synopsys 2017); joined as CEO 2022, not a company founder.",
+  "totalRaised": "$59.9M total (EUR4.1M seed 2023 + EUR21.5M Series A Apr 2025 + EUR27.5M extension Dec 2025)",
+  "leadInvestors": "PensionDanmark, EIFO (Danish state fund), Innovation Fund Denmark, European Innovation Council, Novo Holdings",
+  "lastRound": "Series A (extension) · EUR27.5M · Dec 2025",
+  "asymAdvantage": "Most photonic quantum approaches rely on probabilistic photon sources, forcing heavy multiplexing/heralding overhead — the central scaling bottleneck. Sparrow's quantum dots in photonic-crystal waveguides generate single photons deterministically on-demand (>95% waveguide coupling, g2(0)=0.02 purity, ~96% indistinguishability) — if it holds at manufacturing scale, it removes the photon-supply bottleneck gating both FT photonic computers and long-distance quantum-repeater networks.",
+  "asymRisk": "Quantum-dot single-photon sources still require cryogenic cooling and face open manufacturing-yield/uniformity challenges at chip scale, so a rival deterministic approach (e.g. Quandela) or an easier-to-fabricate probabilistic source closing the efficiency gap would collapse Sparrow's core differentiation."
+ }
+};
+
 function useMergedCompanies() {
   const [state, setState] = React.useState(getImportState);
   React.useEffect(() => {
@@ -1904,7 +2518,7 @@ function useMergedCompanies() {
       window.removeEventListener('storage', handler);
     };
   }, []);
-  return React.useMemo(() => applyImportOverlay(ALL_QUANTUM_COMPANIES), [state]);
+  return React.useMemo(() => applyImportOverlay(ALL_QUANTUM_COMPANIES).map(c => (typeof COMPANY_INTEL !== 'undefined' && COMPANY_INTEL[c.name]) ? { ...c, ...COMPANY_INTEL[c.name] } : c), [state]);
 }
 
 function validateImportEntry(entry) {
@@ -1929,23 +2543,31 @@ function validatePatch(p) {
   return errors;
 }
 
-// Live Yahoo Finance market cap fetch (15-min cache via localStorage)
+// Shares outstanding (millions), pulled from Yahoo v7 quote Jun 2026. Live cap = live price x shares.
+const SHARES_OUT_M = {
+  IONQ: 373.3, RGTI: 332.4, QBTS: 367.3, INFQ: 218.2, XNDU: 43.3, ARQQ: 17.4, IBM: 939.9, MSFT: 7428.4,
+};
+
+// Live Yahoo Finance market cap (15-min cache). The v8/chart endpoint returns regularMarketPrice
+// (reachable cross-origin) but NOT marketCap, so cap = price x SHARES_OUT_M[ticker].
 async function fetchYahooMarketCap(ticker) {
   const cacheKey = `qi_cap_${ticker}`;
   try {
     const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
-    if (cached && Date.now() - cached.ts < 15 * 60 * 1000) return { capB: cached.capB, live: true };
+    if (cached && Date.now() - cached.ts < 15 * 60 * 1000) return { capB: cached.capB, live: cached.capB != null };
   } catch(e) {}
   try {
     const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`, {
-      headers: { 'Accept': 'application/json', 'User-Agent': 'Mozilla/5.0' },
+      headers: { 'Accept': 'application/json' },
     });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     const meta = data?.chart?.result?.[0]?.meta;
-    const capB = meta?.marketCap ? meta.marketCap / 1e9 : null;
-    if (capB) localStorage.setItem(cacheKey, JSON.stringify({ capB, ts: Date.now() }));
-    return { capB, live: !!capB };
+    const price = meta?.regularMarketPrice;
+    const sharesM = SHARES_OUT_M[ticker];
+    const capB = (price && sharesM) ? (price * sharesM) / 1000 : (meta?.marketCap ? meta.marketCap / 1e9 : null);
+    localStorage.setItem(cacheKey, JSON.stringify({ capB, ts: Date.now() }));   // cache negatives too (no refetch storm)
+    return { capB, live: capB != null };
   } catch(e) {
     return { capB: null, live: false };
   }
@@ -4830,6 +5452,7 @@ function AllCompaniesTab() {
   const [search, setSearch] = React.useState('');
   const [catFilter, setCatFilter] = React.useState('All');
   const [statusFilter, setStatusFilter] = React.useState('All');
+  const [expanded, setExpanded] = React.useState(null);
 
   const allCompanies = useMergedCompanies();
 
@@ -4922,33 +5545,56 @@ function AllCompaniesTab() {
         <table style={{width:'100%',borderCollapse:'collapse',fontSize:11}}>
           <thead style={{position:'sticky',top:0,background:'var(--card)',zIndex:1}}>
             <tr style={{borderBottom:'1px solid var(--border)'}}>
-              {['Company','Category','Tech Focus','Description','Country','Status'].map(h=>(
+              {['','Company','Category','Tech Focus','CEO','Raised','Description','Country','Status'].map(h=>(
                 <th key={h} style={{textAlign:'left',padding:'8px 12px',fontSize:9,fontWeight:700,letterSpacing:0.6,color:'var(--dim)',textTransform:'uppercase',whiteSpace:'nowrap',borderRight:'1px solid rgba(255,255,255,0.03)'}}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {filtered.map((c,i)=>(
-              <tr key={c.name} style={{borderBottom:'1px solid rgba(255,255,255,0.025)',background:i%2===0?'transparent':'rgba(255,255,255,0.008)'}}>
+            {filtered.map((c,i)=>{
+              const hasIntel = c.ceo||c.totalRaised||c.asymAdvantage||c.leadInvestors||c.lastRound||c.asymRisk;
+              const isOpen = expanded===c.name;
+              return (
+              <React.Fragment key={c.name}>
+              <tr onClick={()=>hasIntel&&setExpanded(isOpen?null:c.name)} style={{borderBottom:'1px solid rgba(255,255,255,0.025)',background:isOpen?'rgba(99,102,241,0.07)':(i%2===0?'transparent':'rgba(255,255,255,0.008)'),cursor:hasIntel?'pointer':'default'}}>
+                <td style={{padding:'7px 4px 7px 12px',color:'#818cf8',width:14,fontSize:10,fontWeight:700}}>{hasIntel?(isOpen?'▾':'▸'):''}</td>
                 <td style={{padding:'7px 12px',fontWeight:700,color:'#f1f5f9',whiteSpace:'nowrap',borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.name}</td>
                 <td style={{padding:'7px 12px',whiteSpace:'nowrap',borderRight:'1px solid rgba(255,255,255,0.03)'}}>
                   <span style={{fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:3,background:`${CAT_COLOR[c.category]}18`,color:CAT_COLOR[c.category]}}>{c.category}</span>
                 </td>
                 <td style={{padding:'7px 12px',color:'#94a3b8',whiteSpace:'nowrap',fontSize:10,borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.tech}</td>
-                <td style={{padding:'7px 12px',color:'#64748b',maxWidth:400,lineHeight:1.5,borderRight:'1px solid rgba(255,255,255,0.03)'}}>
+                <td style={{padding:'7px 12px',color:'#cbd5e1',whiteSpace:'nowrap',fontSize:10,borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.ceo||'—'}</td>
+                <td style={{padding:'7px 12px',color:'#cbd5e1',whiteSpace:'nowrap',fontSize:10,borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.totalRaised||'—'}</td>
+                <td style={{padding:'7px 12px',color:'#64748b',maxWidth:360,lineHeight:1.5,borderRight:'1px solid rgba(255,255,255,0.03)'}}>
                   {c.desc}
                   {c.statusNote && <span style={{color:'#f59e0b',marginLeft:6,fontSize:10}}>[{c.statusNote}]</span>}
                 </td>
                 <td style={{padding:'7px 12px',color:'#475569',whiteSpace:'nowrap',fontSize:10,borderRight:'1px solid rgba(255,255,255,0.03)'}}>{c.country||'—'}</td>
                 <td style={{padding:'7px 12px',whiteSpace:'nowrap'}}><StatusBadge c={c}/></td>
               </tr>
-            ))}
+              {isOpen && hasIntel && (
+              <tr style={{background:'rgba(99,102,241,0.045)'}}>
+                <td colSpan={9} style={{padding:'2px 20px 16px 34px',borderBottom:'1px solid var(--border)'}}>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px 32px',fontSize:11,lineHeight:1.55,maxWidth:1180}}>
+                    {c.asymAdvantage && <div style={{gridColumn:'1 / -1'}}><div style={{color:'#34d399',fontWeight:700,fontSize:9,letterSpacing:0.7,textTransform:'uppercase',marginBottom:3}}>↗ Asymmetric Advantage</div><div style={{color:'#e2e8f0'}}>{c.asymAdvantage}</div></div>}
+                    {c.asymRisk && <div style={{gridColumn:'1 / -1'}}><div style={{color:'#f87171',fontWeight:700,fontSize:9,letterSpacing:0.7,textTransform:'uppercase',marginBottom:3}}>↘ Asymmetric Risk</div><div style={{color:'#cbd5e1'}}>{c.asymRisk}</div></div>}
+                    {(c.ceo||c.ceoNote) && <div><div style={{color:'var(--dim)',fontWeight:700,fontSize:9,letterSpacing:0.7,textTransform:'uppercase',marginBottom:3}}>CEO</div><div style={{color:'#cbd5e1'}}>{c.ceo}{c.ceoNote?` — ${c.ceoNote}`:''}</div></div>}
+                    {c.leadInvestors && <div><div style={{color:'var(--dim)',fontWeight:700,fontSize:9,letterSpacing:0.7,textTransform:'uppercase',marginBottom:3}}>Lead Investors</div><div style={{color:'#cbd5e1'}}>{c.leadInvestors}</div></div>}
+                    {c.totalRaised && <div><div style={{color:'var(--dim)',fontWeight:700,fontSize:9,letterSpacing:0.7,textTransform:'uppercase',marginBottom:3}}>Total Raised</div><div style={{color:'#cbd5e1'}}>{c.totalRaised}</div></div>}
+                    {c.lastRound && <div><div style={{color:'var(--dim)',fontWeight:700,fontSize:9,letterSpacing:0.7,textTransform:'uppercase',marginBottom:3}}>Last Round</div><div style={{color:'#cbd5e1'}}>{c.lastRound}</div></div>}
+                  </div>
+                </td>
+              </tr>
+              )}
+              </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       <div style={{marginTop:10,fontSize:9,color:'#2d3748',lineHeight:1.8}}>
-        TRACKED = full analysis in Scatter/Investability views · ACQUIRED/MERGED/RENAMED = notable corporate change · IMPORTED/PATCHED = added via Import tab (localStorage overlay) · Sources: industry directories + Wikipedia · {allCompanies.length} companies
+        ▸ Click a tracked row to expand CEO · investors · asymmetric advantage (free-sources research, Jun 2026) · TRACKED = full analysis in Scatter/Investability views · ACQUIRED/MERGED/RENAMED = notable corporate change · IMPORTED/PATCHED = added via Import tab (localStorage overlay) · Sources: industry directories + Wikipedia · {allCompanies.length} companies
       </div>
     </div>
   );
@@ -5662,13 +6308,330 @@ function ImportTab() {
 
 /* ─── APP ──────────────────────────────────────────────── */
 
+/* ═══════════════════════════════════════════════════════════════
+   VALUE CAPTURE — top-down BCG pool / market-share / implied-share layer
+   Built 2026-06-02 from 19-agent legitimacy workflow. All numbers are
+   ASSUMPTIONS (editable below, persisted to localStorage). BCG publishes
+   no per-layer split — layer/modality shares are DEDUCED, not BCG-published.
+   ═══════════════════════════════════════════════════════════════ */
+
+const VC_LAYERS = {
+  L1:  { name:'Hardware / QPU',                      color:'#3b82f6', lo:45, hi:55, note:"Largest REVENUE slice — but profit concentrates in 1–2 fault-tolerant winners; the rest earn foundry-style margins or get acqui-hired." },
+  L2:  { name:'Control & cryo (picks-and-shovels)',  color:'#10b981', lo:5,  hi:10, note:"BCG's own disclosed supply-chain share. Highest-confidence number here. Modality-agnostic — paid regardless of who wins." },
+  L3:  { name:'Error-suppression / middleware SW',   color:'#a78bfa', lo:8,  hi:15, note:"High margin but double-squeezed: hyperscalers bundle it AND fault-tolerant correction subsumes NISQ-era suppression." },
+  L4:  { name:'Algorithms / applications SW',        color:'#f59e0b', lo:5,  hi:12, note:"Carries the $450–850B economic-value headline but weakest VENDOR capture — value accrues to end users, not the app vendor." },
+  L5:  { name:'Networking / interconnect / transducers', color:'#ec4899', lo:2, hi:6, note:"A call option on fault tolerance arriving — cash flows a decade out and binary on the FT timeline." },
+  L6:  { name:'PQC / quantum security',              color:'#ef4444', lo:0,  hi:5,  note:"Mandate-driven near-term cash (NIST/NSA), but mostly OUTSIDE the $90–170B compute pool and likely captured by security incumbents." },
+  L7:  { name:'Cloud / QCaaS distribution',          color:'#14b8a6', lo:15, hi:25, note:"Most DURABLE margin. ABSORBS share that L3/L4/L6 pure-plays book as their own TAM. But immaterial to the mega-caps' financials." },
+  ADJ: { name:'Adjacent (sensing) — outside pool',   color:'#64748b', lo:0,  hi:0,  note:"Real market, but separate from the QC compute pool — fence it out to avoid double-counting (the Infleqtion-sensing trap)." },
+};
+const VC_LAYER_ORDER = ['L1','L7','L3','L4','L2','L5','L6','ADJ'];
+
+// Hardware modality share-of-pool (directional ranges; superconducting bundles IBM/Google integrated position, so columns overlap and do NOT sum to 100%).
+const VC_MODALITY = [
+  { name:'Trapped Ion',                       today:[30,45], y2030:[25,35], ft:[15,25] },
+  { name:'Neutral Atom',                      today:[10,15], y2030:[15,25], ft:[25,40] },
+  { name:'Superconducting (incl. IBM/Google)',today:[20,30], y2030:[25,35], ft:[30,45] },
+  { name:'Photonic (bimodal)',                today:[0,5],   y2030:[5,12],  ft:[5,15]  },
+  { name:'Silicon Spin',                      today:[0,2],   y2030:[2,8],   ft:[10,20] },
+  { name:'Topological',                       today:[0,1],   y2030:[0,3],   ft:[0,5]   },
+  { name:'Annealing',                         today:[5,10],  y2030:[3,7],   ft:[2,5]   },
+  { name:'NV-diamond / exotic',               today:[0,2],   y2030:[0,2],   ft:[0,2]   },
+];
+
+// Per-company classification. agnostic = paid regardless of who wins the qubit race.
+// hyper = hyperscaler-absorption risk. ft = FT-timeline dependence. audit = revenue-anchor correction.
+const VC_TAGS = {
+  ionq:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  quantinuum:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary',audit:'S-1: ~$30.9M FY2025 rev (not ~$115M); Q1-26 fell 73% to $5.2M'},
+  aqt:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  quera:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  alice_bob:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  seeqc:{layer:'L2',agnostic:true,hyper:'Med',ft:'Binary'},
+  qci:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  atom:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  quantum_motion:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  quobly:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  quantware:{layer:'L1',agnostic:false,hyper:'Med',ft:'Binary'},
+  rigetti:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  pasqal:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  infleqtion:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary',audit:'~75% of ~$29M LTM is SENSING, not gate-model QC'},
+  psiquantum:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  microsoft:{layer:'L7',agnostic:true,hyper:'Low',ft:'Near-cash'},
+  sygaldry:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  yaqumo:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  cavilinq:{layer:'L5',agnostic:true,hyper:'Low',ft:'FT 2035+'},
+  welinq:{layer:'L5',agnostic:true,hyper:'Low',ft:'FT 2035+'},
+  dwave:{layer:'L1',agnostic:false,hyper:'Low',ft:'Near-cash'},
+  ibm:{layer:'L7',agnostic:true,hyper:'Low',ft:'Near-cash'},
+  iqm:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  xanadu:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  quantum_machines:{layer:'L2',agnostic:true,hyper:'Med',ft:'Near-cash'},
+  kipu_quantum:{layer:'L4',agnostic:true,hyper:'High',ft:'Binary'},
+  classiq:{layer:'L3',agnostic:true,hyper:'High',ft:'Binary'},
+  qctrl:{layer:'L3',agnostic:true,hyper:'High',ft:'Near-cash'},
+  qboson:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  multiverse:{layer:'L4',agnostic:true,hyper:'High',ft:'Near-cash',audit:'~$5.5M rev + AI/LLM pivot (CompactifAI); not €100M QC ARR'},
+  quantum_brilliance:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  eeroq:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  horizon_quantum:{layer:'L3',agnostic:true,hyper:'High',ft:'Binary'},
+  fermioniq:{layer:'L4',agnostic:true,hyper:'High',ft:'Near-cash'},
+  haiqu:{layer:'L3',agnostic:true,hyper:'High',ft:'Binary'},
+  qt_sense:{layer:'ADJ',agnostic:true,hyper:'Low',ft:'Near-cash'},
+  quantum_elements:{layer:'L3',agnostic:true,hyper:'High',ft:'Near-cash'},
+  saxonq:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  nu_quantum:{layer:'L5',agnostic:true,hyper:'Low',ft:'FT 2035+'},
+  arqit:{layer:'L6',agnostic:true,hyper:'High',ft:'Near-cash'},
+  quintessencelabs:{layer:'L6',agnostic:true,hyper:'High',ft:'Near-cash'},
+  btq:{layer:'L6',agnostic:true,hyper:'High',ft:'Near-cash'},
+  qbird:{layer:'L5',agnostic:true,hyper:'Low',ft:'FT 2035+'},
+  qphox:{layer:'L5',agnostic:true,hyper:'Low',ft:'FT 2035+'},
+  euqlid:{layer:'ADJ',agnostic:true,hyper:'Low',ft:'Near-cash'},
+  xeedq:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+  memq:{layer:'L5',agnostic:true,hyper:'Low',ft:'FT 2035+'},
+  oqc:{layer:'L1',agnostic:false,hyper:'Low',ft:'Binary'},
+};
+
+function VcSlider({label, min, max, step, value, onChange, fmtv}) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:10, padding:'4px 0' }}>
+      <div style={{ width:185, fontSize:11, color:'#cbd5e1' }}>{label}</div>
+      <input type="range" min={min} max={max} step={step} value={value}
+        onChange={e => onChange(parseFloat(e.target.value))}
+        style={{ flex:1, accentColor:'#14b8a6', cursor:'pointer' }} />
+      <div style={{ width:62, textAlign:'right', fontSize:12, fontWeight:700, color:'#f1f5f9' }}>{fmtv(value)}</div>
+    </div>
+  );
+}
+function VcRangeBar({range, max, color}) {
+  return (
+    <div style={{ flex:1, height:14, background:'rgba(255,255,255,0.04)', borderRadius:3, position:'relative', overflow:'hidden' }}>
+      <div style={{ position:'absolute', left:`${(range[0]/max)*100}%`, width:`${((range[1]-range[0])/max)*100}%`, top:0, bottom:0, background:`${color}44`, borderLeft:`2px solid ${color}`, borderRight:`2px solid ${color}` }} />
+    </div>
+  );
+}
+function VcPill({txt, color}) {
+  return <span style={{ fontSize:8.5, fontWeight:700, letterSpacing:'0.3px', padding:'1px 5px', borderRadius:3, color, background:`${color}22`, whiteSpace:'nowrap' }}>{txt}</span>;
+}
+
+function ValueCaptureTab() {
+  const DEFAULT_VC = { econLow:450, econHigh:850, capture:0.12, poolOverride:null, segCaps:{ibm:3,microsoft:2}, termPS:10, discount:0.15, baseYear:2026, targetYear:2040 };
+  const [vc, setVc] = React.useState(() => {
+    try { const s = { ...DEFAULT_VC, ...JSON.parse(localStorage.getItem('qci-valuecapture-assumptions-v2') || '{}') }; s.segCaps = { ...DEFAULT_VC.segCaps, ...(s.segCaps||{}) }; return s; }
+    catch(e) { return DEFAULT_VC; }
+  });
+  React.useEffect(() => { localStorage.setItem('qci-valuecapture-assumptions-v2', JSON.stringify(vc)); }, [vc]);
+  const set = (k, v) => setVc(prev => ({ ...prev, [k]: v }));
+  const reset = () => setVc(DEFAULT_VC);
+
+  const [liveCaps, setLiveCaps] = React.useState({});
+  const PUBLIC_TICKERS = { ionq:'IONQ', rigetti:'RGTI', dwave:'QBTS', infleqtion:'INFQ', xanadu:'XNDU', arqit:'ARQQ', btq:'BTQ-A.TO', ibm:'IBM', microsoft:'MSFT' };
+  React.useEffect(() => {
+    let active = true;
+    Promise.all(Object.entries(PUBLIC_TICKERS).map(([id,t]) => fetchYahooMarketCap(t).then(r=>[id,r]).catch(()=>[id,{capB:null}])))
+      .then(res => { if (active) setLiveCaps(Object.fromEntries(res)); });
+    return () => { active = false; };
+  }, []);
+  const effCap = (id) => { const live = liveCaps[id]; if (live && live.capB) return live.capB; const mc = MARKET_CAPS[id]; return mc ? mc.capB : null; };
+
+  const poolLo = vc.econLow * vc.capture, poolHi = vc.econHigh * vc.capture;
+  const poolMid = Math.round((poolLo + poolHi) / 2);
+  const poolPoint = (vc.poolOverride != null) ? vc.poolOverride : poolMid;
+  const years = vc.targetYear - vc.baseYear;
+  const isConglomerate = (id) => !!(MARKET_CAPS[id] && MARKET_CAPS[id].capStatus === 'conglomerate');
+  const conglomerateList = COMPANIES.filter(c => isConglomerate(c.id));
+  const tagFor = (id) => VC_TAGS[id] || { layer:'L1', agnostic:false, hyper:'Low', ft:'Binary' };
+  const fmt = (b) => b==null ? '—' : (b<=0 ? '$0' : (b>=1000 ? `$${(b/1000).toFixed(1)}T` : (b>=1 ? `$${b.toFixed(1)}B` : `$${(b*1000).toFixed(0)}M`)));
+
+  const rows = COMPANIES.map(c => {
+    const cong = isConglomerate(c.id);
+    const cap = cong ? (vc.segCaps[c.id] != null ? vc.segCaps[c.id] : 0) : effCap(c.id);
+    if (cap == null) return null;
+    const impliedRev = cap * Math.pow(1 + vc.discount, years) / vc.termPS;   // $B of 2040 revenue the price implies
+    const sharePct = poolPoint > 0 ? (impliedRev / poolPoint) * 100 : 0;
+    const live = !cong && !!(liveCaps[c.id] && liveCaps[c.id].capB);
+    return { c, cap, impliedRev, sharePct, live, cong, tag: tagFor(c.id) };
+  }).filter(Boolean).sort((a,b) => b.sharePct - a.sharePct);
+
+  const shareColor = (p) => p > 100 ? '#ef4444' : (p > 40 ? '#f59e0b' : '#10b981');
+
+  const card = { background:'rgba(255,255,255,0.03)', border:'1px solid var(--border)', borderRadius:8, padding:'14px 16px' };
+  const lblS = { fontSize:9, fontWeight:700, letterSpacing:'0.6px', textTransform:'uppercase', color:'var(--dim)' };
+  const ftColor = (ft) => ft==='Near-cash' ? '#10b981' : (ft==='Binary' ? '#ef4444' : '#f59e0b');
+  const hyperColor = (h) => h==='High' ? '#ef4444' : (h==='Med' ? '#f59e0b' : '#64748b');
+
+  return (
+    <div>
+      {/* POOL-REALITY HEADER */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:12, marginBottom:18 }}>
+        <div style={{ ...card, borderColor:'rgba(20,184,166,0.35)' }}>
+          <div style={lblS}>Provider revenue pool · 2040E</div>
+          <div style={{ fontSize:22, fontWeight:800, color:'#2dd4bf', marginTop:4 }}>{fmt(poolLo)}–{fmt(poolHi)}</div>
+          <div style={{ fontSize:10, color:'var(--dim)', marginTop:3 }}>= economic value × {(vc.capture*100).toFixed(0)}% capture. <b style={{color:'#cbd5e1'}}>The only equity-relevant number.</b></div>
+        </div>
+        <div style={{ ...card, borderColor:'rgba(245,158,11,0.30)' }}>
+          <div style={lblS}>Economic value · 2040E</div>
+          <div style={{ fontSize:22, fontWeight:800, color:'#fbbf24', marginTop:4 }}>${vc.econLow}–{vc.econHigh}B</div>
+          <div style={{ fontSize:10, color:'var(--dim)', marginTop:3 }}>~80% accrues to <b style={{color:'#cbd5e1'}}>END USERS</b> (pharma/finance) — not vendors. Don't value a company off this.</div>
+        </div>
+        <div style={{ ...card, borderColor:'rgba(100,116,139,0.30)' }}>
+          <div style={lblS}>Real revenue · today</div>
+          <div style={{ fontSize:22, fontWeight:800, color:'#94a3b8', marginTop:4 }}>~$0.2–0.6B</div>
+          <div style={{ fontSize:10, color:'var(--dim)', marginTop:3 }}>Pure-play, <b style={{color:'#cbd5e1'}}>~80% government-funded</b>. Pool needs ~35–57%/yr for 15 yrs, back-loaded post-2030.</div>
+        </div>
+      </div>
+
+      {/* ASSUMPTIONS PANEL */}
+      <div style={{ ...card, marginBottom:18 }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:8 }}>
+          <div style={{ fontSize:12, fontWeight:700, color:'#f1f5f9' }}>Assumptions <span style={{ fontSize:10, fontWeight:400, color:'var(--dim)' }}>· editable · saved to this browser</span></div>
+          <button onClick={reset} style={{ fontSize:10, fontWeight:600, cursor:'pointer', fontFamily:'inherit', padding:'4px 12px', borderRadius:4, background:'rgba(255,255,255,0.04)', border:'1px solid var(--border)', color:'var(--dim)' }}>Reset to defaults</button>
+        </div>
+        {/* capture presets */}
+        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:6, flexWrap:'wrap' }}>
+          <span style={{ fontSize:11, color:'#cbd5e1', width:185 }}>Capture-rate scenario</span>
+          {[['Bull · 20% (BCG TAM ceiling)',0.20],['Mid · 12%',0.12],['Bear · 6% (bottom-up)',0.06]].map(([lbl,v]) => (
+            <button key={lbl} onClick={() => { set('capture', v); set('poolOverride', null); }}
+              style={{ fontSize:10, fontWeight:600, cursor:'pointer', fontFamily:'inherit', padding:'4px 10px', borderRadius:4,
+                background: Math.abs(vc.capture-v)<0.001 ? 'rgba(20,184,166,0.18)' : 'rgba(255,255,255,0.04)',
+                border:`1px solid ${Math.abs(vc.capture-v)<0.001 ? 'rgba(20,184,166,0.5)' : 'var(--border)'}`,
+                color: Math.abs(vc.capture-v)<0.001 ? '#2dd4bf' : 'var(--dim)' }}>{lbl}</button>
+          ))}
+        </div>
+        <VcSlider label="Capture rate (% of econ value)" min={0.03} max={0.35} step={0.01} value={vc.capture} onChange={v=>set('capture',v)} fmtv={v=>`${(v*100).toFixed(0)}%`} />
+        <VcSlider label="Economic value — low ($B)"   min={200} max={900}  step={10} value={vc.econLow}  onChange={v=>set('econLow',v)}  fmtv={v=>`$${v}B`} />
+        <VcSlider label="Economic value — high ($B)"  min={400} max={1500} step={10} value={vc.econHigh} onChange={v=>set('econHigh',v)} fmtv={v=>`$${v}B`} />
+        <div style={{ borderTop:'1px solid var(--border)', margin:'8px 0' }} />
+        <div style={{ fontSize:10, color:'var(--dim)', marginBottom:4 }}>Implied-share model: <i>today's market cap = (2040 revenue × terminal P/S), discounted back. Solve for the share of the pool the price implies.</i></div>
+        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:4, flexWrap:'wrap' }}>
+          <span style={{ fontSize:11, color:'#cbd5e1', width:185 }}>Pool $ for implied-share <span style={{ color:'#64748b' }}>{vc.poolOverride==null ? '(auto = band mid)' : '(override)'}</span></span>
+          {[['Low',poolLo],['Mid',poolMid],['High',poolHi]].map(([lbl,v]) => (
+            <button key={lbl} onClick={() => set('poolOverride', Math.round(v))}
+              style={{ fontSize:10, fontWeight:600, cursor:'pointer', fontFamily:'inherit', padding:'3px 10px', borderRadius:4, background:'rgba(255,255,255,0.04)', border:'1px solid var(--border)', color:'var(--dim)' }}>{lbl} {fmt(v)}</button>
+          ))}
+          <button onClick={() => set('poolOverride', null)}
+            style={{ fontSize:10, fontWeight:600, cursor:'pointer', fontFamily:'inherit', padding:'3px 10px', borderRadius:4, background: vc.poolOverride==null?'rgba(20,184,166,0.18)':'rgba(255,255,255,0.04)', border:`1px solid ${vc.poolOverride==null?'rgba(20,184,166,0.5)':'var(--border)'}`, color: vc.poolOverride==null?'#2dd4bf':'var(--dim)' }}>Auto</button>
+        </div>
+        <VcSlider label="Pool size used ($B)"        min={20}   max={250} step={5}    value={poolPoint} onChange={v=>set('poolOverride',v)} fmtv={v=>`$${v}B`} />
+        <VcSlider label="Terminal P/S on 2040 rev"   min={3}    max={30}  step={0.5}  value={vc.termPS}    onChange={v=>set('termPS',v)}    fmtv={v=>`${v}x`} />
+        <VcSlider label="Discount rate (annual)"     min={0.08} max={0.25} step={0.01} value={vc.discount} onChange={v=>set('discount',v)}  fmtv={v=>`${(v*100).toFixed(0)}%`} />
+        <VcSlider label="Target year"                min={2035} max={2045} step={1}   value={vc.targetYear} onChange={v=>set('targetYear',v)} fmtv={v=>`${v} (${v-vc.baseYear}y)`} />
+        {conglomerateList.length > 0 && (
+          <div style={{ marginTop:8, paddingTop:8, borderTop:'1px solid var(--border)' }}>
+            <div style={{ fontSize:10, color:'var(--dim)', marginBottom:4 }}>Conglomerate <b style={{color:'#cbd5e1'}}>quantum-segment</b> cap (editable est., $B) — used instead of full parent cap so the &gt;100% flag stays meaningful:</div>
+            {conglomerateList.map(c => (
+              <div key={c.id} style={{ display:'flex', alignItems:'center', gap:10, padding:'2px 0' }}>
+                <span style={{ width:185, fontSize:11, color:'#cbd5e1' }}>{c.name} <span style={{ color:'#64748b' }}>(parent {fmt(effCap(c.id))})</span></span>
+                <input type="number" step="0.5" value={vc.segCaps[c.id] != null ? vc.segCaps[c.id] : 0}
+                  onChange={e => set('segCaps', { ...vc.segCaps, [c.id]: parseFloat(e.target.value) || 0 })}
+                  style={{ width:80, background:'rgba(255,255,255,0.05)', border:'1px solid var(--border)', borderRadius:4, color:'#f1f5f9', fontSize:12, padding:'3px 6px', fontFamily:'inherit' }} />
+                <span style={{ fontSize:11, color:'#64748b' }}>$B</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* PROVIDER-REVENUE SHARE BY LAYER + companies */}
+      <div style={{ ...card, marginBottom:18 }}>
+        <div style={{ fontSize:12, fontWeight:700, color:'#f1f5f9', marginBottom:2 }}>Provider-revenue share by layer <span style={{ fontSize:10, fontWeight:400, color:'#f59e0b' }}>· DEDUCED, not BCG-published</span></div>
+        <div style={{ fontSize:10, color:'var(--dim)', marginBottom:12 }}>Durable margin pools at two poles — the FT-QPU winner (L1, but only 1–2 names) and cloud distribution (L7). Ranges are directional and do not sum to 100%.</div>
+        {VC_LAYER_ORDER.map(code => {
+          const L = VC_LAYERS[code];
+          const members = COMPANIES.filter(c => tagFor(c.id).layer === code);
+          if (!members.length) return null;
+          return (
+            <div key={code} style={{ marginBottom:14 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:4 }}>
+                <span style={{ fontSize:10, fontWeight:800, color:L.color, width:26 }}>{code}</span>
+                <span style={{ fontSize:11.5, fontWeight:700, color:'#e2e8f0', minWidth:230 }}>{L.name}</span>
+                <VcRangeBar range={[L.lo,L.hi]} max={55} color={L.color} />
+                <span style={{ fontSize:11, fontWeight:700, color:L.color, width:74, textAlign:'right' }}>{L.lo}–{L.hi}%</span>
+              </div>
+              <div style={{ fontSize:10, color:'var(--dim)', margin:'0 0 6px 36px' }}>{L.note}</div>
+              <div style={{ display:'flex', flexWrap:'wrap', gap:6, margin:'0 0 0 36px' }}>
+                {members.map(c => {
+                  const t = tagFor(c.id);
+                  return (
+                    <div key={c.id} title={c.modality} style={{ display:'inline-flex', alignItems:'center', gap:5, padding:'3px 7px', borderRadius:4, background:'rgba(255,255,255,0.025)', border:'1px solid var(--border)' }}>
+                      <span style={{ fontSize:10.5, fontWeight:600, color:'#e2e8f0' }}>{c.name}</span>
+                      <VcPill txt={t.agnostic ? 'AGNOSTIC' : 'MODALITY BET'} color={t.agnostic ? '#10b981' : '#64748b'} />
+                      <VcPill txt={t.ft} color={ftColor(t.ft)} />
+                      {t.hyper !== 'Low' && <VcPill txt={`HYPER ${t.hyper.toUpperCase()}`} color={hyperColor(t.hyper)} />}
+                      {t.audit && <span title={t.audit} style={{ fontSize:9, fontWeight:800, color:'#f59e0b', cursor:'help' }}>⚠</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+        <div style={{ fontSize:9.5, color:'#475569', marginTop:6, display:'flex', gap:14, flexWrap:'wrap' }}>
+          <span><b style={{color:'#10b981'}}>AGNOSTIC</b> = paid regardless of which qubit wins</span>
+          <span><b style={{color:'#10b981'}}>Near-cash</b> / <b style={{color:'#ef4444'}}>Binary</b> / <b style={{color:'#f59e0b'}}>FT 2035+</b> = cash-flow timing</span>
+          <span><b style={{color:'#ef4444'}}>HYPER</b> = hyperscaler-absorption risk</span>
+          <span><b style={{color:'#f59e0b'}}>⚠</b> = revenue-anchor correction (hover)</span>
+        </div>
+      </div>
+
+      {/* MODALITY SHARE-OF-POOL */}
+      <div style={{ ...card, marginBottom:18 }}>
+        <div style={{ fontSize:12, fontWeight:700, color:'#f1f5f9', marginBottom:2 }}>Hardware modality share — who wins the qubit race</div>
+        <div style={{ fontSize:10, color:'var(--dim)', marginBottom:12 }}>Trapped ion leads <b style={{color:'#cbd5e1'}}>today</b>; neutral atom + IBM/Google superconducting are positioned to lead the <b style={{color:'#cbd5e1'}}>fault-tolerant era</b>. Directional ranges; superconducting bundles the IBM/Google integrated position so columns overlap.</div>
+        <div style={{ display:'grid', gridTemplateColumns:'210px 1fr 1fr 1fr', gap:'4px 14px', alignItems:'center' }}>
+          <div></div>
+          {['Today','~2030','2035–40 (FT era)'].map(h => <div key={h} style={{ ...lblS, textAlign:'center' }}>{h}</div>)}
+          {VC_MODALITY.map(m => (
+            <React.Fragment key={m.name}>
+              <div style={{ fontSize:11, color:'#e2e8f0', fontWeight:600 }}>{m.name}</div>
+              {[m.today, m.y2030, m.ft].map((r,i) => (
+                <div key={i} style={{ display:'flex', alignItems:'center', gap:6 }}>
+                  <VcRangeBar range={r} max={45} color={i===2 ? '#2dd4bf' : '#475569'} />
+                  <span style={{ fontSize:9.5, color:'var(--dim)', width:46, textAlign:'right' }}>{r[0]}–{r[1]}%</span>
+                </div>
+              ))}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      {/* IMPLIED SHARE THE MARKET CAP IS PRICING IN */}
+      <div style={card}>
+        <div style={{ fontSize:12, fontWeight:700, color:'#f1f5f9', marginBottom:2 }}>Implied 2040 share the market cap is pricing in</div>
+        <div style={{ fontSize:10, color:'var(--dim)', marginBottom:12 }}>
+          At {fmt(poolPoint)} pool · {vc.termPS}x terminal P/S · {(vc.discount*100).toFixed(0)}% discount · {years}y.
+          <b style={{ color:'#ef4444' }}> &gt;100% = the price embeds owning more than the entire global provider pool.</b> The same runaway-revenue lens you apply to IonQ.
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'1.4fr 0.7fr 0.9fr 1fr 1fr', gap:'2px 10px', fontSize:11 }}>
+          {['Company','Layer','Market cap','Implied 2040 rev','Implied pool share'].map(h => <div key={h} style={{ ...lblS, paddingBottom:4, borderBottom:'1px solid var(--border)' }}>{h}</div>)}
+          {rows.map(r => (
+            <React.Fragment key={r.c.id}>
+              <div style={{ padding:'5px 0', color:'#e2e8f0', fontWeight:600, display:'flex', alignItems:'center', gap:6 }}>
+                {r.c.name}
+                {r.live && <span title="live Yahoo Finance" style={{ width:6, height:6, borderRadius:'50%', background:'#10b981', display:'inline-block' }} />}
+                {r.cong && <span title="conglomerate — editable quantum-segment estimate, not parent cap" style={{ fontSize:8.5, fontWeight:700, color:'#a78bfa' }}>SEG·EST</span>}
+                {r.tag.audit && <span title={r.tag.audit} style={{ fontSize:9, color:'#f59e0b', cursor:'help' }}>⚠</span>}
+              </div>
+              <div style={{ padding:'5px 0', color:VC_LAYERS[r.tag.layer].color, fontWeight:700 }}>{r.tag.layer}</div>
+              <div style={{ padding:'5px 0', color:'#cbd5e1' }}>{fmt(r.cap)}</div>
+              <div style={{ padding:'5px 0', color:'#cbd5e1' }}>{fmt(r.impliedRev)}</div>
+              <div style={{ padding:'5px 0', fontWeight:800, color:shareColor(r.sharePct) }}>{r.sharePct.toFixed(1)}%{r.sharePct>100 && ' ⚠'}</div>
+            </React.Fragment>
+          ))}
+        </div>
+        <div style={{ fontSize:9.5, color:'#475569', marginTop:10 }}>Caps: live Yahoo for public tickers, else static estimates. Implied revenue is illustrative reverse-math, not a forecast — change the assumptions above to stress it.</div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   const [tab, setTab] = React.useState('allcos');
   const [openMenu, setOpenMenu] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
 
   const INVEST_TABS = [
-    ['invest','Investability'],['valuation','Market Map'],['rebalancer','Portfolio'],
+    ['invest','Investability'],['valuation','Market Map'],['valuecapture','Value Capture'],['rebalancer','Portfolio'],
     ['fund','Fund Overview'],['qtum','QTUM ETF'],
   ];
   const RESEARCH_TABS = [
@@ -5843,6 +6806,9 @@ function App() {
 
       {/* MARKET MAP */}
       {tab === 'valuation' && <ValuationTab portfolioStatuses={portfolioStatuses} />}
+
+      {/* VALUE CAPTURE */}
+      {tab === 'valuecapture' && <ValueCaptureTab />}
 
       {/* PORTFOLIO REBALANCER */}
       {tab === 'rebalancer' && <RebalancerTab portfolioStatuses={portfolioStatuses} onStatusChange={handleStatusChange} />}
